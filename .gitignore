@@ -1,0 +1,15 @@
+.DS_Store
+
+# IntelliJ files
+.idea/
+out/
+
+# Gradle files
+build/
+.gradle/
+
+# Maven files
+target
+
+# Modules for JS projects build
+node_modules
