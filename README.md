@@ -1,24 +1,15 @@
 KotmolPdbParser
 ==========
-sandbox for gradle based kotlin serialization hacking
-<br>status: builds
 
-- ReadWritePDBfile
+Experimental library for parsing PDB files.
 
-Read in a PDB file that has been edited into a JSON 
-data format.
+<br><b>status:</b> in developement.  Not yet posted for sharing
 
-    { "MOL" : [
-    {"A": "C","X": "  7.075","Y": " -41.217","Z": "  35.604"},
+Credits
+-------
+The bond table information derives from the pdbe information, 
+for example from the query:
 
-Write out the data to a file as a binary file.   Then do a test read
-back of the data.
-
-- WriteThenReadFloats
-
-testing writing bytes to a file.
-
-- Module1
-
-added a bit of PDB atom serialization from an edited JSON
-file extraction.   
+    https://www.ebi.ac.uk/pdbe/api/pdb/compound/bonds/dg
+    
+ 
