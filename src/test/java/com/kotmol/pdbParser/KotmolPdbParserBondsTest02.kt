@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 
 internal class KotmolPdbParserBondsTest02 {
 
-    @org.junit.jupiter.api.BeforeEach
+/*    @org.junit.jupiter.api.BeforeEach
     fun setUp() {
         println("Setup")
     }
@@ -16,7 +16,7 @@ internal class KotmolPdbParserBondsTest02 {
     @org.junit.jupiter.api.AfterEach
     fun tearDown() {
         println("Teardown")
-    }
+    }*/
 
     @Test
     @DisplayName( "check that all entries exist")

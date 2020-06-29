@@ -17,6 +17,7 @@
 
 package com.kotmol.pdbParser
 
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -24,7 +25,7 @@ import org.junit.jupiter.api.Test
 
 internal class KotmolPdbParserBondsTest03 {
 
-    @org.junit.jupiter.api.BeforeEach
+/*    @org.junit.jupiter.api.BeforeEach
     fun setUp() {
         println("Setup")
     }
@@ -32,7 +33,7 @@ internal class KotmolPdbParserBondsTest03 {
     @org.junit.jupiter.api.AfterEach
     fun tearDown() {
         println("Teardown")
-    }
+    }*/
 
     @Test
     @DisplayName("touch all hash entries")
@@ -43,7 +44,7 @@ internal class KotmolPdbParserBondsTest03 {
             //println("number of entries in item: ${item.value}")
 
             val foo = item.value
-            println(foo.size)
+            assertNotEquals(0, foo)
         }
 
 
@@ -77,8 +78,7 @@ internal class KotmolPdbParserBondsTest03 {
         for (k in (foundMatch.indices)) {
             if (!foundMatch[k]) {
                 val bad = badList[k]
-                println("Found orphaned entry: ${badList[k]}")
-
+                println("Found (expected) orphaned entry: ${badList[k]}")
             }
         }
     }

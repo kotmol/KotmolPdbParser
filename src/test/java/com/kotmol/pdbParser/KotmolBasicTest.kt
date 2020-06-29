@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolPdbParserBondsTest {
+internal class KotmolBasicTest {
 
     @org.junit.jupiter.api.BeforeEach
     fun setUp() {
