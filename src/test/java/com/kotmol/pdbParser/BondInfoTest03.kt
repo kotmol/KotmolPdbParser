@@ -17,13 +17,14 @@
 
 package com.kotmol.pdbParser
 
+import com.kotmol.BondInfo
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolPdbParserBondsTest03 {
+internal class BondInfoTest03 {
 
 /*    @org.junit.jupiter.api.BeforeEach
     fun setUp() {
@@ -38,7 +39,7 @@ internal class KotmolPdbParserBondsTest03 {
     @Test
     @DisplayName("touch all hash entries")
     fun testAllHashEntries() {
-        val bondLookup = KotmolPdbParserBonds()
+        val bondLookup = BondInfo()
 
         for (item in bondLookup.kotmolBondLookup) {
             //println("number of entries in item: ${item.value}")
@@ -88,7 +89,7 @@ internal class KotmolPdbParserBondsTest03 {
      */
     companion object {
         val badList = listOf(
-                KotmolPdbParserBonds.KotmolBondRecord(
+                BondInfo.KotmolBondRecord(
                         aromatic = false,
                         atom_1 = "C1'",
                         atom_2 = "H1'",
@@ -97,7 +98,7 @@ internal class KotmolPdbParserBondsTest03 {
                         ideal_length = 1.095,
                         stereo = false
                 ),
-                KotmolPdbParserBonds.KotmolBondRecord(
+                BondInfo.KotmolBondRecord(
                         aromatic = false,
                         atom_1 = "NX",
                         atom_2 = "NY",
@@ -106,7 +107,7 @@ internal class KotmolPdbParserBondsTest03 {
                         ideal_length = 1.434,
                         stereo = false
                 ),
-                KotmolPdbParserBonds.KotmolBondRecord(
+                BondInfo.KotmolBondRecord(
                         aromatic = false,
                         atom_1 = "C1'",
                         atom_2 = "N3",

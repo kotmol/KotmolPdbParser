@@ -1,12 +1,13 @@
 package com.kotmol.pdbParser
 
+import com.kotmol.BondInfo
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolPdbParserBondsTest02 {
+internal class BondInfoTest02 {
 
 /*    @org.junit.jupiter.api.BeforeEach
     fun setUp() {
@@ -21,7 +22,7 @@ internal class KotmolPdbParserBondsTest02 {
     @Test
     @DisplayName( "check that all entries exist")
     fun testAllHashEntriesExist() {
-        val bondLookup = KotmolPdbParserBonds()
+        val bondLookup = BondInfo()
 
         val theList = listOf(
         "ala",

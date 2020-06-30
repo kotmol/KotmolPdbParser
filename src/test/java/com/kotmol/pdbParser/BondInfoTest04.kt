@@ -16,13 +16,14 @@
 )
 package com.kotmol.pdbParser
 
+import com.kotmol.BondInfo
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolPdbParserBondsTest04 {
+internal class BondInfoTest04 {
     /*
      * for every bond list, scan the list and verify that all bond pairs have at least one
      * match of an atom to another atom.   That is to say - in the directed graph
@@ -31,7 +32,7 @@ internal class KotmolPdbParserBondsTest04 {
     @Test
     @DisplayName("check all lists for orphaned bond pairs")
     fun checkAllListsForOrphanedParis() {
-        val bondLookup = KotmolPdbParserBonds()
+        val bondLookup = BondInfo()
 
         for (item in bondLookup.kotmolBondLookup) {
             scanListForOphanedPairs(item.value)
@@ -42,7 +43,7 @@ internal class KotmolPdbParserBondsTest04 {
      * the actual scan function - the "foundMatch" boolean array should go completely true
      * as the connections are tested.
      */
-    fun scanListForOphanedPairs(testList: List<KotmolPdbParserBonds.KotmolBondRecord>) {
+    fun scanListForOphanedPairs(testList: List<BondInfo.KotmolBondRecord>) {
         val foundMatch = BooleanArray(testList.size)
         val allTrue = BooleanArray(testList.size) { true }
         //for (item in badList) {

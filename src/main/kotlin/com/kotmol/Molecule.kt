@@ -39,7 +39,9 @@ class Molecule {
     val pdbSheetList: MutableList<PdbBetaSheet> = ArrayList()
     val listofChainDescriptorLists: MutableList<List<*>> = ArrayList()
     private val listofDnaHelixChainLists: MutableList<List<*>> = ArrayList()
+    var ribbonNodeCount = 0
 
+    var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
 
     /*
      * list of ribbons to render
@@ -56,6 +58,9 @@ class Molecule {
         pdbSheetList.clear()
         listofChainDescriptorLists.clear()
         listofDnaHelixChainLists.clear()
+        ribbonNodeCount = 0
     }
 
 }
+
+class Bond(val atomNumber1: Int, val atomNumber2: Int)

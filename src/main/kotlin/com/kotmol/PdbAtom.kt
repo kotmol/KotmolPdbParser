@@ -23,7 +23,10 @@
         "ConstantConditionIf",
         "LocalVariableName",
         "PropertyName")
+
 package com.kotmol
+
+import kotlin.math.sqrt
 
 class PdbAtom {
 
@@ -35,7 +38,7 @@ class PdbAtom {
     var chainId: Char = ' '
     var residueSeqNumber: Int = 0
     var residueInsertionCode: Char = ' '  //  Code for insertion of residues.
-//    lateinit var atom_position3f: Vector3
+    lateinit var atomPosition: KotmolVector3
     lateinit var elementSymbol: String
 
     /**
@@ -49,6 +52,24 @@ class PdbAtom {
         const val IS_NUCLEIC = 3
     }
 }
+
+class Helix {
+    var chain_id: Char = ' '
+    lateinit var atom: PdbAtom
+}
+
+class KotmolVector3(
+        var x: Double, var y: Double, var z: Double) {
+
+    fun distanceTo(q: KotmolVector3): Double {
+        val a = x - q.x
+        val b = y - q.y
+        val c = z - q.z
+        return sqrt(a * a + b * b + c * c)
+
+    }
+}
+
 
 /*
 ATOM line per PDB spec V33
