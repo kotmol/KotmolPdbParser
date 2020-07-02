@@ -23,7 +23,7 @@
         "ConstantConditionIf",
         "LocalVariableName",
         "PropertyName")
-package com.kotmol
+package com.kotmol.pdbParser
 
 class PdbHelix {
 

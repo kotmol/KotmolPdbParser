@@ -16,7 +16,6 @@
 )
 package com.kotmol.pdbParser
 
-import com.kotmol.BondInfo
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName

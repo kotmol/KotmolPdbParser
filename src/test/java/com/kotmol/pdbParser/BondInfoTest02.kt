@@ -1,6 +1,5 @@
 package com.kotmol.pdbParser
 
-import com.kotmol.BondInfo
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
