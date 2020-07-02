@@ -40,6 +40,7 @@ class Molecule {
     val listofChainDescriptorLists: MutableList<List<*>> = ArrayList()
     private val listofDnaHelixChainLists: MutableList<List<*>> = ArrayList()
     var ribbonNodeCount = 0
+    var unbondedAtomCount = 0
 
     var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
 

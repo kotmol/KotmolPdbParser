@@ -31,8 +31,7 @@ import java.lang.Math.sqrt
 // TODO: parse old version of Hydrogen atoms (e.g. 1HD)
 // TODO: parse HETATM - convert "CO" in 1mat to single letter code (at atom 1967)
 
-
-class ParserPdbFile(val mMol: Molecule) {
+class ParserPdbFile(private val mol: Molecule) {
 
     private val bondinfo = BondInfo()
     private var maxX = 0.toDouble()
@@ -45,7 +44,7 @@ class ParserPdbFile(val mMol: Molecule) {
     fun loadPdbFromStream(inputStream: InputStream) {
 
         resetMoleculeMaxMin()
-        mMol.clearLists()
+        mol.clearLists()
         loadPdbFromInputStream(inputStream)
         /*
          * Todo: ?? addHelixSecondaryInformation - update for HELIX records
@@ -123,8 +122,8 @@ class ParserPdbFile(val mMol: Molecule) {
         var anAtom: PdbAtom?
         var lastAtom: PdbAtom? = null
         var lastResidueSequenceNumber = 0
-        for (i in 0 until mMol.numList.size) {
-            anAtom = mMol.atoms[mMol.numList[i]]
+        for (i in 0 until mol.numList.size) {
+            anAtom = mol.atoms[mol.numList[i]]
             if (anAtom == null) {
                 //Timber.e("connectResidues: error - got null for " + mMol.numList[i])
                 continue
@@ -178,8 +177,8 @@ class ParserPdbFile(val mMol: Molecule) {
         var residueInsertionCode: Char
 
         var i = 0
-        while (i < mMol.numList.size) {
-            anAtom = mMol.atoms[mMol.numList[i]]
+        while (i < mol.numList.size) {
+            anAtom = mol.atoms[mol.numList[i]]
             if (anAtom == null) {
 //                Timber.e("mapBonds: error - got null for " + mMol.numList[i])
                 i++
@@ -191,7 +190,7 @@ class ParserPdbFile(val mMol: Molecule) {
             }
             residueSequenceNumber = anAtom.residueSeqNumber
             residueInsertionCode = anAtom.residueInsertionCode
-            residueName = anAtom.residueName
+            residueName = anAtom.residueName.toLowerCase()
 
             if (!resnameToBonds.containsKey(residueName)) {
 //                Timber.e("matchBonds: no matching info for residue " + residueName +
@@ -208,19 +207,20 @@ class ParserPdbFile(val mMol: Molecule) {
             }
             matchBonds(i, residueSequenceNumber, residueInsertionCode, bondMap)
             i++
-            while (i < mMol.numList.size) {
-                anAtom = mMol.atoms[mMol.numList[i]]
+            while (i < mol.numList.size) {
+                anAtom = mol.atoms[mol.numList[i]]
                 if (anAtom == null) {
 //                    Timber.e("mapBonds: error - got null for " + mMol.numList[i])
                     i++
                     continue
                 }
-                if (anAtom.residueSeqNumber != residueSequenceNumber || anAtom.residueInsertionCode != residueInsertionCode) {
+                if (anAtom.residueSeqNumber != residueSequenceNumber
+                        || anAtom.residueInsertionCode != residueInsertionCode) {
                     break
                 }
                 i++
             }
-            if (i == mMol.atoms.size) {
+            if (i == mol.atoms.size) {
                 break
             } else
                 i--
@@ -232,23 +232,24 @@ class ParserPdbFile(val mMol: Molecule) {
      * matchBonds
      * for an initial atom - walk the residue to match each atom in the residue with a bonding
      * atom in the residue.   Basically build the bond table for the residue.
-     * @param atom_index   initial atom in the residue
-     * @param residue_sequence_number    which residue in the PDB file
-     * @param residue_insertion_code     PDB code for inserted residues
-     * @param bond_map     the bond map for the residue
+     * @param atomIndex   initial atom in the residue
+     * @param residueSequenceNumber    which residue in the PDB file
+     * @param residueInsertionCode     PDB code for inserted residues
+     * @param bondListOriginal         the bond list for the residue
      */
     // TODO: rework to search the array instead of look up values in the map
     private fun matchBonds(
-            atom_index: Int,
-            residue_sequence_number: Int,
-            residue_insertion_code: Char,
-            bond_map: List<BondInfo.KotmolBondRecord>) {
+            atomIndex: Int,
+            residueSequenceNumber: Int,
+            residueInsertionCode: Char,
+            bondListOriginal: List<BondInfo.KotmolBondRecord>) {
 
         // for each atom, pull a bond for the atom if any (might not be in list)
         // then search for the bonding atom in the residue.   It should be there.
 
         var currentAtom: PdbAtom?
         var loopAtom: PdbAtom?
+        val bondList = ArrayList(bondListOriginal.map { it.copy() })
 
         // val ca_atom = false
 
@@ -257,13 +258,13 @@ class ParserPdbFile(val mMol: Molecule) {
          *    residue (residue insertion code changes).
          * for each atom, search the residue for a bond match based on the bond table
          */
-        var i = atom_index
+        var i = atomIndex
         while (true) {
-// TODO: rework this section
-         /*   if (i == mMol.numList.size) {
+
+            if (i == mol.numList.size) {
                 break
             }
-            currentAtom = mMol.atoms[mMol.numList[i]]
+            currentAtom = mol.atoms[mol.numList[i]]
 
             if (currentAtom == null) {
 //                Timber.e("matchBonds: error - got null for " + mMol.numList[i])
@@ -271,64 +272,84 @@ class ParserPdbFile(val mMol: Molecule) {
                 continue
             }
 
-            if (currentAtom.residueSeqNumber != residue_sequence_number || currentAtom.residueInsertionCode != residue_insertion_code) {
+            if (currentAtom.residueSeqNumber != residueSequenceNumber || currentAtom.residueInsertionCode != residueInsertionCode) {
                 break
             }
 
-            val bondTargetList = bond_map.get(currentAtom.atomName)
-            if (bondTargetList == null) {
-//                Timber.e("matchBonds: got null bond info for " + currentAtom.atomNumber)
-                i++
-                continue
-            }
+            /*
+             * scan the bondList for the currentAtom.   If there is a bond pair
+             * that hasn't already been added to the bond list, then add it
+             */
 
-           for (bond_index in bondTargetList.indices) {
+            val bondAtomName = findNextBond(currentAtom.atomName, bondList)
+            if (bondAtomName != "") {
 
-                val bondAtomName = bondTargetList[bond_index]
                 /*
-                 * OK bond_atom_name has the name of a atom in this residue type to which
-                 * current_atom is bonded.   Now to find that atom
-                 */
-                var j = atom_index
+                  * OK bondAtomName has the name of a atom in this residue type to which
+                  * currentAtom is bonded.   Now to find that atom in the atomList
+                  * for this residue
+                  */
+                var j = atomIndex
                 while (true) {
                     if (i == j) { // skip a match to self
                         j++
                         continue
                     }
-                    if (j == mMol.numList.size) {
+                    if (j == mol.numList.size) {
                         break
                     }
-                    loopAtom = mMol.atoms[mMol.numList[j]]
+                    loopAtom = mol.atoms[mol.numList[j]]
                     if (loopAtom == null) {
 //                        Timber.e("matchBonds: error - got null for %s", mMol.numList[j])
                         j++
                         continue
                     }
-                    if (loopAtom.residueSeqNumber != residue_sequence_number || loopAtom.residueInsertionCode != residue_insertion_code) {
+                    if (loopAtom.residueSeqNumber != residueSequenceNumber || loopAtom.residueInsertionCode != residueInsertionCode) {
                         break
                     }
                     if (loopAtom.atomName == bondAtomName) {
-                        // addBond(i, j);
                         addBond(currentAtom, loopAtom)
                         break
                     }
                     j++
                 }
             }
-
-
             if (currentAtom.atomBondCount == 0) {
+                mol.unbondedAtomCount++
                 // debugging I think
-                if (currentAtom.atomName == "CA") {
-                }
 //                Timber.e("matchBonds file: " + mMol.name + " no CHARMM entry for atom " + currentAtom.atomNumber +
 //                        " residue " + currentAtom.residueName + " type " + currentAtom.atomName)
             }
 
-          */
             i++
         }
     }
+
+    /**
+     * findNextBond
+     * scan the copy of the Bond Records and return an unused bond partner if one exists.
+     * to the bond table
+     * @param atomName atom to match in the list
+     * @param bondList - list of atom to atom bonds for the current residue
+     */
+    private fun findNextBond(atomName: String, bondList: ArrayList<BondInfo.KotmolBondRecord>): String {
+        for (bond in bondList) {
+            if (bond.bondRecordCreated) {
+                continue
+            }
+            if (atomName == bond.atom_1) {
+                bond.bondRecordCreated = true
+                return (bond.atom_2)
+            }
+            if (atomName == bond.atom_2) {
+                bond.bondRecordCreated = true
+                return (bond.atom_1)
+            }
+        }
+        // no bond
+        return ("")
+    }
+
 
     /**
      * addBond
@@ -346,11 +367,10 @@ class ParserPdbFile(val mMol: Molecule) {
             }
         }
         val bond = Bond(atom1.atomNumber, atom2.atomNumber)
-        mMol.bondList.add(bond)
+        mol.bondList.add(bond)
         atom1.atomBondCount = atom1.atomBondCount + 1
         atom2.atomBondCount = atom2.atomBondCount + 1
     }
-
 
     /*
      * Walk the PDB Atom list and assemble lists of the chains
@@ -363,7 +383,7 @@ class ParserPdbFile(val mMol: Molecule) {
         var chain = ChainRenderingDescriptor()
 
         // set base chain_id to the chain_id of the first atom
-        anAtom = mMol.atoms[mMol.numList[0]]
+        anAtom = mol.atoms[mol.numList[0]]
         if (anAtom == null) {
 //            Timber.e("buildPdbChainList: error - first atom is null!")
             return
@@ -371,8 +391,8 @@ class ParserPdbFile(val mMol: Molecule) {
         var currentChainIdChar = anAtom.chainId
         var residueSequenceNumber = anAtom.residueSeqNumber
 
-        for (i in 0 until mMol.numList.size) {
-            anAtom = mMol.atoms[mMol.numList[i]]
+        for (i in 0 until mol.numList.size) {
+            anAtom = mol.atoms[mol.numList[i]]
             if (anAtom == null) {
 //                Timber.e("buildPdbChainList: error - got null for %s", mMol.numList[i])
                 continue
@@ -402,8 +422,8 @@ class ParserPdbFile(val mMol: Molecule) {
             if (currentChainIdChar != anAtom.chainId) {
                 currentChainIdChar = anAtom.chainId
                 if (chainList.size > 2) {
-                    mMol.listofChainDescriptorLists.add(chainList)
-                    mMol.ribbonNodeCount = mMol.ribbonNodeCount + chainList.size
+                    mol.listofChainDescriptorLists.add(chainList)
+                    mol.ribbonNodeCount = mol.ribbonNodeCount + chainList.size
                     chainList = ArrayList()
                 } else {
                     chainList.clear()
@@ -484,8 +504,8 @@ class ParserPdbFile(val mMol: Molecule) {
             if (chain.backboneAtom != null) {
                 chainList.add(chain)
             }
-            mMol.listofChainDescriptorLists.add(chainList)
-            mMol.ribbonNodeCount = mMol.ribbonNodeCount + chainList.size
+            mol.listofChainDescriptorLists.add(chainList)
+            mol.ribbonNodeCount = mol.ribbonNodeCount + chainList.size
         } else {
             chainList.clear()
         }
@@ -502,7 +522,7 @@ class ParserPdbFile(val mMol: Molecule) {
         var i: Int
         var j = 0
 
-        val alphaHelixList = mMol.helixList
+        val alphaHelixList = mol.helixList
         if (alphaHelixList.size == 0) {
             return
         }
@@ -521,7 +541,7 @@ class ParserPdbFile(val mMol: Molecule) {
             terminalResidueNumber = pdbHelix.terminalResidueNumber
             terminalChainIdChar = pdbHelix.terminalChainIdChar
 
-            val listOfLists = mMol.listofChainDescriptorLists
+            val listOfLists = mol.listofChainDescriptorLists
             var found = false
             i = 0
             while (i < listOfLists.size) {
@@ -586,7 +606,7 @@ class ParserPdbFile(val mMol: Molecule) {
         var i: Int
         var j: Int
 
-        val betaSheetList = mMol.pdbSheetList
+        val betaSheetList = mol.pdbSheetList
         if (betaSheetList.size == 0) {
             return
         }
@@ -605,7 +625,7 @@ class ParserPdbFile(val mMol: Molecule) {
             terminalResidueNumber = pdbSheet.terminalResidueNumber
             terminalChainIdChar = pdbSheet.terminalChainIdChar
 
-            val listOfLists = mMol.listofChainDescriptorLists
+            val listOfLists = mol.listofChainDescriptorLists
             var found = false
             i = 0
             while (i < listOfLists.size) {
@@ -664,11 +684,11 @@ class ParserPdbFile(val mMol: Molecule) {
     }
 
 
-    /*
-     * scan the atom list looking for the C3-prime atom
-     *   with the same chain_id.   Use this atom for
-     *   the spline anchor.  Helper for formHelices().
-     */
+/*
+ * scan the atom list looking for the C3-prime atom
+ *   with the same chain_id.   Use this atom for
+ *   the spline anchor.  Helper for formHelices().
+ */
 
     private fun findSplineAnchor(
             sequence_id: Char,
@@ -677,8 +697,8 @@ class ParserPdbFile(val mMol: Molecule) {
 
         var anAtom: PdbAtom?
 
-        for (i in 0 until mMol.numList.size) {
-            anAtom = mMol.atoms[mMol.numList[i]]
+        for (i in 0 until mol.numList.size) {
+            anAtom = mol.atoms[mol.numList[i]]
             if (anAtom == null) {
 //                Timber.e("findSplineAnchor: error - got null for " + mMol.numList[i])
                 continue
@@ -719,8 +739,8 @@ class ParserPdbFile(val mMol: Molecule) {
         val centerZ = (maxZ - minZ) / 2f + minZ
 
         var anAtom: PdbAtom?
-        for (i in 0 until mMol.numList.size) {
-            anAtom = mMol.atoms[mMol.numList[i]]
+        for (i in 0 until mol.numList.size) {
+            anAtom = mol.atoms[mol.numList[i]]
             if (anAtom == null) {
 //                Timber.e("centerMolecules: error - got null for " + mMol.numList[i])
                 continue
@@ -734,7 +754,7 @@ class ParserPdbFile(val mMol: Molecule) {
         val dcOffsetY = maxY - minY
         val dcOffsetZ = maxZ - minZ
 
-        mMol.dcOffset = kotlin.math.sqrt(dcOffsetX * dcOffsetX + dcOffsetY * dcOffsetY + dcOffsetZ + dcOffsetZ)
+        mol.dcOffset = kotlin.math.sqrt(dcOffsetX * dcOffsetX + dcOffsetY * dcOffsetY + dcOffsetZ + dcOffsetZ)
     }
 
     /*
@@ -808,12 +828,12 @@ class ParserPdbFile(val mMol: Molecule) {
             }
 
             // mMol.mAtoms.add(atom);
-            mMol.atoms[atom.atomNumber] = atom
-            mMol.numList.add(atom.atomNumber)
-            mMol.maxAtomNumber = if (mMol.maxAtomNumber < atom.atomNumber)
+            mol.atoms[atom.atomNumber] = atom
+            mol.numList.add(atom.atomNumber)
+            mol.maxAtomNumber = if (mol.maxAtomNumber < atom.atomNumber)
                 atom.atomNumber
             else
-                mMol.maxAtomNumber
+                mol.maxAtomNumber
 
         } catch (e: Exception) {
 //            Timber.e("parseAtom exception on line %s", line)
@@ -857,7 +877,7 @@ class ParserPdbFile(val mMol: Molecule) {
         betaSheet.registrationPreviousChainChar = line[65 - 1]
         betaSheet.registrationPreviousInsertionCodeChar = line[70 - 1]
 
-        mMol.pdbSheetList.add(betaSheet)
+        mol.pdbSheetList.add(betaSheet)
     }
 
     /*
@@ -894,14 +914,14 @@ class ParserPdbFile(val mMol: Molecule) {
 
         helix.helixLength = parseInteger(line.substring(72 - 1, 76).trim { it <= ' ' })
 
-        mMol.helixList.add(helix)
+        mol.helixList.add(helix)
     }
 
     /*
      * CONECT records
      */
     private fun parseConect(line: String) {
-        val maxAtomNumber = mMol.maxAtomNumber + 1
+        val maxAtomNumber = mol.maxAtomNumber + 1
         var connectedAtomId: Int
         var idSubstring: String
 
@@ -954,10 +974,10 @@ class ParserPdbFile(val mMol: Molecule) {
 
     /**
      * doesDuplicateBondExist
-     * check for an existing bond from/to
-     * @param atom1 from this atom
-     * @param atom2    to this atom
-     * @return   true if there is an bond from/to
+     * check for an existing bond between
+     * @param atom1
+     * @param atom2
+     * @return   true if there is an bond between already in the bond list
      */
     private fun doesDuplicateBondExist(atom1: PdbAtom, atom2: PdbAtom): Boolean {
 
@@ -966,14 +986,17 @@ class ParserPdbFile(val mMol: Molecule) {
         var atom1Number: Int
         var atom2Number: Int
 
-        for (i in 0 until mMol.bondList.size) {
-            atom1Number = mMol.bondList[i].atomNumber1
-            atom2Number = mMol.bondList[i].atomNumber2
+        for (i in 0 until mol.bondList.size) {
+            atom1Number = mol.bondList[i].atomNumber1
+            atom2Number = mol.bondList[i].atomNumber2
 
-            if (fromAtomNumber == atom1Number) {
-                if (toAtomNumber == atom2Number) {
-                    return true
-                }
+            if (fromAtomNumber == atom1Number
+                    && toAtomNumber == atom2Number) {
+                return true
+            }
+            if (fromAtomNumber == atom2Number
+                    && toAtomNumber == atom1Number) {
+                return true
             }
         }
         return false
@@ -981,8 +1004,8 @@ class ParserPdbFile(val mMol: Molecule) {
 
     private fun validateBond(atom1: Int, atom2: Int) {
 
-        val a1 = mMol.atoms[atom1]
-        val a2 = mMol.atoms[atom2]
+        val a1 = mol.atoms[atom1]
+        val a2 = mol.atoms[atom2]
 
         /*
          * TODO: handle hydrogens.   For now skip over null pointers from missing hydros
