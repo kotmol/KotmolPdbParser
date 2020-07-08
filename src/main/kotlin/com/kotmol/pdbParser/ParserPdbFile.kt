@@ -27,6 +27,14 @@ import java.lang.Double.min
 import java.lang.Math.sqrt
 
 
+/**
+ * @author Jim Andreas
+ * @email jim@kotmol.com
+ * @link <a href='http://jcouture.net/cisc190/A19002.php'>Program Specification</a>
+ * @link <br><a href='>https://github.com/kotmol/KotmolPdbParser</a>
+ *
+ */
+
 // TODO: parse old version of Hydrogen atoms (e.g. 1HD)
 // TODO: parse HETATM - convert "CO" in 1mat to single letter code (at atom 1967)
 
