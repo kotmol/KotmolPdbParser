@@ -18,7 +18,7 @@
 #  to get the right line endings for unix.
 
 
-REPO="https://github.com/jimandreas/TestRepoMkdocsPage"
+REPO="https://github.com/kotmol/KotmolPdbParser"
 DIR=build/temp-$$
 
 if [ ! -f build_and_upload_docs.sh ]; then
