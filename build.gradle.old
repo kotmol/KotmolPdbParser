@@ -1,0 +1,139 @@
+apply plugin: 'kotlin'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+
+buildscript {
+//    ext.kotlin_version = '1.2.0'
+    ext.kotlin_version = '1.3.72'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation( "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" )
+    testImplementation ('org.junit.jupiter:junit-jupiter:5.6.0')
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+group = 'com.kotmol.kotmolpdbparser'
+archivesBaseName = "KotmolPdbParser"
+version = "1.0.0"
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : '', password: hasProperty('ossrhPassword') ? ossrhPassword : '')
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: hasProperty('ossrhUsername') ? ossrhUsername : '', password: hasProperty('ossrhPassword') ? ossrhPassword : '')
+            }
+
+            println("$ossrhUsername")
+            println("$ossrhPassword")
+
+            pom.project {
+                name = 'KotmolPdbParser'
+                packaging 'jar'
+
+                description = 'Protein DataBase parser in Kotlin.'
+                url = 'https://github.com/kotmol/KotmolPdbParser'
+
+                scm {
+                    def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
+                    url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                }
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'jimandreas'
+                        name = 'Jim Andreas'
+                        email = 'jim@kotmol.com'
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//group = 'com.kotmol'
+//archivesBaseName = "KotmolPdbParser"
+//version = "0.1.0-SNAPSHOT"
+
+
+
+
+//        mavenJava(MavenPublication) {
+//            artifactId = 'KotmolPdbParser'
+//            from components.java
+//
+//            pom {
+//                name = 'KotmolPdbParser'
+//                description = 'Protein DataBase (PDB) parser in Kotlin.'
+//                url = 'https://github.com/kotmol/KotmolPdbParser'
+//
+//                licenses {
+//                    license {
+//                        name = 'The Apache License, Version 2.0'
+//                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id = 'JimAndreas'
+//                        name = 'Jim Andreas'
+//                        email = 'jim@kotmol.com'
+//                    }
+//                }
+//
+//                scm {
+//                    def releasesRepoUrl = "https://github.com/kotmol/KotmolPdbParser"
+//                    def snapshotsRepoUrl = "https://github.com/kotmol/KotmolPdbParser"
+//                    url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//                }
+//            }
+//        }
+
+
+
+
+
+
