@@ -19,6 +19,7 @@ compileKotlin {
 dependencies {
     api deps.kotlinStdLib
 
+    testImplementation deps.junit
     testImplementation deps.jupiter
 
 }
