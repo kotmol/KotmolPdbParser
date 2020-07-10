@@ -16,4 +16,11 @@ for example from the query:
 
     https://www.ebi.ac.uk/pdbe/api/pdb/compound/bonds/dg
     
+Build technology credits
+------------------------
+
+- jakewharton/Picnic - for nice maven central publication structure
+
+- MarcinMoskala/KotlinDiscreteMathToolkit - for nice testing structure
+    
  

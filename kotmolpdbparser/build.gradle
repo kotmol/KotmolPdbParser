@@ -24,6 +24,9 @@ dependencies {
 
 }
 
+// credit: jakewharton/Picnic
+//   for documentation and maven publishing structure
+
 apply plugin: 'org.jetbrains.dokka'
 def dokkaDir = "$buildDir/dokka"
 dokka {
@@ -108,12 +111,16 @@ tasks.register('publishSnapshot').configure { task ->
     }
 }
 
+// this solves problems with IDE vs Gradle based testing flows
+// https://stackoverflow.com/a/60269625/3853712
 test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
     }
 }
+
+// credit: MarcinMoskala/KotlinDiscreteMathToolkit
 
 tasks.withType(Test) {
     testLogging {
