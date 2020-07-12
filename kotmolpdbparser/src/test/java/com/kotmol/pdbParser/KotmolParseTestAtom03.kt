@@ -11,7 +11,7 @@ internal class KotmolParseTestAtom03 {
 
     lateinit var str : ByteArrayInputStream
     val mol = Molecule()
-    val parse = ParserPdbFile(mol)
+    val parse = ParserPdbFile()
 
     @org.junit.jupiter.api.BeforeEach
     fun setUp() { // from 1bna.pdb
@@ -33,7 +33,9 @@ ATOM      3  C4'  DC A   1      19.961  32.668  24.100  1.00 31.28           C
     @DisplayName( "test with 3 atoms - should have a bond list of size 2 as a result")
     fun testWithThreeAtoms() {
 
-        parse.loadPdbFromStream(str)
+        var messages : MutableList<String> = mutableListOf()
+
+        parse.loadPdbFromStream(str, mol, messages)
 
         assertEquals(3, mol.maxAtomNumber)
 

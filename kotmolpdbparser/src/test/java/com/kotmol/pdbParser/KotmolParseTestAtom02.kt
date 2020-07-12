@@ -9,9 +9,9 @@ import java.io.ByteArrayInputStream
 
 internal class KotmolParseTestAtom02 {
 
-    lateinit var str : ByteArrayInputStream
+    lateinit var stream : ByteArrayInputStream
     val mol = Molecule()
-    val parse = ParserPdbFile(mol)
+    val parse = ParserPdbFile()
 
     @org.junit.jupiter.api.BeforeEach
     fun setUp() { // from 1bna.pdb
@@ -19,19 +19,21 @@ internal class KotmolParseTestAtom02 {
             ATOM      1  O5'  DC A   1      18.935  34.195  25.617  1.00 64.35           O 
         """.trimIndent()
 
-        str = anAtom.byteInputStream()
+        stream = anAtom.byteInputStream()
     }
 
     @org.junit.jupiter.api.AfterEach
     fun tearDown() {
-        str.close()
+        stream.close()
     }
 
     @Test
     @DisplayName( "test an ATOM line")
     fun testThis() {
 
-        parse.loadPdbFromStream(str)
+        var messages : MutableList<String> = mutableListOf()
+
+        parse.loadPdbFromStream(stream, mol, messages)
 
         assertEquals(1, mol.maxAtomNumber)
 

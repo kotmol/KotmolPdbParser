@@ -38,8 +38,9 @@ import java.lang.Math.sqrt
 // TODO: parse old version of Hydrogen atoms (e.g. 1HD)
 // TODO: parse HETATM - convert "CO" in 1mat to single letter code (at atom 1967)
 
-class ParserPdbFile(private val mol: Molecule) {
+class ParserPdbFile() {
 
+    private lateinit var mol: Molecule
     private val bondinfo = BondInfo()
     private var maxX = 0.toDouble()
     private var maxY = 0.toDouble()
@@ -48,10 +49,11 @@ class ParserPdbFile(private val mol: Molecule) {
     private var minY = 1e6
     private var minZ = 1e6
 
-    fun loadPdbFromStream(inputStream: InputStream) {
+    fun loadPdbFromStream(inputStream: InputStream, molecule: Molecule, messages: MutableList<String>) {
 
-        resetMoleculeMaxMin()
-        mol.clearLists()
+        mol = molecule
+//        resetMoleculeMaxMin()
+//        mol.clearLists()
         loadPdbFromInputStream(inputStream)
         /*
          * Todo: ?? addHelixSecondaryInformation - update for HELIX records
