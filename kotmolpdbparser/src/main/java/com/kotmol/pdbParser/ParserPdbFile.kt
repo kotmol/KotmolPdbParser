@@ -33,6 +33,15 @@ import java.lang.Math.sqrt
  * @link <a href='http://jcouture.net/cisc190/A19002.php'>Program Specification</a>
  * @link <br><a href='>https://github.com/kotmol/KotmolPdbParser</a>
  *
+ * Notes:
+ * Use of UNX/UNL/UNK There are times when an amino acid residue, nucleotide, atom, or ligand is unidentified. These ligand codes should be used in the following cases:
+
+    UNX: unknown atom or ion
+    UNL: unknown ligand
+    UNK: unknown amino acid
+    N: unknown nucleotide
+     @link https://www.wwpdb.org/documentation/procedure
+
  */
 
 // TODO: parse old version of Hydrogen atoms (e.g. 1HD)
@@ -197,6 +206,7 @@ class ParserPdbFile internal constructor(
             var anAtom: PdbAtom?
             var residueSequenceNumber: Int
             var residueInsertionCode: Char
+            var warnOnUnknownResidue = false
 
             var i = 0
             while (i < mol.numList.size) {
@@ -214,6 +224,15 @@ class ParserPdbFile internal constructor(
                 residueSequenceNumber = anAtom.residueSeqNumber
                 residueInsertionCode = anAtom.residueInsertionCode
                 residueName = anAtom.residueName.toLowerCase()
+
+                if (residueName == "unk") {
+                    if (!warnOnUnknownResidue) {
+                        messageStrings.add(String.format(
+                                "matchBonds: UNK (unknown) residues present in PDB file"))
+                        warnOnUnknownResidue = true
+                    }
+                    continue
+                }
 
                 if (!resnameToBonds.containsKey(residueName)) {
                     messageStrings.add(String.format(
