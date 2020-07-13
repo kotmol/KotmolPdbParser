@@ -231,6 +231,7 @@ class ParserPdbFile internal constructor(
                                 "matchBonds: UNK (unknown) residues present in PDB file"))
                         warnOnUnknownResidue = true
                     }
+                    i++
                     continue
                 }
 
