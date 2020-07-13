@@ -4829,7 +4829,12 @@ class BondInfo {
             "dc" to dc,
             "dg" to dg,
             "dt" to dt,
-            "du" to du
+            "du" to du,
+            "a" to da,
+            "c" to dc,
+            "g" to dg,
+            "t" to dt,
+            "u" to du
     )
 
 }

@@ -39,7 +39,7 @@ import java.lang.Math.sqrt
 // TODO: parse HETATM - convert "CO" in 1mat to single letter code (at atom 1967)
 
 class ParserPdbFile internal constructor(
-    builder: Builder
+        builder: Builder
 ) {
 
     constructor() : this(Builder())
@@ -70,9 +70,9 @@ class ParserPdbFile internal constructor(
 //        mol.clearLists()
             messageStrings.add("Hello from loadPdbFromStream")
             loadPdbFromInputStream(inputStream)
-        /*
-         * Todo: ?? addHelixSecondaryInformation - update for HELIX records
-         */
+            /*
+             * Todo: ?? addHelixSecondaryInformation - update for HELIX records
+             */
             centerMolecule()
             mapBonds()
             buildPdbChainLists()
@@ -92,7 +92,6 @@ class ParserPdbFile internal constructor(
 
                 line = reader.readLine()
                 while (line != null) {
-                    // Timber.w("line is: " + line);
                     if (line.length < 6) {
                         line = reader.readLine()
                         continue
@@ -129,10 +128,10 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * walk the list of atoms.
-     *    For each residue, attempt to connect the standard atoms in the polymeric chain.
-     *    Check the atom to atom spacing for error correction
-     */
+         * walk the list of atoms.
+         *    For each residue, attempt to connect the standard atoms in the polymeric chain.
+         *    Check the atom to atom spacing for error correction
+         */
         private fun connectResidues() {
             // val resname_to_bonds = mBondTemplate.residueToBondHash
 
@@ -165,21 +164,21 @@ class ParserPdbFile internal constructor(
                             addBond(anAtom, lastAtom)
                         } else {
                             val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
-                        messageStrings.add(String.format(
-                                "connectResidues: excessive bond dist = %s from atom %s to %s",
-                                prettyPrint,
-                                lastAtom.atomNumber,
-                                anAtom.atomNumber))
+                            messageStrings.add(String.format(
+                                    "connectResidues: excessive bond dist = %s from atom %s to %s",
+                                    prettyPrint,
+                                    lastAtom.atomNumber,
+                                    anAtom.atomNumber))
                         }
                         lastAtom = null
                     }
                 }
             }
 
-            if (count > 0) {
+            /*if (count > 0) {
                 val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
                 //Timber.i("connectResidues: ave connection distance = $prettyPrint")
-            }
+            }*/
 
         }
 
@@ -218,7 +217,7 @@ class ParserPdbFile internal constructor(
 
                 if (!resnameToBonds.containsKey(residueName)) {
                     messageStrings.add(String.format(
-                            "matchBonds: no matching info for residue %s at atom %n",
+                            "matchBonds: no matching info for residue %s at atom %d",
                             residueName,
                             anAtom.atomNumber))
                     i++
@@ -284,10 +283,10 @@ class ParserPdbFile internal constructor(
             // val ca_atom = false
 
             /*
-         * interate through the atoms in the residue.   quit if there is an inserted
-         *    residue (residue insertion code changes).
-         * for each atom, search the residue for a bond match based on the bond table
-         */
+             * interate through the atoms in the residue.   quit if there is an inserted
+             *    residue (residue insertion code changes).
+             * for each atom, search the residue for a bond match based on the bond table
+             */
             var i = atomIndex
             while (true) {
 
@@ -299,7 +298,6 @@ class ParserPdbFile internal constructor(
                 if (currentAtom == null) {
                     messageStrings.add(String.format(
                             "matchBonds: error - got null for %d", mol.numList[i]))
-//                Timber.e("matchBonds: error - got null for " + mMol.numList[i])
                     i++
                     continue
                 }
@@ -309,18 +307,17 @@ class ParserPdbFile internal constructor(
                 }
 
                 /*
-             * scan the bondList for the currentAtom.   If there is a bond pair
-             * that hasn't already been added to the bond list, then add it
-             */
+                 * scan the bondList for the currentAtom.   If there is a bond pair
+                 * that hasn't already been added to the bond list, then add it
+                 */
 
                 val bondAtomName = findNextBond(currentAtom.atomName, bondList)
                 if (bondAtomName != "") {
-
                     /*
-                  * OK bondAtomName has the name of a atom in this residue type to which
-                  * currentAtom is bonded.   Now to find that atom in the atomList
-                  * for this residue
-                  */
+                     * OK bondAtomName has the name of a atom in this residue type to which
+                     * currentAtom is bonded.   Now to find that atom in the atomList
+                     * for this residue
+                     */
                     var j = atomIndex
                     while (true) {
                         if (i == j) { // skip a match to self
@@ -332,12 +329,13 @@ class ParserPdbFile internal constructor(
                         }
                         loopAtom = mol.atoms[mol.numList[j]]
                         if (loopAtom == null) {
-
-//                        Timber.e("matchBonds: error - got null for %s", mMol.numList[j])
+                            messageStrings.add(String.format(
+                                    "matchBonds: error - got null for %s", mol.numList[j]))
                             j++
                             continue
                         }
-                        if (loopAtom.residueSeqNumber != residueSequenceNumber || loopAtom.residueInsertionCode != residueInsertionCode) {
+                        if (loopAtom.residueSeqNumber != residueSequenceNumber
+                                || loopAtom.residueInsertionCode != residueInsertionCode) {
                             break
                         }
                         if (loopAtom.atomName == bondAtomName) {
@@ -349,11 +347,12 @@ class ParserPdbFile internal constructor(
                 }
                 if (currentAtom.atomBondCount == 0) {
                     mol.unbondedAtomCount++
-                    // debugging I think
+                    messageStrings.add(String.format(
+                            "matchBonds: pdbName: %s no CHARMM entry for atom %d in residue %s atomType %s",
+                            mol.name, currentAtom.atomNumber, currentAtom.residueName, currentAtom.atomName ))
 //                Timber.e("matchBonds file: " + mMol.name + " no CHARMM entry for atom " + currentAtom.atomNumber +
 //                        " residue " + currentAtom.residueName + " type " + currentAtom.atomName)
                 }
-
                 i++
             }
         }
@@ -406,8 +405,8 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * Walk the PDB Atom list and assemble lists of the chains
-     */
+         * Walk the PDB Atom list and assemble lists of the chains
+         */
         private fun buildPdbChainLists() {
 
             var anAtom: PdbAtom?
@@ -418,8 +417,7 @@ class ParserPdbFile internal constructor(
             // set base chain_id to the chain_id of the first atom
             anAtom = mol.atoms[mol.numList[0]]
             if (anAtom == null) {
-                messageStrings.add("buildPdbChainList: error - first atom is null!")
-//            Timber.e("buildPdbChainList: error - first atom is null!")
+                messageStrings.add("buildPdbChainLists: error - first atom is null!")
                 return
             }
             var currentChainIdChar = anAtom.chainId
@@ -429,24 +427,22 @@ class ParserPdbFile internal constructor(
                 anAtom = mol.atoms[mol.numList[i]]
                 if (anAtom == null) {
                     messageStrings.add(String.format(
-                            "buildPdbChainList: error - got null for %d", mol.numList[i]))
-//                Timber.e("buildPdbChainList: error - got null for %s", mMol.numList[i])
+                            "buildPdbChainLists: error - got null for %d", mol.numList[i]))
                     continue
                 }
 
 
                 /*
-             * if this is a new residue sequence,
-             * then add the previous residue info to the list
-             */
+                 * if this is a new residue sequence,
+                 * then add the previous residue info to the list
+                 */
                 if (residueSequenceNumber != anAtom.residueSeqNumber) {
                     residueSequenceNumber = anAtom.residueSeqNumber
                     if (chain.backboneAtom != null) {
                         chainList.add(chain)
                         if (chain.guideAtom == null) {
                             messageStrings.add(String.format(
-                                    "guide atom is null at atom %d", anAtom.atomNumber))
-//                        Timber.e("guide atom is null at atom %d", anAtom.atomNumber)
+                                    "buildPdbChainLists: guide atom is null at atom %d", anAtom.atomNumber))
                             chain.guideAtom = chain.backboneAtom // HACK
                         }
                         chain = ChainRenderingDescriptor()
@@ -454,9 +450,9 @@ class ParserPdbFile internal constructor(
                 }
 
                 /*
-             * if this is a new chain, then add the old list to the
-             * molecule list of lists.
-             */
+                 * if this is a new chain, then add the old list to the
+                 * molecule list of lists.
+                 */
                 if (currentChainIdChar != anAtom.chainId) {
                     currentChainIdChar = anAtom.chainId
                     if (chainList.size > 2) {
@@ -536,8 +532,8 @@ class ParserPdbFile internal constructor(
                 }/* || an_atom.atom_name.equals("N1") */
             }
             /*
-         * finish up
-         */
+             * finish up
+             */
             if (chainList.size > 2) {
                 if (chain.backboneAtom != null) {
                     chainList.add(chain)
@@ -550,12 +546,12 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * walk the list of helix records -
-     *    search for the records in the ChainRenderingDescriptor list.
-     *    update the secondary type for helix records.
-     *    this will make it pretty easy to switch modes later when
-     *       rendering the ribbon.
-     */
+         * walk the list of helix records -
+         *    search for the records in the ChainRenderingDescriptor list.
+         *    update the secondary type for helix records.
+         *    this will make it pretty easy to switch modes later when
+         *       rendering the ribbon.
+         */
         private fun addHelixSecondaryInformation() {
             var i: Int
             var j = 0
@@ -609,10 +605,10 @@ class ParserPdbFile internal constructor(
                     continue
                 }
                 /*
-             * Walk the "list" of
-             * ChainRenderingDescriptors and mark the records as HELIX.
-             * At the last record flip the boolean to flag it.
-             */
+                 * Walk the "list" of
+                 * ChainRenderingDescriptors and mark the records as HELIX.
+                 * At the last record flip the boolean to flag it.
+                 */
                 var nextItem: ChainRenderingDescriptor? = null
                 while (j < list!!.size - 1) {
                     nextItem = list[j + 1] as ChainRenderingDescriptor
@@ -624,8 +620,8 @@ class ParserPdbFile internal constructor(
                     j++
                 }
                 /*
-             * shouldn't happen but error check to make sure we found the terminating residue
-             */
+                 * shouldn't happen but error check to make sure we found the terminating residue
+                 */
                 if (nextItem != null && !nextItem.endOfSecondaryStructure) {
 
                     messageStrings.add(String.format(
@@ -642,12 +638,12 @@ class ParserPdbFile internal constructor(
 
 
         /*
-     * walk the list of helix records -
-     *    search for the records in the ChainRenderingDescriptor list.
-     *    update the secondary type for helix records.
-     *    this will make it pretty easy to switch modes later when
-     *       rendering the ribbon.
-     */
+         * walk the list of helix records -
+         *    search for the records in the ChainRenderingDescriptor list.
+         *    update the secondary type for helix records.
+         *    this will make it pretty easy to switch modes later when
+         *       rendering the ribbon.
+        */
         private fun addSheetSecondaryInformation() {
             var i: Int
             var j: Int
@@ -697,16 +693,13 @@ class ParserPdbFile internal constructor(
                             initialResidueNumber, initialChainIdChar))
 //                Timber.e("%s: SHEET residue not found - number %d chain char: %c",
 //                        mPdbFileName, initialResidueNumber, initialChainIdChar)
-                    /*Timber.e(mPdbFileName +
-                        ": SHEET residue not found - number " + initial_residue_number +
-                        " chain char: " + initial_chain_id_char);*/
                     continue
                 }
                 /*
-             * Walk the "list" of
-             * ChainRenderingDescriptors and mark the records as BETA_SHEET.
-             * At the last record flip the boolean to flag it.
-             */
+                 * Walk the "list" of
+                 * ChainRenderingDescriptors and mark the records as BETA_SHEET.
+                 * At the last record flip the boolean to flag it.
+                 */
                 var nextItem: ChainRenderingDescriptor? = null
                 j = 0
                 while (j < list!!.size - 1) {
@@ -719,28 +712,25 @@ class ParserPdbFile internal constructor(
                     j++
                 }
                 /*
-             * shouldn't happen but error check to make sure we found the terminating residue
-             */
+                 * shouldn't happen but error check to make sure we found the terminating residue
+                 */
                 if (nextItem != null && !nextItem.endOfSecondaryStructure) {
                     messageStrings.add(String.format(
                             "SHEET terminating residue not found - number %d chain char: %c",
                             initialResidueNumber, initialChainIdChar))
 //                Timber.e("%s: SHEET residue not found - number %d chain char: %c",
 //                        mPdbFileName, initialResidueNumber, initialChainIdChar)
-                    /*Timber.e(mPdbFileName +
-                        ": terminating SHEET residue not found- number " + terminal_residue_number +
-                        " chain char: " + terminal_chain_id_char);*/
                     nextItem.endOfSecondaryStructure = true
                 }
             }
         }
 
 
-/*
- * scan the atom list looking for the C3-prime atom
- *   with the same chain_id.   Use this atom for
- *   the spline anchor.  Helper for formHelices().
- */
+        /*
+         * scan the atom list looking for the C3-prime atom
+         *   with the same chain_id.   Use this atom for
+         *   the spline anchor.  Helper for formHelices().
+         */
 
         private fun findSplineAnchor(
                 sequence_id: Char,
@@ -754,7 +744,6 @@ class ParserPdbFile internal constructor(
                 if (anAtom == null) {
                     messageStrings.add(String.format(
                             "findSplineAnchor: error - got null for %d", mol.numList[i]))
-//                Timber.e("findSplineAnchor: error - got null for " + mMol.numList[i])
                     continue
                 }
                 if (anAtom.chainId == sequence_id) {
@@ -775,9 +764,9 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * adjust the XYZ of each atom
-     * to move the entire molecule to the center of the viewport
-     */
+         * adjust the XYZ of each atom
+         * to move the entire molecule to the center of the viewport
+         */
         private fun centerMolecule() {
 
             val maxX = maxX
@@ -796,7 +785,8 @@ class ParserPdbFile internal constructor(
             for (i in 0 until mol.numList.size) {
                 anAtom = mol.atoms[mol.numList[i]]
                 if (anAtom == null) {
-//                Timber.e("centerMolecules: error - got null for " + mMol.numList[i])
+                    messageStrings.add(String.format(
+                            "centerMolecules: error - got null for %d", mol.numList[i]))
                     continue
                 }
                 anAtom.atomPosition.x = anAtom.atomPosition.x - centerX
@@ -812,9 +802,9 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * ParseAtom
-     *   Assumptions:
-     */
+         * ParseAtom
+         *   Assumptions:
+         */
         private fun parseAtom(lineIn: String, atom_type_flag: Int) {
             var line = lineIn
 
@@ -837,8 +827,9 @@ class ParserPdbFile internal constructor(
                 atom.elementSymbol = line.substring(77 - 1, 78).trim { it <= ' ' }
 
                 /*
-             * skip hydrogens for now
-             */
+                 * skip hydrogens for now
+                 * TODO: handle hydros
+                 */
                 if (atom.elementSymbol == "H") {
                     return
                 }
@@ -864,17 +855,22 @@ class ParserPdbFile internal constructor(
                 // Decision: throw out OXT, O5T, and O3T atoms - no bond info - see README.md
 
                 if (atom.atomName == "OXT" || atom.atomName == "O5T" || atom.atomName == "O3T") {
+                    messageStrings.add(String.format(
+                            "parseAtom: pdbName: %s atom is one of OXT, O5T, O3T, skipping", mol.name))
 //                Timber.d("%s: atom is one of OXT, O5T, O3T, skipping", mMol.name)
                     return
                 }
 
                 /*
-             * check for "Alternate location indicator" at position 17
-             *    if present it is typically "A or B or ..."
-             * take only the A case (see README.md)
-             */
+                 * check for "Alternate location indicator" at position 17
+                 *    if present it is typically "A or B or ..."
+                 * take only the A case (see README.md)
+                 */
                 if (line[17 - 1] != ' ') {
                     if (line[17 - 1] != 'A') {
+                        messageStrings.add(String.format(
+                                "parseAtom: pdbName: %s: Alternate location indicator is %c, skippping",
+                                mol.name, line[17 - 1]))
 //                    Timber.e("%s: Alternate location indicator is %c, skippping",
 //                            mMol.name, line[17 - 1])
                         return
@@ -898,9 +894,9 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * ParseBetaSheet
-     *   Assumptions:
-     */
+         * ParseBetaSheet
+         *   Assumptions:
+         */
         private fun parseBetaSheet(lineIn: String) {
             var line = lineIn
             val betaSheet = PdbBetaSheet()
@@ -937,17 +933,17 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * this is inserted to keep the mapping of atom_umber to array entry working
-     */
+         * this is inserted to keep the mapping of atom_umber to array entry working
+         */
         @Suppress("UseExpressionBody")
         private fun parseTerRecord(line: String) {
             // do nothing for now...
         }
 
         /*
-    * ParseHelix
-    *   Assumptions:
-    */
+        * ParseHelix
+        *   Assumptions:
+        */
         private fun parseHelix(line: String) {
 
             val helix = PdbHelix()
@@ -974,8 +970,8 @@ class ParserPdbFile internal constructor(
         }
 
         /*
-     * CONECT records
-     */
+         * CONECT records
+         */
         private fun parseConect(line: String) {
             val maxAtomNumber = mol.maxAtomNumber + 1
             var connectedAtomId: Int
@@ -1065,8 +1061,8 @@ class ParserPdbFile internal constructor(
             val a2 = mol.atoms[atom2]
 
             /*
-         * TODO: handle hydrogens.   For now skip over null pointers from missing hydros
-         */
+             * TODO: handle hydrogens.   For now skip over null pointers from missing hydros
+             */
             if (a1 == null || a2 == null) {
                 // Timber.e("null ptr : atom1: " + atom1 + " atom2: " + atom2);
                 return
