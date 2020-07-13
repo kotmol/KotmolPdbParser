@@ -60,4 +60,18 @@ internal class KotmolPdbParserTest {
                 .parse(molecule)
         assertEquals(1, molecule.atoms.size)
     }
+
+    @Test
+    @DisplayName( "parser test with parameters and retained messages")
+    fun parserTest03() {
+        val molecule: Molecule = Molecule()
+        val retainedMessages = mutableListOf<String>()
+        assertEquals(0, retainedMessages.size)
+        val builder = KotmolPdbParserClient
+                .Builder()
+                .setStream(stream)
+                .parse(molecule, retainedMessages)
+        assertEquals(1, molecule.atoms.size)
+        assert(retainedMessages.size > 0)
+    }
 }

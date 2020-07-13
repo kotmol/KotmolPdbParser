@@ -35,7 +35,9 @@ ATOM      3  C4'  DC A   1      19.961  32.668  24.100  1.00 31.28           C
 
         var messages : MutableList<String> = mutableListOf()
 
-        parse.loadPdbFromStream(str, mol, messages)
+        val parse = ParserPdbFile
+                .Builder()
+                .loadPdbFromStream(str, mol)
 
         assertEquals(3, mol.maxAtomNumber)
 

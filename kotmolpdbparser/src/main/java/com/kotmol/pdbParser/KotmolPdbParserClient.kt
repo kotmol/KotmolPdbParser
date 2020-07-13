@@ -27,8 +27,8 @@ class KotmolPdbParserClient internal constructor(
     
     class Builder constructor() {
 //        internal var molecule = Molecule()
-        internal var messages : MutableList<String> = mutableListOf()
-        internal var parserPdbFile = ParserPdbFile()
+        internal var messageStrings : MutableList<String> = mutableListOf()
+
         internal var stream: InputStream? = null
 
         /**
@@ -44,7 +44,21 @@ class KotmolPdbParserClient internal constructor(
          */
         fun parse(molecule: Molecule) = apply {
             requireNotNull(stream)
-            parserPdbFile.loadPdbFromStream(stream!!, molecule, messages)
+
+            val parserPdbFile = ParserPdbFile.Builder()
+                    .setMessageStrings(messageStrings)
+                    .loadPdbFromStream(stream!!, molecule)
+        }
+
+        /**
+         * begin parsing!!
+         */
+        fun parse(molecule: Molecule, retainMessages: MutableList<String>) = apply {
+            requireNotNull(stream)
+
+            val parserPdbFile = ParserPdbFile.Builder()
+                    .setMessageStrings(retainMessages)
+                    .loadPdbFromStream(stream!!, molecule)
         }
     }
 
