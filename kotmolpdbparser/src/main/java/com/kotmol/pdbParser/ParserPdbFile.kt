@@ -225,17 +225,16 @@ class ParserPdbFile internal constructor(
                 residueInsertionCode = anAtom.residueInsertionCode
                 residueName = anAtom.residueName.toLowerCase()
 
-                if (residueName == "unk") {
-                    if (!warnOnUnknownResidue) {
-                        messageStrings.add(String.format(
-                                "matchBonds: UNK (unknown) residues present in PDB file"))
-                        warnOnUnknownResidue = true
-                    }
-                    i++
-                    continue
-                }
-
                 if (!resnameToBonds.containsKey(residueName)) {
+                    if (residueName == "unk") {
+                        if (!warnOnUnknownResidue) {
+                            messageStrings.add(String.format(
+                                    "matchBonds: UNK (unknown) residues present in PDB file"))
+                            warnOnUnknownResidue = true
+                        }
+                        i++
+                        continue
+                    }
                     messageStrings.add(String.format(
                             "matchBonds: no matching info for residue %s at atom %d",
                             residueName,
