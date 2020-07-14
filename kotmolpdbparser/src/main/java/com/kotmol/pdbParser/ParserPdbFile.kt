@@ -77,7 +77,6 @@ class ParserPdbFile internal constructor(
             mol = molecule
 //        resetMoleculeMaxMin()
 //        mol.clearLists()
-            messageStrings.add("Hello from loadPdbFromStream")
             loadPdbFromInputStream(inputStream)
             /*
              * Todo: ?? addHelixSecondaryInformation - update for HELIX records
@@ -90,6 +89,12 @@ class ParserPdbFile internal constructor(
             connectResidues()
         }
 
+        /**
+         * read the PDB file line by line, parsing each line.  The prefix
+         * determines the parsing action.
+         *
+         * TODO: handle multiple models.  Currently the parsing stops at the end of the first model.
+         */
         private fun loadPdbFromInputStream(inputStream: InputStream?) {
             val reader: BufferedReader
             var line: String?
@@ -125,70 +130,12 @@ class ParserPdbFile internal constructor(
                     }
                     line = reader.readLine()
                 }
-
                 reader.close()
                 inputStream.close()
             } catch (e: IOException) {
                 messageStrings.add("IO error reading the stream")
                 return
             }
-
-
-        }
-
-        /*
-         * walk the list of atoms.
-         *    For each residue, attempt to connect the standard atoms in the polymeric chain.
-         *    Check the atom to atom spacing for error correction
-         */
-        private fun connectResidues() {
-            // val resname_to_bonds = mBondTemplate.residueToBondHash
-
-            var totalDistance = 0f
-            var count = 0
-//        val last_residue_name: String? = null
-            var anAtom: PdbAtom?
-            var lastAtom: PdbAtom? = null
-            var lastResidueSequenceNumber = 0
-            for (i in 0 until mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
-                if (anAtom == null) {
-                    messageStrings.add(String.format("connectResidues: error - got null for %s", mol.numList[i]))
-                    continue
-                }
-                // rely on CONECT records for HETATM
-                if (anAtom.atomType == PdbAtom.IS_HETATM) {
-                    continue
-                }
-                if (anAtom.atomName == "O3'" || anAtom.atomName == "C") {
-                    lastResidueSequenceNumber = anAtom.residueSeqNumber
-                    lastAtom = anAtom
-                } else if (anAtom.atomName == "P" || anAtom.atomName == "N") {
-                    if (anAtom.residueSeqNumber == lastResidueSequenceNumber + 1 && lastAtom != null) {
-                        // connect the atoms
-                        val dist = anAtom.atomPosition.distanceTo(lastAtom.atomPosition)
-                        if (dist < 2.0) {
-                            totalDistance += dist.toFloat()
-                            count++
-                            addBond(anAtom, lastAtom)
-                        } else {
-                            val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
-                            messageStrings.add(String.format(
-                                    "connectResidues: excessive bond dist = %s from atom %s to %s",
-                                    prettyPrint,
-                                    lastAtom.atomNumber,
-                                    anAtom.atomNumber))
-                        }
-                        lastAtom = null
-                    }
-                }
-            }
-
-            /*if (count > 0) {
-                val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
-                //Timber.i("connectResidues: ave connection distance = $prettyPrint")
-            }*/
-
         }
 
         /**
@@ -211,12 +158,7 @@ class ParserPdbFile internal constructor(
             var i = 0
             while (i < mol.numList.size) {
                 anAtom = mol.atoms[mol.numList[i]]
-                if (anAtom == null) {
-                    messageStrings.add(String.format(
-                            "mapBonds: error - got null for %s", mol.numList[i]))
-                    i++
-                    continue
-                }
+                requireNotNull(anAtom)
                 if (anAtom.atomType == PdbAtom.IS_HETATM) {
                     i++
                     continue
@@ -243,25 +185,15 @@ class ParserPdbFile internal constructor(
                     continue
                 }
                 val bondMap = resnameToBonds[residueName]
-                if (bondMap == null) {
-                    messageStrings.add(String.format(
-                            "matchBonds: got null bond info for residue %s at atom %d",
-                            residueName,
-                            anAtom.atomNumber))
-                    i++
-                    continue
-                }
+                requireNotNull(bondMap)
                 matchBonds(i, residueSequenceNumber, residueInsertionCode, bondMap)
                 i++
+                /*
+                 * now skip through the rest of the atoms in the residue until the next residue starts
+                 */
                 while (i < mol.numList.size) {
                     anAtom = mol.atoms[mol.numList[i]]
-                    if (anAtom == null) {
-                        messageStrings.add(String.format(
-                                "mapBonds: error - got null for %d",
-                                mol.numList[i]))
-                        i++
-                        continue
-                    }
+                    requireNotNull(anAtom)
                     if (anAtom.residueSeqNumber != residueSequenceNumber
                             || anAtom.residueInsertionCode != residueInsertionCode) {
                         break
@@ -270,19 +202,20 @@ class ParserPdbFile internal constructor(
                 }
                 if (i == mol.atoms.size) {
                     break
-                } else
+                } else {
                     i--
+                }
                 i++
             }
         }
 
         /**
          * matchBonds
-         * for an initial atom - walk the residue to match each atom in the residue with a bonding
+         * walk the residue to match each atom in the residue with a bonding
          * atom in the residue.   Basically build the bond table for the residue.
          * @param atomIndex   initial atom in the residue
-         * @param residueSequenceNumber    which residue in the PDB file
-         * @param residueInsertionCode     PDB code for inserted residues
+         * @param residueSequenceNumber    the current residue number
+         * @param residueInsertionCode     PDB code for inserted residues (repeated sequences)
          * @param bondListOriginal         the bond list for the residue
          */
         // TODO: rework to search the array instead of look up values in the map
@@ -313,46 +246,45 @@ class ParserPdbFile internal constructor(
                     break
                 }
                 currentAtom = mol.atoms[mol.numList[i]]
+                requireNotNull(currentAtom)
 
-                if (currentAtom == null) {
-                    messageStrings.add(String.format(
-                            "matchBonds: error - got null for %d", mol.numList[i]))
-                    i++
-                    continue
-                }
-
-                if (currentAtom.residueSeqNumber != residueSequenceNumber || currentAtom.residueInsertionCode != residueInsertionCode) {
+                // has the loop arrived at the next residue?
+                if (currentAtom.residueSeqNumber != residueSequenceNumber
+                        || currentAtom.residueInsertionCode != residueInsertionCode) {
                     break
                 }
 
                 /*
-                 * scan the bondList for the currentAtom.   If there is a bond pair
-                 * that hasn't already been added to the bond list, then add it
+                 * keep scanning the rest of the residue until we run out
+                 * of bond candidates in the bond list
                  */
-
-                val bondAtomName = findNextBond(currentAtom.atomName, bondList)
-                if (bondAtomName != "") {
+                while (true) {
+                    /*
+                     * scan the bondList for the currentAtom.   If there is a bond pair
+                     * that hasn't already been added to the bond list, then add it
+                     */
+                    val bondAtomName = findNextBond(currentAtom.atomName, bondList)
+                    if (bondAtomName == "") {
+                        break
+                    }
                     /*
                      * OK bondAtomName has the name of a atom in this residue type to which
                      * currentAtom is bonded.   Now to find that atom in the atomList
                      * for this residue
+                     *
+                     * Modified: scan starting at the *next* atom - don't rescan the previous
+                     * atoms.   That is because all previous bonds are now marked as used.
                      */
-                    var j = atomIndex
+                    var j = i + 1
                     while (true) {
-                        if (i == j) { // skip a match to self
-                            j++
-                            continue
-                        }
                         if (j == mol.numList.size) {
                             break
                         }
                         loopAtom = mol.atoms[mol.numList[j]]
-                        if (loopAtom == null) {
-                            messageStrings.add(String.format(
-                                    "matchBonds: error - got null for %s", mol.numList[j]))
-                            j++
-                            continue
-                        }
+                        requireNotNull(loopAtom)
+                        /*
+                         * if the loop has reached the next residue, then quit
+                         */
                         if (loopAtom.residueSeqNumber != residueSequenceNumber
                                 || loopAtom.residueInsertionCode != residueInsertionCode) {
                             break
@@ -364,6 +296,7 @@ class ParserPdbFile internal constructor(
                         j++
                     }
                 }
+
                 if (currentAtom.atomBondCount == 0) {
                     mol.unbondedAtomCount++
                     messageStrings.add(String.format(
@@ -845,13 +778,6 @@ class ParserPdbFile internal constructor(
                 atom.chainId = line[22 - 1]
                 atom.elementSymbol = line.substring(77 - 1, 78).trim { it <= ' ' }
 
-                /*
-                 * skip hydrogens for now
-                 * TODO: handle hydros
-                 */
-                if (atom.elementSymbol == "H") {
-                    return
-                }
                 atom.residueSeqNumber = parseInteger(line.substring(23 - 1, 26).trim { it <= ' ' })
                 atom.residueInsertionCode = line[27 - 1]
                 vx = parseDouble(line.substring(31 - 1, 38).trim { it <= ' ' })
@@ -871,11 +797,11 @@ class ParserPdbFile internal constructor(
 
                 atom.atomPosition = KotmolVector3(vx, vy, vz)
 
-                // Decision: throw out OXT, O5T, and O3T atoms - no bond info - see README.md
+                // Decision: throw out O5T, and O3T atoms - no bond info - see README.md
 
-                if (atom.atomName == "OXT" || atom.atomName == "O5T" || atom.atomName == "O3T") {
+                if (atom.atomName == "O5T" || atom.atomName == "O3T") {
                     messageStrings.add(String.format(
-                            "parseAtom: pdbName: %s atom is one of OXT, O5T, O3T, skipping", mol.name))
+                            "parseAtom: pdbName: %s atom is one of O5T, O3T, skipping", mol.name))
 //                Timber.d("%s: atom is one of OXT, O5T, O3T, skipping", mMol.name)
                     return
                 }
@@ -883,20 +809,17 @@ class ParserPdbFile internal constructor(
                 /*
                  * check for "Alternate location indicator" at position 17
                  *    if present it is typically "A or B or ..."
-                 * take only the A case (see README.md)
+                 * take only the A case
                  */
                 if (line[17 - 1] != ' ') {
                     if (line[17 - 1] != 'A') {
                         messageStrings.add(String.format(
                                 "parseAtom: pdbName: %s: Alternate location indicator is %c, skippping",
                                 mol.name, line[17 - 1]))
-//                    Timber.e("%s: Alternate location indicator is %c, skippping",
-//                            mMol.name, line[17 - 1])
                         return
                     }
                 }
 
-                // mMol.mAtoms.add(atom);
                 mol.atoms[atom.atomNumber] = atom
                 mol.numList.add(atom.atomNumber)
                 mol.maxAtomNumber = if (mol.maxAtomNumber < atom.atomNumber)
@@ -1104,6 +1027,61 @@ class ParserPdbFile internal constructor(
                 return
             }
             addBond(a1, a2)
+        }
+
+        /**
+         * This is the last step in assembling the molecule information.
+         * This algorithm creates the bonds in the bond list that form the peptide chain.
+         * Procedure:
+         *    walk the list of atoms.
+         *    For each residue, attempt to connect the standard atoms in the polymeric chain.
+         *    Check the atom to atom spacing for error correction
+         */
+        private fun connectResidues() {
+            var totalDistance = 0f
+            var count = 0
+            var anAtom: PdbAtom?
+            var lastAtom: PdbAtom? = null
+            var lastResidueSequenceNumber = 0
+            for (i in 0 until mol.numList.size) {
+                anAtom = mol.atoms[mol.numList[i]]
+                if (anAtom == null) {
+                    messageStrings.add(String.format("connectResidues: error - got null for %s", mol.numList[i]))
+                    continue
+                }
+                // rely on CONECT records for HETATM
+                if (anAtom.atomType == PdbAtom.IS_HETATM) {
+                    continue
+                }
+                if (anAtom.atomName == "O3'" || anAtom.atomName == "C") {
+                    lastResidueSequenceNumber = anAtom.residueSeqNumber
+                    lastAtom = anAtom
+                } else if (anAtom.atomName == "P" || anAtom.atomName == "N") {
+                    if (anAtom.residueSeqNumber == lastResidueSequenceNumber + 1 && lastAtom != null) {
+                        // connect the atoms
+                        val dist = anAtom.atomPosition.distanceTo(lastAtom.atomPosition)
+                        if (dist < 2.0) {
+                            totalDistance += dist.toFloat()
+                            count++
+                            addBond(anAtom, lastAtom)
+                        } else {
+                            val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
+                            messageStrings.add(String.format(
+                                    "connectResidues: excessive bond dist = %s from atom %s to %s",
+                                    prettyPrint,
+                                    lastAtom.atomNumber,
+                                    anAtom.atomNumber))
+                        }
+                        lastAtom = null
+                    }
+                }
+            }
+
+            /*if (count > 0) {
+                val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
+                //Timber.i("connectResidues: ave connection distance = $prettyPrint")
+            }*/
+
         }
 
         private fun parseDouble(s: String): Double {
