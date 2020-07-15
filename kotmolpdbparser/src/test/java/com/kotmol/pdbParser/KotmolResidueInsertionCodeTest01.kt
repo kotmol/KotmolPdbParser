@@ -76,9 +76,9 @@ ATOM   2891  N   THR B  83     -15.949 -20.929 -10.732  1.00 24.92           N
         var messages : MutableList<String> = mutableListOf()
 
         val parse = ParserPdbFile
-                .Builder()
+                .Builder(mol)
                 .setMessageStrings(messages)
-                .loadPdbFromStream(str, mol)
+                .loadPdbFromStream(str)
 
         assertEquals(2891, mol.maxAtomNumber)
 

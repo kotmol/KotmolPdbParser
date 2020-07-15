@@ -51,11 +51,11 @@ class ParserPdbFile internal constructor(
         builder: Builder
 ) {
 
-    constructor() : this(Builder())
+    constructor(mol: Molecule) : this(Builder(mol))
 
-    class Builder constructor() {
+    class Builder(private val mol: Molecule) {
 
-        private lateinit var mol: Molecule
+        //private lateinit var mol: Molecule
         private val bondinfo = BondInfo()
         private var maxX = 0.toDouble()
         private var maxY = 0.toDouble()
@@ -69,12 +69,16 @@ class ParserPdbFile internal constructor(
             messageStrings = messagesIn
         }
 
-        fun loadPdbFromStream(inputStream: InputStream, molecule: Molecule) = apply {
+        fun setMoleculeName(molNameString: String) = apply {
+            mol.molName = molNameString
+        }
+
+        fun loadPdbFromStream(inputStream: InputStream) = apply {
 
             if (!this::messageStrings.isInitialized) {
                 messageStrings = mutableListOf("")
             }
-            mol = molecule
+
 //        resetMoleculeMaxMin()
 //        mol.clearLists()
             loadPdbFromInputStream(inputStream)
@@ -240,6 +244,7 @@ class ParserPdbFile internal constructor(
              * for each atom, search the residue for a bond match based on the bond table
              */
             var i = atomIndex
+            var j = 0
             while (true) {
 
                 if (i == mol.numList.size) {
@@ -275,7 +280,7 @@ class ParserPdbFile internal constructor(
                      * Modified: scan starting at the *next* atom - don't rescan the previous
                      * atoms.   That is because all previous bonds are now marked as used.
                      */
-                    var j = i + 1
+                    j = i + 1
                     while (true) {
                         if (j == mol.numList.size) {
                             break
@@ -299,11 +304,19 @@ class ParserPdbFile internal constructor(
 
                 if (currentAtom.atomBondCount == 0) {
                     mol.unbondedAtomCount++
-                    messageStrings.add(String.format(
-                            "matchBonds: pdbName: %s no CHARMM entry for atom %d in residue %s atomType %s",
-                            mol.name, currentAtom.atomNumber, currentAtom.residueName, currentAtom.atomName ))
+
+                    /*
+                     * if there is only one atom in the residue, then this is
+                     * likely a CA chain only model.   Don't complain about
+                     * missing bonds
+                     */
+                    if (j != i + 1) {
+                        messageStrings.add(String.format(
+                                "matchBonds: pdbName: %s no Bond Atom for atom %d in residue %s atomType %s",
+                                mol.molName, currentAtom.atomNumber, currentAtom.residueName, currentAtom.atomName))
 //                Timber.e("matchBonds file: " + mMol.name + " no CHARMM entry for atom " + currentAtom.atomNumber +
 //                        " residue " + currentAtom.residueName + " type " + currentAtom.atomName)
+                    }
                 }
                 i++
             }
@@ -393,8 +406,17 @@ class ParserPdbFile internal constructor(
                     if (chain.backboneAtom != null) {
                         chainList.add(chain)
                         if (chain.guideAtom == null) {
-                            messageStrings.add(String.format(
-                                    "buildPdbChainLists: guide atom is null at atom %d", anAtom.atomNumber))
+                            /*
+                             * don't repeat this message
+                             */
+                            if (!mol.guideAtomMissing) {
+                                messageStrings.add(
+                                        String.format(
+                                        "%sbuildPdbChainLists: no guide atom in residue at atom %d",
+                                                messageMolName(),
+                                                anAtom.atomNumber))
+                                mol.guideAtomMissing = true
+                            }
                             chain.guideAtom = chain.backboneAtom // HACK
                         }
                         chain = ChainRenderingDescriptor()
@@ -801,7 +823,7 @@ class ParserPdbFile internal constructor(
 
                 if (atom.atomName == "O5T" || atom.atomName == "O3T") {
                     messageStrings.add(String.format(
-                            "parseAtom: pdbName: %s atom is one of O5T, O3T, skipping", mol.name))
+                            "parseAtom: pdbName: %s atom is one of O5T, O3T, skipping", mol.molName))
 //                Timber.d("%s: atom is one of OXT, O5T, O3T, skipping", mMol.name)
                     return
                 }
@@ -813,9 +835,12 @@ class ParserPdbFile internal constructor(
                  */
                 if (line[17 - 1] != ' ') {
                     if (line[17 - 1] != 'A') {
-                        messageStrings.add(String.format(
-                                "parseAtom: pdbName: %s: Alternate location indicator is %c, skippping",
-                                mol.name, line[17 - 1]))
+                        if (!mol.hasAlternateLocations) {
+                            messageStrings.add(String.format(
+                                    "parseAtom: pdbName: %s: Alternate location indicator is %c, skippping",
+                                    mol.molName, line[17 - 1]))
+                            mol.hasAlternateLocations = true
+                        }
                         return
                     }
                 }
@@ -1114,6 +1139,12 @@ class ParserPdbFile internal constructor(
             minX = 1e6
             minY = 1e6
             minZ = 1e6
+        }
+        private fun messageMolName() : String {
+            if (mol.molName != "") {
+                return String.format("%s: ", mol.molName)
+            }
+            return("")
         }
     }
 }

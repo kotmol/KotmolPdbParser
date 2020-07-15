@@ -33,8 +33,8 @@ internal class KotmolParseTestAtom02 {
         var messages : MutableList<String> = mutableListOf()
 
         val parse = ParserPdbFile
-                .Builder()
-                .loadPdbFromStream(stream, mol)
+                .Builder(mol)
+                .loadPdbFromStream(stream)
 
         assertEquals(1, mol.maxAtomNumber)
 

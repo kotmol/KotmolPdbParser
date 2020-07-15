@@ -31,7 +31,7 @@
 package com.kotmol.pdbParser
 
 class Molecule {
-    var name: String? = null
+    var molName: String = ""
     var maxAtomNumber: Int = 0
     val numList: MutableList<Int> = ArrayList()
     val atoms = HashMap<Int, PdbAtom>()
@@ -42,6 +42,8 @@ class Molecule {
     private val listofDnaHelixChainLists: MutableList<List<*>> = ArrayList()
     var ribbonNodeCount = 0
     var unbondedAtomCount = 0
+    var hasAlternateLocations = false
+    var guideAtomMissing = false
 
     var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
 

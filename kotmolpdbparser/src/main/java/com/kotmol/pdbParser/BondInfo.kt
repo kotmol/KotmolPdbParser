@@ -34,6 +34,35 @@
 
 package com.kotmol.pdbParser
 
+/**
+ * bond information
+ *   as extracted from the database at:
+ *   @link: https://www.ebi.ac.uk/pdbe/api/pdb/compound/bonds/
+ */
+
+/**
+ *  NOTES:
+ *  from the 1992 PDB file format specification:
+ *
+ * PROTEIN DATA BANK
+ * ATOMIC COORDINATE AND BIBLIOGRAPHIC ENTRY FORMAT DESCRIPTION
+ * February 1992
+ *
+ *  Atom names employed for polynucleotides generally follow the precedents set for mononucleotides.
+ * The following points are worthy of note.
+ * (i) The prime character (') commonly used to denote atoms of the ribose originally was
+ * avoided because of non-uniformity of its external representation. An asterisk (*)
+ * therefore was used in its place, in entries released through January 1992.
+ * (ii) Of the four characters reserved for atom names the leftmost two are reserved for the
+ * chemical symbol (right justified) and the remaining two denote the atom's position.
+ * (iii) Atoms exocyclic to the ring systems have the same position identifier as the atom
+ * to which they are bonded except if this would result in identical atom names. In this
+ * case an alphabetic character is used to avoid ambiguity.
+ * (iv) The ring-oxygen atom of the ribose is denoted O4 rather than O1.
+ * (v) The extra oxygen atom at the free 5' phosphate terminus is designated OXT. This
+ * atom will be placed first in the coordinate set.
+ */
+
 class BondInfo {
     data class KotmolBondRecord(
             val atom_1: String,
@@ -3658,7 +3687,7 @@ class BondInfo {
             KotmolBondRecord(
                     aromatic = false,
                     atom_1 = "C2",
-                    atom_2 = "O2",
+                    atom_2 = "O2'",
                     bond_order = 2f,
                     bond_type = "doub",
                     ideal_length = 1.22
@@ -3913,6 +3942,32 @@ class BondInfo {
             )
     )
     val dg = listOf(
+            /*
+             *   !!!
+             * These two records were added to capture the bond between the
+             * C2' then O2' and HO2'
+             * this was borrowed from another bond between an OXT and HXT
+             * SEE: 1A1T.pdb
+             */
+            KotmolBondRecord(
+                    aromatic = false,
+                    atom_1 = "O2'",
+                    atom_2 = "HO2'",
+                    bond_order = 1f,
+                    bond_type = "sing",
+                    ideal_length = 0.967
+            ),
+            KotmolBondRecord(
+                    aromatic = false,
+                    atom_1 = "C2'",
+                    atom_2 = "O2'",
+                    bond_order = 1f,
+                    bond_type = "sing",
+                    ideal_length = 1.43
+            ),
+            /*
+             *  End of added record
+             */
             KotmolBondRecord(
                     aromatic = false,
                     atom_1 = "C1'",
@@ -4254,7 +4309,7 @@ class BondInfo {
             KotmolBondRecord(
                     aromatic = false,
                     atom_1 = "C2",
-                    atom_2 = "O2",
+                    atom_2 = "O2'",
                     bond_order = 2f,
                     bond_type = "doub",
                     ideal_length = 1.232
@@ -4552,7 +4607,7 @@ class BondInfo {
             KotmolBondRecord(
                     aromatic = false,
                     atom_1 = "C2",
-                    atom_2 = "O2",
+                    atom_2 = "O2'",
                     bond_order = 2f,
                     bond_type = "doub",
                     ideal_length = 1.233

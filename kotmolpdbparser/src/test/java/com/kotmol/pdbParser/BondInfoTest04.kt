@@ -34,7 +34,7 @@ internal class BondInfoTest04 {
         val bondLookup = BondInfo()
 
         for (item in bondLookup.kotmolBondLookup) {
-            scanListForOphanedPairs(item.value)
+            scanListForOphanedPairs(item.value, item.key)
         }
     }
 
@@ -42,7 +42,7 @@ internal class BondInfoTest04 {
      * the actual scan function - the "foundMatch" boolean array should go completely true
      * as the connections are tested.
      */
-    fun scanListForOphanedPairs(testList: List<BondInfo.KotmolBondRecord>) {
+    fun scanListForOphanedPairs(testList: List<BondInfo.KotmolBondRecord>, residueName: String) {
         val foundMatch = BooleanArray(testList.size)
         val allTrue = BooleanArray(testList.size) { true }
         //for (item in badList) {
@@ -69,7 +69,7 @@ internal class BondInfoTest04 {
         for (k in (foundMatch.indices)) {
             if (!foundMatch[k]) {
                 val bad = testList[k]
-                println("Found orphaned entry: ${testList[k]}")
+                println("$residueName: Found orphaned entry: ${testList[k]}")
             }
         }
         assertArrayEquals(allTrue, foundMatch)
