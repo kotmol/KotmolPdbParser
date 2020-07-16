@@ -94,7 +94,7 @@ internal class BondInfoTest03 {
                         atom_2 = "H1'",
                         bond_order = 1f,
                         bond_type = "sing",
-                        ideal_length = 1.095
+                        length = 1.095
                 ),
                 BondInfo.KotmolBondRecord(
                         aromatic = false,
@@ -102,7 +102,7 @@ internal class BondInfoTest03 {
                         atom_2 = "NY",
                         bond_order = 1f,
                         bond_type = "sing",
-                        ideal_length = 1.434
+                        length = 1.434
                 ),
                 BondInfo.KotmolBondRecord(
                         aromatic = false,
@@ -110,7 +110,7 @@ internal class BondInfoTest03 {
                         atom_2 = "N3",
                         bond_order = 1f,
                         bond_type = "sing",
-                        ideal_length = 1.402
+                        length = 1.402
                 ))
     }
 
