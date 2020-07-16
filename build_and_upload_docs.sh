@@ -12,10 +12,16 @@
 # https://www.mkdocs.org/
 # https://squidfunk.github.io/mkdocs-material/
 #
+
+#  Posting changes
+#  1) commit and push your changes to master!!
+
 #  script assumes you run this with the current dir in the "docs" folder
-#  Note for windoze users : in gvim do a:
-#    set ff=unix
-#  to get the right line endings for unix.
+#  Prepare the script - use vim to fix line endings:
+#  2)  set ff=unix
+#
+#  Then cd to the docs dir and run:
+#  3) bash -x build_and_upload_docs.sh
 
 
 REPO="https://github.com/kotmol/KotmolPdbParser"
