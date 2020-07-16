@@ -15,7 +15,24 @@
  */
 
 @file:Suppress(
-        "unused", "unused_variable", "unused_parameter", "deprecation", "UNUSED_ANONYMOUS_PARAMETER", "UNUSED_EXPRESSION", "MemberVisibilityCanBePrivate", "FunctionWithLambdaExpressionBody", "UnusedMainParameter", "JoinDeclarationAndAssignment", "CanBePrimaryConstructorProperty", "RemoveEmptyClassBody", "ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE", "UNUSED_VALUE", "ConstantConditionIf", "ReplaceSingleLineLet", "ReplaceJavaStaticMethodWithKotlinAnalog", "NestedLambdaShadowedImplicitParameter"
+        "unused",
+        "unused_variable",
+        "unused_parameter",
+        "deprecation",
+        "UNUSED_ANONYMOUS_PARAMETER",
+        "UNUSED_EXPRESSION",
+        "MemberVisibilityCanBePrivate",
+        "FunctionWithLambdaExpressionBody",
+        "UnusedMainParameter",
+        "JoinDeclarationAndAssignment",
+        "CanBePrimaryConstructorProperty",
+        "RemoveEmptyClassBody",
+        "ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE",
+        "UNUSED_VALUE",
+        "ConstantConditionIf",
+        "ReplaceSingleLineLet",
+        "ReplaceJavaStaticMethodWithKotlinAnalog",
+        "NestedLambdaShadowedImplicitParameter"
 )
 
 package com.kotmol.pdbParser
@@ -254,15 +271,15 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB2", bond_order = 1f, bond_type = "sing", length = 1.099),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB3", bond_order = 1f, bond_type = "sing", length = 1.098),
             KotmolBondRecord(atom_1 = "CD2", atom_2 = "HD2", bond_order = 1f, bond_type = "sing", length = 1.072),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD2", atom_2 = "NE2", bond_order = 1.5f, bond_type = "sing", length = 1.374),
+            KotmolBondRecord(atom_1 = "CD2", atom_2 = "NE2", bond_order = 1.5f, bond_type = "sing", length = 1.374, aromatic = true),
             KotmolBondRecord(atom_1 = "CE1", atom_2 = "HE1", bond_order = 1f, bond_type = "sing", length = 1.078),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE1", atom_2 = "NE2", bond_order = 1.5f, bond_type = "sing", length = 1.337),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "doub", length = 1.338),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "ND1", bond_order = 1.5f, bond_type = "sing", length = 1.351),
+            KotmolBondRecord(atom_1 = "CE1", atom_2 = "NE2", bond_order = 1.5f, bond_type = "sing", length = 1.337, aromatic = true),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "doub", length = 1.338, aromatic = true),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "ND1", bond_order = 1.5f, bond_type = "sing", length = 1.351, aromatic = true),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.441),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.006),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.007),
-            KotmolBondRecord(aromatic = true, atom_1 = "ND1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "doub", length = 1.337),
+            KotmolBondRecord(atom_1 = "ND1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "doub", length = 1.337, aromatic = true),
             KotmolBondRecord(atom_1 = "ND1", atom_2 = "HD1", bond_order = 1f, bond_type = "sing", length = 1.016),
             KotmolBondRecord(atom_1 = "NE2", atom_2 = "HE2", bond_order = 1f, bond_type = "sing", length = 1.016),
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.98
@@ -375,16 +392,16 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "CB", atom_2 = "CG", bond_order = 1f, bond_type = "sing", length = 1.505),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB2", bond_order = 1f, bond_type = "sing", length = 1.091),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB3", bond_order = 1f, bond_type = "sing", length = 1.09),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "sing", length = 1.382),
+            KotmolBondRecord(atom_1 = "CD1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "sing", length = 1.382, aromatic = true),
             KotmolBondRecord(atom_1 = "CD1", atom_2 = "HD1", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.382),
+            KotmolBondRecord(atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.382, aromatic = true),
             KotmolBondRecord(atom_1 = "CD2", atom_2 = "HD2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE1", atom_2 = "CZ", bond_order = 1.5f, bond_type = "doub", length = 1.381),
+            KotmolBondRecord(atom_1 = "CE1", atom_2 = "CZ", bond_order = 1.5f, bond_type = "doub", length = 1.381, aromatic = true),
             KotmolBondRecord(atom_1 = "CE1", atom_2 = "HE1", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE2", atom_2 = "CZ", bond_order = 1.5f, bond_type = "sing", length = 1.382),
+            KotmolBondRecord(atom_1 = "CE2", atom_2 = "CZ", bond_order = 1.5f, bond_type = "sing", length = 1.382, aromatic = true),
             KotmolBondRecord(atom_1 = "CE2", atom_2 = "HE2", bond_order = 1f, bond_type = "sing", length = 1.081),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.382),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.383),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.382, aromatic = true),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.383, aromatic = true),
             KotmolBondRecord(atom_1 = "CZ", atom_2 = "HZ", bond_order = 1f, bond_type = "sing", length = 1.08),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
@@ -457,23 +474,23 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB2", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB3", bond_order = 1f, bond_type = "sing", length = 1.089),
             KotmolBondRecord(atom_1 = "CD1", atom_2 = "HD1", bond_order = 1f, bond_type = "sing", length = 1.079),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD1", atom_2 = "NE1", bond_order = 1.5f, bond_type = "sing", length = 1.369),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.407),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD2", atom_2 = "CE3", bond_order = 1.5f, bond_type = "sing", length = 1.396),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE2", atom_2 = "CZ2", bond_order = 1.5f, bond_type = "sing", length = 1.391),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE3", atom_2 = "CZ3", bond_order = 1.5f, bond_type = "doub", length = 1.366),
+            KotmolBondRecord(atom_1 = "CD1", atom_2 = "NE1", bond_order = 1.5f, bond_type = "sing", length = 1.369, aromatic = true),
+            KotmolBondRecord(atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.407, aromatic = true),
+            KotmolBondRecord(atom_1 = "CD2", atom_2 = "CE3", bond_order = 1.5f, bond_type = "sing", length = 1.396, aromatic = true),
+            KotmolBondRecord(atom_1 = "CE2", atom_2 = "CZ2", bond_order = 1.5f, bond_type = "sing", length = 1.391, aromatic = true),
+            KotmolBondRecord(atom_1 = "CE3", atom_2 = "CZ3", bond_order = 1.5f, bond_type = "doub", length = 1.366, aromatic = true),
             KotmolBondRecord(atom_1 = "CE3", atom_2 = "HE3", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.343),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.464),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.343, aromatic = true),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.464, aromatic = true),
             KotmolBondRecord(atom_1 = "CH2", atom_2 = "HH2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CZ2", atom_2 = "CH2", bond_order = 1.5f, bond_type = "doub", length = 1.377),
+            KotmolBondRecord(atom_1 = "CZ2", atom_2 = "CH2", bond_order = 1.5f, bond_type = "doub", length = 1.377, aromatic = true),
             KotmolBondRecord(atom_1 = "CZ2", atom_2 = "HZ2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CZ3", atom_2 = "CH2", bond_order = 1.5f, bond_type = "sing", length = 1.388),
+            KotmolBondRecord(atom_1 = "CZ3", atom_2 = "CH2", bond_order = 1.5f, bond_type = "sing", length = 1.388, aromatic = true),
             KotmolBondRecord(atom_1 = "CZ3", atom_2 = "HZ3", bond_order = 1f, bond_type = "sing", length = 1.08),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.01),
-            KotmolBondRecord(aromatic = true, atom_1 = "NE1", atom_2 = "CE2", bond_order = 1.5f, bond_type = "sing", length = 1.377),
+            KotmolBondRecord(atom_1 = "NE1", atom_2 = "CE2", bond_order = 1.5f, bond_type = "sing", length = 1.377, aromatic = true),
             KotmolBondRecord(atom_1 = "NE1", atom_2 = "HE1", bond_order = 1f, bond_type = "sing", length = 0.969),
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
@@ -487,16 +504,16 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "CB", atom_2 = "CG", bond_order = 1f, bond_type = "sing", length = 1.506),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB2", bond_order = 1f, bond_type = "sing", length = 1.089),
             KotmolBondRecord(atom_1 = "CB", atom_2 = "HB3", bond_order = 1f, bond_type = "sing", length = 1.091),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "sing", length = 1.381),
+            KotmolBondRecord(atom_1 = "CD1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "sing", length = 1.381, aromatic = true),
             KotmolBondRecord(atom_1 = "CD1", atom_2 = "HD1", bond_order = 1f, bond_type = "sing", length = 1.079),
-            KotmolBondRecord(aromatic = true, atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.381),
+            KotmolBondRecord(atom_1 = "CD2", atom_2 = "CE2", bond_order = 1.5f, bond_type = "doub", length = 1.381, aromatic = true),
             KotmolBondRecord(atom_1 = "CD2", atom_2 = "HD2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE1", atom_2 = "CZ", bond_order = 1.5f, bond_type = "doub", length = 1.387),
+            KotmolBondRecord(atom_1 = "CE1", atom_2 = "CZ", bond_order = 1.5f, bond_type = "doub", length = 1.387, aromatic = true),
             KotmolBondRecord(atom_1 = "CE1", atom_2 = "HE1", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CE2", atom_2 = "CZ", bond_order = 1.5f, bond_type = "sing", length = 1.388),
+            KotmolBondRecord(atom_1 = "CE2", atom_2 = "CZ", bond_order = 1.5f, bond_type = "sing", length = 1.388, aromatic = true),
             KotmolBondRecord(atom_1 = "CE2", atom_2 = "HE2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.382),
-            KotmolBondRecord(aromatic = true, atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.383),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD1", bond_order = 1.5f, bond_type = "doub", length = 1.382, aromatic = true),
+            KotmolBondRecord(atom_1 = "CG", atom_2 = "CD2", bond_order = 1.5f, bond_type = "sing", length = 1.383, aromatic = true),
             KotmolBondRecord(atom_1 = "CZ", atom_2 = "OH", bond_order = 1f, bond_type = "sing", length = 1.358),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
@@ -528,10 +545,23 @@ class BondInfo {
     )
 
     val da = listOf(
+            /*
+             *   !!!
+             * These two records were added to capture the bond between the
+             * C2' then O2' and HO2'
+             * this was borrowed from another bond between an OXT and HXT
+             * SEE: 1A1T.pdb
+             */
+            KotmolBondRecord(atom_1 = "O2'", atom_2 = "HO2'", bond_order = 1f, bond_type = "sing", length = 0.967),
+            KotmolBondRecord(atom_1 = "C2'", atom_2 = "O2'", bond_order = 1f, bond_type = "sing", length = 1.43),
+            /*
+             *  End of added record
+             */
+
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "H1'", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "N9", bond_order = 1f, bond_type = "sing", length = 1.466),
             KotmolBondRecord(atom_1 = "C2", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "C2", atom_2 = "N3", bond_order = 1.5f, bond_type = "doub", length = 1.316),
+            KotmolBondRecord(atom_1 = "C2", atom_2 = "N3", bond_order = 1.5f, bond_type = "doub", length = 1.316, aromatic = true),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.541),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2'", bond_order = 1f, bond_type = "sing", length = 1.089),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2''", bond_order = 1f, bond_type = "sing", length = 1.091),
@@ -541,22 +571,22 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "C3'", bond_order = 1f, bond_type = "sing", length = 1.549),
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "H4'", bond_order = 1f, bond_type = "sing", length = 1.089),
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "O4'", bond_order = 1f, bond_type = "sing", length = 1.446),
-            KotmolBondRecord(aromatic = true, atom_1 = "C5", atom_2 = "C4", bond_order = 1.5f, bond_type = "doub", length = 1.405),
-            KotmolBondRecord(aromatic = true, atom_1 = "C5", atom_2 = "C6", bond_order = 1.5f, bond_type = "sing", length = 1.405),
+            KotmolBondRecord(atom_1 = "C5", atom_2 = "C4", bond_order = 1.5f, bond_type = "doub", length = 1.405, aromatic = true),
+            KotmolBondRecord(atom_1 = "C5", atom_2 = "C6", bond_order = 1.5f, bond_type = "sing", length = 1.405, aromatic = true),
             KotmolBondRecord(atom_1 = "C5'", atom_2 = "C4'", bond_order = 1f, bond_type = "sing", length = 1.53),
             KotmolBondRecord(atom_1 = "C5'", atom_2 = "H5'", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "C5'", atom_2 = "H5''", bond_order = 1f, bond_type = "sing", length = 1.089),
-            KotmolBondRecord(aromatic = true, atom_1 = "C6", atom_2 = "N1", bond_order = 1.5f, bond_type = "doub", length = 1.329),
+            KotmolBondRecord(atom_1 = "C6", atom_2 = "N1", bond_order = 1.5f, bond_type = "doub", length = 1.329, aromatic = true),
             KotmolBondRecord(atom_1 = "C6", atom_2 = "N6", bond_order = 1f, bond_type = "sing", length = 1.384),
             KotmolBondRecord(atom_1 = "C8", atom_2 = "H8", bond_order = 1f, bond_type = "sing", length = 1.08),
-            KotmolBondRecord(aromatic = true, atom_1 = "C8", atom_2 = "N7", bond_order = 1.5f, bond_type = "doub", length = 1.301),
-            KotmolBondRecord(aromatic = true, atom_1 = "N1", atom_2 = "C2", bond_order = 1.5f, bond_type = "sing", length = 1.319),
-            KotmolBondRecord(aromatic = true, atom_1 = "N3", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.329),
+            KotmolBondRecord(atom_1 = "C8", atom_2 = "N7", bond_order = 1.5f, bond_type = "doub", length = 1.301, aromatic = true),
+            KotmolBondRecord(atom_1 = "N1", atom_2 = "C2", bond_order = 1.5f, bond_type = "sing", length = 1.319, aromatic = true),
+            KotmolBondRecord(atom_1 = "N3", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.329, aromatic = true),
             KotmolBondRecord(atom_1 = "N6", atom_2 = "H61", bond_order = 1f, bond_type = "sing", length = 0.97),
             KotmolBondRecord(atom_1 = "N6", atom_2 = "H62", bond_order = 1f, bond_type = "sing", length = 0.971),
-            KotmolBondRecord(aromatic = true, atom_1 = "N7", atom_2 = "C5", bond_order = 1.5f, bond_type = "sing", length = 1.355),
-            KotmolBondRecord(aromatic = true, atom_1 = "N9", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.372),
-            KotmolBondRecord(aromatic = true, atom_1 = "N9", atom_2 = "C8", bond_order = 1.5f, bond_type = "sing", length = 1.362),
+            KotmolBondRecord(atom_1 = "N7", atom_2 = "C5", bond_order = 1.5f, bond_type = "sing", length = 1.355, aromatic = true),
+            KotmolBondRecord(atom_1 = "N9", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.372, aromatic = true),
+            KotmolBondRecord(atom_1 = "N9", atom_2 = "C8", bond_order = 1.5f, bond_type = "sing", length = 1.362, aromatic = true),
             KotmolBondRecord(atom_1 = "O3'", atom_2 = "HO3'", bond_order = 1f, bond_type = "sing", length = 0.966),
             KotmolBondRecord(atom_1 = "O4'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.436),
             KotmolBondRecord(atom_1 = "O5'", atom_2 = "C5'", bond_order = 1f, bond_type = "sing", length = 1.428),
@@ -569,10 +599,25 @@ class BondInfo {
             )
     )
     val dc = listOf(
+            /*
+             *   !!!
+             * These two records were added to capture the bond between the
+             * C2' then O2' and HO2'
+             * this was borrowed from another bond between an OXT and HXT
+             * SEE: 1A1T.pdb
+             */
+            KotmolBondRecord(atom_1 = "O2'", atom_2 = "HO2'", bond_order = 1f, bond_type = "sing", length = 0.967),
+            KotmolBondRecord(atom_1 = "C2'", atom_2 = "O2'", bond_order = 1f, bond_type = "sing", length = 1.43),
+            /*
+             *  End of added record
+             */
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "H1'", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "N1", bond_order = 1f, bond_type = "sing", length = 1.465),
             KotmolBondRecord(atom_1 = "C2", atom_2 = "N3", bond_order = 1f, bond_type = "sing", length = 1.332),
+             /*  BUG should be O2
             KotmolBondRecord(atom_1 = "C2", atom_2 = "O2'", bond_order = 2f, bond_type = "doub", length = 1.22),
+              */
+            KotmolBondRecord(atom_1 = "C2", atom_2 = "O2", bond_order = 2f, bond_type = "doub", length = 1.22),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.541),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2'", bond_order = 1f, bond_type = "sing", length = 1.089),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2''", bond_order = 1f, bond_type = "sing", length = 1.091),
@@ -616,9 +661,9 @@ class BondInfo {
              */
             KotmolBondRecord(atom_1 = "O2'", atom_2 = "HO2'", bond_order = 1f, bond_type = "sing", length = 0.967),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "O2'", bond_order = 1f, bond_type = "sing", length = 1.43),
-/*
-                        *  End of added record
-                        */
+            /*
+             *  End of added record
+             */
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "H1'", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "N9", bond_order = 1f, bond_type = "sing", length = 1.464),
             KotmolBondRecord(atom_1 = "C2", atom_2 = "N2", bond_order = 1f, bond_type = "sing", length = 1.372),
@@ -632,7 +677,7 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "C3'", bond_order = 1f, bond_type = "sing", length = 1.55),
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "H4'", bond_order = 1f, bond_type = "sing", length = 1.09),
             KotmolBondRecord(atom_1 = "C4'", atom_2 = "O4'", bond_order = 1f, bond_type = "sing", length = 1.446),
-            KotmolBondRecord(aromatic = true, atom_1 = "C5", atom_2 = "C4", bond_order = 1.5f, bond_type = "doub", length = 1.4),
+            KotmolBondRecord(atom_1 = "C5", atom_2 = "C4", bond_order = 1.5f, bond_type = "doub", length = 1.4, aromatic = true),
             KotmolBondRecord(atom_1 = "C5", atom_2 = "C6", bond_order = 1f, bond_type = "sing", length = 1.415),
             KotmolBondRecord(atom_1 = "C5'", atom_2 = "C4'", bond_order = 1f, bond_type = "sing", length = 1.53),
             KotmolBondRecord(atom_1 = "C5'", atom_2 = "H5'", bond_order = 1f, bond_type = "sing", length = 1.089),
@@ -640,15 +685,15 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "C6", atom_2 = "N1", bond_order = 1f, bond_type = "sing", length = 1.351),
             KotmolBondRecord(atom_1 = "C6", atom_2 = "O6", bond_order = 2f, bond_type = "doub", length = 1.219),
             KotmolBondRecord(atom_1 = "C8", atom_2 = "H8", bond_order = 1f, bond_type = "sing", length = 1.081),
-            KotmolBondRecord(aromatic = true, atom_1 = "C8", atom_2 = "N7", bond_order = 1.5f, bond_type = "doub", length = 1.302),
+            KotmolBondRecord(atom_1 = "C8", atom_2 = "N7", bond_order = 1.5f, bond_type = "doub", length = 1.302, aromatic = true),
             KotmolBondRecord(atom_1 = "N1", atom_2 = "C2", bond_order = 1f, bond_type = "sing", length = 1.362),
             KotmolBondRecord(atom_1 = "N1", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 0.97),
             KotmolBondRecord(atom_1 = "N2", atom_2 = "H21", bond_order = 1f, bond_type = "sing", length = 0.97),
             KotmolBondRecord(atom_1 = "N2", atom_2 = "H22", bond_order = 1f, bond_type = "sing", length = 0.97),
             KotmolBondRecord(atom_1 = "N3", atom_2 = "C4", bond_order = 1f, bond_type = "sing", length = 1.338),
-            KotmolBondRecord(aromatic = true, atom_1 = "N7", atom_2 = "C5", bond_order = 1.5f, bond_type = "sing", length = 1.355),
-            KotmolBondRecord(aromatic = true, atom_1 = "N9", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.368),
-            KotmolBondRecord(aromatic = true, atom_1 = "N9", atom_2 = "C8", bond_order = 1.5f, bond_type = "sing", length = 1.364),
+            KotmolBondRecord(atom_1 = "N7", atom_2 = "C5", bond_order = 1.5f, bond_type = "sing", length = 1.355, aromatic = true),
+            KotmolBondRecord(atom_1 = "N9", atom_2 = "C4", bond_order = 1.5f, bond_type = "sing", length = 1.368, aromatic = true),
+            KotmolBondRecord(atom_1 = "N9", atom_2 = "C8", bond_order = 1.5f, bond_type = "sing", length = 1.364, aromatic = true),
             KotmolBondRecord(atom_1 = "O3'", atom_2 = "HO3'", bond_order = 1f, bond_type = "sing", length = 0.966),
             KotmolBondRecord(atom_1 = "O4'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.437),
             KotmolBondRecord(atom_1 = "O5'", atom_2 = "C5'", bond_order = 1f, bond_type = "sing", length = 1.428),
@@ -664,7 +709,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "H1'", bond_order = 1f, bond_type = "sing", length = 1.095),
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "N1", bond_order = 1f, bond_type = "sing", length = 1.434),
             KotmolBondRecord(atom_1 = "C2", atom_2 = "N3", bond_order = 1f, bond_type = "sing", length = 1.399),
+            /* BUG should be O2
             KotmolBondRecord(atom_1 = "C2", atom_2 = "O2'", bond_order = 2f, bond_type = "doub", length = 1.232),
+            */
+            KotmolBondRecord(atom_1 = "C2", atom_2 = "O2", bond_order = 2f, bond_type = "doub", length = 1.232),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.52),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2'", bond_order = 1f, bond_type = "sing", length = 1.097),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2''", bond_order = 1f, bond_type = "sing", length = 1.095),
@@ -701,10 +749,27 @@ class BondInfo {
             )
     )
     val du = listOf(
+            /*
+             *   !!!
+             * These two records were added to capture the bond between the
+             * C2' then O2' and HO2'
+             * this was borrowed from another bond between an OXT and HXT
+             * SEE: 1A1T.pdb
+             */
+            KotmolBondRecord(atom_1 = "O2'", atom_2 = "HO2'", bond_order = 1f, bond_type = "sing", length = 0.967),
+            KotmolBondRecord(atom_1 = "C2'", atom_2 = "O2'", bond_order = 1f, bond_type = "sing", length = 1.43),
+            /*
+             *  End of added record
+             */
+
+
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "H1'", bond_order = 1f, bond_type = "sing", length = 1.095),
             KotmolBondRecord(atom_1 = "C1'", atom_2 = "N1", bond_order = 1f, bond_type = "sing", length = 1.434),
             KotmolBondRecord(atom_1 = "C2", atom_2 = "N3", bond_order = 1f, bond_type = "sing", length = 1.402),
+            /* BUG should be O2
             KotmolBondRecord(atom_1 = "C2", atom_2 = "O2'", bond_order = 2f, bond_type = "doub", length = 1.233),
+            */
+            KotmolBondRecord(atom_1 = "C2", atom_2 = "O2", bond_order = 2f, bond_type = "doub", length = 1.233),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "C1'", bond_order = 1f, bond_type = "sing", length = 1.52),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2'", bond_order = 1f, bond_type = "sing", length = 1.097),
             KotmolBondRecord(atom_1 = "C2'", atom_2 = "H2''", bond_order = 1f, bond_type = "sing", length = 1.095),
