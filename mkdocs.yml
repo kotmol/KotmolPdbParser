@@ -1,6 +1,7 @@
+
 # Project information
 site_name: 'KotmolPdbParser'
-site_description: 'A Protein Database (PDB) Parser written in Kotlin'
+site_description: 'A Protein Database (PDB) Parser written in Kotlin:'
 site_author: 'Jim Andreas'
 site_url: 'https://kotmol.github.io/KotmolPdbParser'
 
@@ -21,22 +22,6 @@ theme:
   font:
     text: 'Roboto'
     code: 'Roboto Mono'
-
-# Customization
-extra:
-  manifest: 'manifest.webmanifest'
-  social:
-    - type: 'github'
-      link: 'https://github.com/kotmol'
-    - type: 'twitter'
-      link: 'https://twitter.com/jimandreasdev'
-    - type: 'linkedin'
-      link: 'https://linkedin.com/in/jimandreas'
-
-# Google Analytics
-#google_analytics:
-#  - 'UA-XXXXXXXX-X'
-#  - 'auto'
 
 # Extensions
 markdown_extensions:
@@ -61,3 +46,4 @@ nav:
 # Notes
 #   avoid tabs in vim:
 #   :set tabstop=4 shiftwidth=4 expandtab
+#
