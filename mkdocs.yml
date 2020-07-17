@@ -8,20 +8,36 @@ site_url: 'https://kotmol.github.io/KotmolPdbParser'
 # Repository
 repo_name: 'kotmol/KotmolPdbParser'
 repo_url: 'https://github.com/kotmol/KotmolPdbParser'
+edit_uri: ""
 
 # Copyright
 copyright: 'Copyright &copy; 2020 Jim Andreas'
 
 # Configuration
 theme:
-  name: 'material'
-  language: 'en'
+  name: null
+  custom_dir: material
+
+  # 404 page
+  static_templates:
+    - 404.html
+
+  # Don't include MkDocs' JavaScript
+  include_search_page: false
+  search_index_only: true
+
+  # Default values, taken from mkdocs_theme.yml
+  language: en
+  features:
+    - tabs
+    #- instant
   palette:
-    primary: 'indigo'
-    accent: 'indigo'
+    scheme: default
+    primary: indigo
+    accent: indigo
   font:
-    text: 'Roboto'
-    code: 'Roboto Mono'
+    text: Roboto
+    code: Roboto Mono
 
 # Extensions
 markdown_extensions:
