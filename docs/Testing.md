@@ -3,5 +3,6 @@ Testing
 
 All tests use the Jupiter (Junit) testing framework.   
 
-![The initial MkDocs layout](img/initial-layout.png)
+All tests are unit tests and run in the Intellig IDEA IDE or standalone via 
+Gradle.
 
