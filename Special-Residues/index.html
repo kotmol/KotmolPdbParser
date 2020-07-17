@@ -276,9 +276,49 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Special Residues
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
     <a href="./" title="Special Residues" class="md-nav__link md-nav__link--active">
       Special Residues
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2r6p" class="md-nav__link">
+    2r6p
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2zoi" class="md-nav__link">
+    2zoi
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -300,6 +340,30 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2r6p" class="md-nav__link">
+    2r6p
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2zoi" class="md-nav__link">
+    2zoi
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -318,10 +382,9 @@
 <p>This is a photo log of special residues found from the PDB101 selection of atoms.</p>
 <p>For now this is a list of special PDB files that were discovered while testing the parser.</p>
 <p>To document these unusual PDB files - screen captures will be used
-when interesting from the [Chimera modeling system][1] and the 
+when interesting from the <a href="https://www.cgl.ucsf.edu/chimera/">Chimera modeling system</a> and the 
 unreleased <code>Molbrowser</code> project.</p>
-<p>[1] https://www.cgl.ucsf.edu/chimera/</p>
-<h1 id="2r6p">2r6p<a class="headerlink" href="#2r6p" title="Permanent link">&para;</a></h1>
+<h2 id="2r6p"><a href="https://www.rcsb.org/structure/2r6p">2r6p</a><a class="headerlink" href="#2r6p" title="Permanent link">&para;</a></h2>
 <p>This interesting PDB was featured in the July 2008 PDB101 article on Dengue Virus.</p>
 <ul>
 <li><a href="https://pdb101.rcsb.org/motm/103">PDB101 Dengue Virus July 2008</a></li>
@@ -333,6 +396,27 @@ There are also no <code>HETATM</code>, <code>CONECT</code>, <code>HELIX</code> o
 and <code>Chimera</code> defaults to just the CA chain.</p>
 <p><img alt="Molbrowser view" src="../img/PDB-2R6P-Molbrowser-spacefilling.PNG" />
 <img alt="Chimera background view" src="../img/PDB-2R6P-chimera-CAbackbone.PNG" /></p>
+<h2 id="2zoi"><a href="https://www.rcsb.org/structure/2zoi">2zoi</a><a class="headerlink" href="#2zoi" title="Permanent link">&para;</a></h2>
+<p>This PDB structure is unusual, in that it contains Deuterium atoms.
+It was featured in the March 2017 PDB101 article on Photoactive Yellow Protein, specifically in
+the section that discusses "Looking at the Hydrogens".</p>
+<ul>
+<li><a href="https://pdb101.rcsb.org/motm/207">PDB101 Photoactive Yellow Protein March 2017</a></li>
+</ul>
+<p>The clever part of this PDB is the use of heavier Deuterium atoms instead of Hydrogen atoms - and then 
+imaging.  As noted in the PDB101 entry:</p>
+<div class="codehilite"><pre><span></span><code>However, in most cases, X-ray crystallography doesn&#39;t allow us to observe 
+the hydrogens directly. Neutrons, on the other hand, are diffracted by the 
+nucleus of atoms, providing information on the location of hydrogen atoms. 
+The PYP neutron diffraction structure (PDB entry 2zoi) revealed a very 
+unusual arrangement, with a hydrogen atom shared between the chromophore 
+and a glutamate.
+</code></pre></div>
+
+
+<p>Here is a <code>Chimera</code> based snapshot showing the "D" atoms in positions where normally
+the hydrogen atoms occupy.</p>
+<p><img alt="Chimera background view" src="../img/PDB-2ZOI-chimera-has-DeuteriumAtoms.PNG" /></p>
                 
               
               
