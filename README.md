@@ -22,5 +22,13 @@ Build technology credits
 - jakewharton/Picnic - for nice maven central publication structure
 
 - MarcinMoskala/KotlinDiscreteMathToolkit - for nice testing structure
+
+Documentation technology credits
+--------------------------------
+
+The documentation uses `MkDocs` and the `material` framework provided 
+kindly by Martin Donath (github/squidfunk).  Documentation available at:
+
+https://squidfunk.github.io/mkdocs-material/
     
  

@@ -55,5 +55,9 @@ nav:
   - Testing: Testing.md
   - Uploading: Uploading.md
   - PDB Notes: PDBnotes.md
-#    - Special Residues: Special-Residues.md
+    - Special Residues: Special-Residues.md
 
+
+# Notes
+#   avoid tabs in vim:
+#   :set tabstop=4 shiftwidth=4 expandtab
