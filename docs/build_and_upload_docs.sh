@@ -23,6 +23,9 @@
 #  Then cd to the docs dir and run:
 #  3) bash -x build_and_upload_docs.sh
 
+#  Check the "gh-pages" branch to see the changes.
+
+#  4) Press "Shift-F5" to reload the browser and see your changes (Chrome).
 
 REPO="https://github.com/kotmol/KotmolPdbParser"
 DIR=build/temp-$$
