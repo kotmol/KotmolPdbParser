@@ -1,4 +1,4 @@
-Special Residues
+Special Structures
 =================
 
 This is a photo log of special residues found from the PDB101 selection of atoms.
@@ -56,5 +56,39 @@ Here is a `Chimera` based snapshot showing the "D" atoms in positions where norm
 the hydrogen atoms occupy.
 
 ![Chimera background view](img/PDB-2ZOI-chimera-has-DeuteriumAtoms.PNG)
+
+[1ZNF][7]
+----
+This is a fine example of a PDB file that contains numerous MODEL entries.
+The PDB entry was discussed in the March 2007 Molecule Of The Month on Zinc Fingers.
+
+* [PDB101 Zinc Fingers][7]
+
+  [6]: https://pdb101.rcsb.org/motm/87
+  [7]: https://www.rcsb.org/structure/1ZNF
+
+This particular PDB entry has 37 models.  It appears that the general structure
+of PDB files containing models is that the ATOM list is repeated for each 
+model with presumably the same series of residues.   At the end of the last 
+model a common set of `CONECT` records appear.  That is the case 
+for this [1ZNF][7] model where the `CONECT` records define the 
+bonds to the Zinc atom in each model.   This can be seen in the
+screen cap from the `Chimera` representation below.
+
+The Kotmol PDB parser currently only captures the first `MODEL` in a PDB file.
+If there is demand for more flexibilty to optionally capture
+all models, then this could be added in the future.   This quote 
+from the
+[Leibniz-Forschungsinstitut für Molekulare Pharmakologie](https://www.leibniz-fmp.de/de/lange)
+suggests that NMR techniques have a growing partnership with Cryo-EM 
+techniques for studying difficult structures such as membrane proteins:
+
+    Cryo-electron microscopy (cryo-EM) data define the overall envelope of the 
+    assembly and rigid-body orientation of the subunits while solid-state NMR 
+    chemical shifts and distance restraints define the local secondary structure, 
+    protein fold and inter-subunit interactions.
+
+
+![Chimera background view](img/PDB-1ZNF-37-models-Chimera.PNG)
 
 
