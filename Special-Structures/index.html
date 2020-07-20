@@ -11,7 +11,7 @@
         <meta name="description" content="A Protein Database (PDB) Parser written in Kotlin:">
       
       
-        <link rel="canonical" href="https://kotmol.github.io/KotmolPdbParser/Special-Residues/">
+        <link rel="canonical" href="https://kotmol.github.io/KotmolPdbParser/Special-Structures/">
       
       
         <meta name="author" content="Jim Andreas">
@@ -64,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#special-residues" class="md-skip">
+        <a href="#special-structures" class="md-skip">
           Skip to content
         </a>
       
@@ -316,6 +316,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#1znf" class="md-nav__link">
+    1ZNF
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -362,6 +369,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#1znf" class="md-nav__link">
+    1ZNF
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -378,7 +392,7 @@
                   
                 
                 
-                <h1 id="special-residues">Special Residues<a class="headerlink" href="#special-residues" title="Permanent link">&para;</a></h1>
+                <h1 id="special-structures">Special Structures<a class="headerlink" href="#special-structures" title="Permanent link">&para;</a></h1>
 <p>This is a photo log of special residues found from the PDB101 selection of atoms.</p>
 <p>For now this is a list of special PDB files that were discovered while testing the parser.</p>
 <p>To document these unusual PDB files - screen captures will be used
@@ -417,6 +431,34 @@ and a glutamate.
 <p>Here is a <code>Chimera</code> based snapshot showing the "D" atoms in positions where normally
 the hydrogen atoms occupy.</p>
 <p><img alt="Chimera background view" src="../img/PDB-2ZOI-chimera-has-DeuteriumAtoms.PNG" /></p>
+<h2 id="1znf"><a href="https://www.rcsb.org/structure/1ZNF">1ZNF</a><a class="headerlink" href="#1znf" title="Permanent link">&para;</a></h2>
+<p>This is a fine example of a PDB file that contains numerous MODEL entries.
+The PDB entry was discussed in the March 2007 Molecule Of The Month on Zinc Fingers.</p>
+<ul>
+<li><a href="https://www.rcsb.org/structure/1ZNF">PDB101 Zinc Fingers</a></li>
+</ul>
+<p>This particular PDB entry has 37 models.  It appears that the general structure
+of PDB files containing models is that the ATOM list is repeated for each 
+model with presumably the same series of residues.   At the end of the last 
+model a common set of <code>CONECT</code> records appear.  That is the case 
+for this <a href="https://www.rcsb.org/structure/1ZNF">1ZNF</a> model where the <code>CONECT</code> records define the 
+bonds to the Zinc atom in each model.   This can be seen in the
+screen cap from the <code>Chimera</code> representation below.</p>
+<p>The Kotmol PDB parser currently only captures the first <code>MODEL</code> in a PDB file.
+If there is demand for more flexibilty to optionally capture
+all models, then this could be added in the future.   This quote 
+from the
+<a href="https://www.leibniz-fmp.de/de/lange">Leibniz-Forschungsinstitut für Molekulare Pharmakologie</a>
+suggests that NMR techniques have a growing partnership with Cryo-EM 
+techniques for studying difficult structures such as membrane proteins:</p>
+<div class="codehilite"><pre><span></span><code>Cryo-electron microscopy (cryo-EM) data define the overall envelope of the 
+assembly and rigid-body orientation of the subunits while solid-state NMR 
+chemical shifts and distance restraints define the local secondary structure, 
+protein fold and inter-subunit interactions.
+</code></pre></div>
+
+
+<p><img alt="Chimera background view" src="../img/PDB-1ZNF-37-models-Chimera.PNG" /></p>
                 
               
               
