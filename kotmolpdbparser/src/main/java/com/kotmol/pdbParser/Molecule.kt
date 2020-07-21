@@ -35,6 +35,7 @@ class Molecule {
     var maxAtomNumber: Int = 0
     val numList: MutableList<Int> = ArrayList()
     val atoms = HashMap<Int, PdbAtom>()
+    val ter = HashMap<Int, Boolean>()
     val bondList: MutableList<Bond> = ArrayList()
     val helixList: MutableList<PdbHelix> = ArrayList()
     val pdbSheetList: MutableList<PdbBetaSheet> = ArrayList()
@@ -46,6 +47,15 @@ class Molecule {
     var guideAtomMissing = false
 
     var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
+
+    // TODO: parse multiple MODELs
+    /*
+     * this is a placeholder for the API to hold an array of additional MODELs
+     * as defined in an NMR type PDB file.  If this is implemented, then
+     * the additional MODELs would appear here as a list of additional Molecules()
+     */
+    val modelArray: MutableList<Molecule>? = null
+    val modelNumber : Int? = null
 
     /*
      * list of ribbons to render
@@ -63,8 +73,12 @@ class Molecule {
         listofChainDescriptorLists.clear()
         listofDnaHelixChainLists.clear()
         ribbonNodeCount = 0
+        modelArray?.clear()
     }
 
 }
 
-class Bond(val atomNumber1: Int, val atomNumber2: Int)
+enum class BondType {
+    BONDTABLE, CONECT
+}
+class Bond(val atomNumber1: Int, val atomNumber2: Int, var type: BondType = BondType.BONDTABLE)

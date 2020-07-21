@@ -8,21 +8,27 @@ For now this is a list of special PDB files that were discovered while testing t
 
 To document these unusual PDB files - screen captures will be used
 when interesting from the [Chimera modeling system][1] and the 
-unreleased `Molbrowser` project.
+unreleased `Molbrowser` project.  The parser test PDB files 
+were the same as those featured in the 20 years of the [PDB-101 Molecule of the Month][1b] 
+(_**MotM**_) feature of the [rcsb.org][1c].
 
   [1]: https://www.cgl.ucsf.edu/chimera/
+  [1b]: https://pdb101.rcsb.org/motm/motm-about
+  [1c]: https://www.rcsb.org/
 
 [2r6p][3]
 ----
-This interesting PDB was featured in the July 2008 PDB101 article on Dengue Virus.
+This interesting PDB was featured in the July 2008 **_MotM_** article on Dengue Virus.
 
-* [PDB101 Dengue Virus July 2008][2]
+* [MotM Dengue Virus July 2008][2]
 
   [2]: https://pdb101.rcsb.org/motm/103
   [3]: https://www.rcsb.org/structure/2r6p
 
-The 2r6p PDB file contains only alpha carbon atoms in the ATOM list.   Normally the parser searches for guide atoms
-to build the backbone ribbon information.   There are no other atoms in this file so this is impossible.
+The 2r6p PDB file contains only alpha carbon atoms in the ATOM list.   
+Normally the parser searches for guide atoms
+to build the backbone ribbon information.   
+There are no other atoms in this file so this is impossible.
 There are also no `HETATM`, `CONECT`, `HELIX` or `SHEET` records.  
 
 The current `Molbrowser` provides just a space filling view 
@@ -34,10 +40,10 @@ and `Chimera` defaults to just the CA chain.
 [2zoi][5]
 ----
 This PDB structure is unusual, in that it contains Deuterium atoms.
-It was featured in the March 2017 PDB101 article on Photoactive Yellow Protein, specifically in
-the section that discusses "Looking at the Hydrogens".
+It was featured in the March 2017 PDB101 article on Photoactive Yellow Protein, 
+specifically in the section that discusses "Looking at the Hydrogens".
 
-* [PDB101 Photoactive Yellow Protein March 2017][4]
+* [MotM Photoactive Yellow Protein March 2017][4]
 
   [4]: https://pdb101.rcsb.org/motm/207
   [5]: https://www.rcsb.org/structure/2zoi
@@ -57,12 +63,12 @@ the hydrogen atoms occupy.
 
 ![Chimera background view](img/PDB-2ZOI-chimera-has-DeuteriumAtoms.PNG)
 
-[1ZNF][7]
+[1znf][7]
 ----
 This is a fine example of a PDB file that contains numerous MODEL entries.
-The PDB entry was discussed in the March 2007 Molecule Of The Month on Zinc Fingers.
+The PDB entry was discussed in the Molecule Of The Month on Zinc Fingers.
 
-* [PDB101 Zinc Fingers][7]
+* [MotM Zinc Fingers March 2007][6]
 
   [6]: https://pdb101.rcsb.org/motm/87
   [7]: https://www.rcsb.org/structure/1ZNF
@@ -77,8 +83,7 @@ screen cap from the `Chimera` representation below.
 
 The Kotmol PDB parser currently only captures the first `MODEL` in a PDB file.
 If there is demand for more flexibilty to optionally capture
-all models, then this could be added in the future.   This quote 
-from the
+all models, then this could be added in the future.   This quote from the
 [Leibniz-Forschungsinstitut für Molekulare Pharmakologie](https://www.leibniz-fmp.de/de/lange)
 suggests that NMR techniques have a growing partnership with Cryo-EM 
 techniques for studying difficult structures such as membrane proteins:

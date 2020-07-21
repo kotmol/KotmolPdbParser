@@ -64,6 +64,8 @@ class ParserPdbFile internal constructor(
         private var minY = 1e6
         private var minZ = 1e6
         private lateinit var messageStrings: MutableList<String>
+        private var parseModelsSomeday = false
+        private var centerTheMoleculeCoordinates = true
 
         fun setMessageStrings(messagesIn: MutableList<String>) = apply {
             messageStrings = messagesIn
@@ -71,6 +73,19 @@ class ParserPdbFile internal constructor(
 
         fun setMoleculeName(molNameString: String) = apply {
             mol.molName = molNameString
+        }
+
+        fun parseModels(parseModelFlag: Boolean) = apply {
+            parseModelsSomeday = parseModelFlag
+            // TODO: optionally parse additional models if flag is set
+            messageStrings.add(
+                    String.format(
+                            "%sparsing: parsing of MODELs is not yet implemented.",
+                            messageMolName()))
+        }
+
+        fun centerTheMolecule(centerTheMoleculeFlag: Boolean) = apply {
+            centerTheMoleculeCoordinates = centerTheMoleculeFlag
         }
 
         fun loadPdbFromStream(inputStream: InputStream) = apply {
@@ -85,12 +100,13 @@ class ParserPdbFile internal constructor(
             /*
              * Todo: ?? addHelixSecondaryInformation - update for HELIX records
              */
-            centerMolecule()
             mapBonds()
             buildPdbChainLists()
             addHelixSecondaryInformation()
             addSheetSecondaryInformation()
             connectResidues()
+
+            if (centerTheMoleculeCoordinates) centerMolecule()
         }
 
         /**
@@ -130,6 +146,11 @@ class ParserPdbFile internal constructor(
                     } else if (line.substring(0, 5) == "SHEET") {
                         parseBetaSheet(line)
                     } else if (line.substring(0, 6) == "ENDMDL") {  // only do the 1st model
+                        // TODO: optionally parse additional models if flag is set
+                        messageStrings.add(
+                                String.format(
+                                        "%sparsing: MODELs are used.  Only 1st MODEL is parsed.",
+                                        messageMolName()))
                         skipToEnd = true
                     }
                     line = reader.readLine()
@@ -196,13 +217,20 @@ class ParserPdbFile internal constructor(
                  * now skip through the rest of the atoms in the residue until the next residue starts
                  */
                 while (i < mol.numList.size) {
-                    anAtom = mol.atoms[mol.numList[i]]
+                    val atomSerialNumber = mol.numList[i]
+                    anAtom = mol.atoms[atomSerialNumber]
                     requireNotNull(anAtom)
                     if (anAtom.residueSeqNumber != residueSequenceNumber
                             || anAtom.residueInsertionCode != residueInsertionCode) {
                         break
                     }
                     i++
+                    /*
+                    * stop skipping if we cross a TER record
+                    */
+                    if (mol.ter[atomSerialNumber+1] == true) {
+                        break
+                    }
                 }
                 if (i == mol.atoms.size) {
                     break
@@ -250,7 +278,9 @@ class ParserPdbFile internal constructor(
                 if (i == mol.numList.size) {
                     break
                 }
-                currentAtom = mol.atoms[mol.numList[i]]
+                var atomSerialNumber = mol.numList[i]
+
+                currentAtom = mol.atoms[atomSerialNumber]
                 requireNotNull(currentAtom)
 
                 // has the loop arrived at the next residue?
@@ -285,7 +315,9 @@ class ParserPdbFile internal constructor(
                         if (j == mol.numList.size) {
                             break
                         }
-                        loopAtom = mol.atoms[mol.numList[j]]
+                        atomSerialNumber = mol.numList[j]
+
+                        loopAtom = mol.atoms[atomSerialNumber]
                         requireNotNull(loopAtom)
                         /*
                          * if the loop has reached the next residue, then quit
@@ -294,11 +326,18 @@ class ParserPdbFile internal constructor(
                                 || loopAtom.residueInsertionCode != residueInsertionCode) {
                             break
                         }
+
                         if (loopAtom.atomName == bondAtomName) {
                             addBond(currentAtom, loopAtom)
                             break
                         }
                         j++
+                        /*
+                         * has the loop hit a TER record?  Then exit the loop
+                         */
+                        if (mol.ter[atomSerialNumber+1] == true) {
+                             break
+                        }
                     }
                 }
 
@@ -317,6 +356,11 @@ class ParserPdbFile internal constructor(
 //                Timber.e("matchBonds file: " + mMol.name + " no CHARMM entry for atom " + currentAtom.atomNumber +
 //                        " residue " + currentAtom.residueName + " type " + currentAtom.atomName)
                     }
+                }
+
+                atomSerialNumber = mol.numList[i]
+                if (mol.ter[atomSerialNumber+1] == true) {
+                    break
                 }
                 i++
             }
@@ -355,11 +399,11 @@ class ParserPdbFile internal constructor(
          * @param atom1 from atom
          * @param atom2 to atom
          */
-        private fun addBond(atom1: PdbAtom, atom2: PdbAtom) {
+        private fun addBond(atom1: PdbAtom, atom2: PdbAtom): Bond? {
             if (atom1.atomBondCount > 0) {
                 if (atom2.atomBondCount > 0) {
                     if (doesDuplicateBondExist(atom2, atom1)) {
-                        return
+                        return null
                     }
                 }
             }
@@ -367,6 +411,7 @@ class ParserPdbFile internal constructor(
             mol.bondList.add(bond)
             atom1.atomBondCount = atom1.atomBondCount + 1
             atom2.atomBondCount = atom2.atomBondCount + 1
+            return(bond)
         }
 
         /*
@@ -737,7 +782,7 @@ class ParserPdbFile internal constructor(
             return false
         }
 
-        /*
+        /**
          * adjust the XYZ of each atom
          * to move the entire molecule to the center of the viewport
          */
@@ -775,9 +820,8 @@ class ParserPdbFile internal constructor(
             mol.dcOffset = kotlin.math.sqrt(dcOffsetX * dcOffsetX + dcOffsetY * dcOffsetY + dcOffsetZ + dcOffsetZ)
         }
 
-        /*
+        /**
          * ParseAtom
-         *   Assumptions:
          */
         private fun parseAtom(lineIn: String, atom_type_flag: Int) {
             var line = lineIn
@@ -790,6 +834,12 @@ class ParserPdbFile internal constructor(
 
                 // TODO: figure out why the reader sometimes reads short of full line (line 233 in 1ana.pdb)
                 if (line.length < 78) {
+                    messageStrings.add(
+                            String.format(
+                                    "%sparsing: ATOM line is short (%d characters): %s",
+                                    messageMolName(),
+                                    line.length,
+                                    line))
                     line = "$line                                                                          "
                 }
                 atom.atomType = atom_type_flag
@@ -860,9 +910,8 @@ class ParserPdbFile internal constructor(
 
         }
 
-        /*
+        /**
          * ParseBetaSheet
-         *   Assumptions:
          */
         private fun parseBetaSheet(lineIn: String) {
             var line = lineIn
@@ -903,14 +952,35 @@ class ParserPdbFile internal constructor(
          * this is inserted to keep the mapping of atom_umber to array entry working
          */
         @Suppress("UseExpressionBody")
-        private fun parseTerRecord(line: String) {
-            // do nothing for now...
+        private fun parseTerRecord(lineIn: String) {
+            var line = lineIn
+
+            try {
+
+                // TODO: figure out why the reader sometimes reads short of full line (line 233 in 1ana.pdb)
+                if (line.length < 78) {
+                    messageStrings.add(
+                            String.format(
+                                    "%sparsing: TER line is short: %s",
+                                    messageMolName(),
+                            line))
+                    line = "$line                                                                          "
+                }
+
+                val terNumber = parseInteger(line.substring(7 - 1, 11).trim { it <= ' ' })
+                mol.ter[terNumber] = true
+
+            } catch (e: Exception) {
+                messageStrings.add(String.format(
+                        "parseAtom exception on line %s", line))
+//            Timber.e("parseAtom exception on line %s", line)
+            }
+
         }
 
-        /*
-        * ParseHelix
-        *   Assumptions:
-        */
+        /**
+         * ParseHelix
+         */
         private fun parseHelix(line: String) {
 
             val helix = PdbHelix()
@@ -936,8 +1006,8 @@ class ParserPdbFile internal constructor(
             mol.helixList.add(helix)
         }
 
-        /*
-         * CONECT records
+        /**
+         * parse CONECT records
          */
         private fun parseConect(line: String) {
             val maxAtomNumber = mol.maxAtomNumber + 1
@@ -1022,6 +1092,11 @@ class ParserPdbFile internal constructor(
             return false
         }
 
+        /**
+         * validateBond
+         *    treat CONECT records with some suspicion.   Check atom distances
+         *    before adding to the Bond table for the Molecule()
+         */
         private fun validateBond(atom1: Int, atom2: Int) {
 
             val a1 = mol.atoms[atom1]
@@ -1031,7 +1106,6 @@ class ParserPdbFile internal constructor(
              * TODO: handle hydrogens.   For now skip over null pointers from missing hydros
              */
             if (a1 == null || a2 == null) {
-                // Timber.e("null ptr : atom1: " + atom1 + " atom2: " + atom2);
                 return
             }
             val p1 = a1.atomPosition
@@ -1051,7 +1125,8 @@ class ParserPdbFile internal constructor(
 //                    + prettyPrint)
                 return
             }
-            addBond(a1, a2)
+            val bond = addBond(a1, a2)
+            bond!!.type = BondType.CONECT
         }
 
         /**
