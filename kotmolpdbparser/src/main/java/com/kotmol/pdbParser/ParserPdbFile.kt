@@ -18,6 +18,7 @@
 
 package com.kotmol.pdbParser
 
+import com.kotmol.pdbParser.PdbAtom.Companion.IS_HETATM
 import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 import java.io.BufferedReader
 import java.io.IOException
@@ -185,8 +186,8 @@ class ParserPdbFile internal constructor(
             while (i < mol.numList.size) {
                 anAtom = mol.atoms[mol.numList[i]]
                 requireNotNull(anAtom)
-                if (anAtom.atomType == PdbAtom.IS_HETATM
-                        || anAtom.atomType == PdbAtom.IS_TER_RECORD ) {
+                if (anAtom.atomType == IS_HETATM
+                        || anAtom.atomType == IS_TER_RECORD ) {
                     i++
                     continue
                 }
@@ -1146,7 +1147,10 @@ class ParserPdbFile internal constructor(
                 return
             }
             val bond = addBond(a1, a2)
-            bond!!.type = BondType.CONECT
+            if (bond != null) { // only add the bond if it doesn't already exist
+                bond.type = BondType.CONECT
+            }
+
         }
 
         /**
