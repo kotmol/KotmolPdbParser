@@ -38,7 +38,7 @@ class PdbAtom {
     lateinit var residueName: String
     var chainId: Char = ' '
     var residueSeqNumber: Int = 0
-    var residueInsertionCode: Char = ' '  //  Code for insertion of residues.
+    var residueInsertionCode: Char = ' '
     lateinit var atomPosition: KotmolVector3
     lateinit var elementSymbol: String
 
@@ -51,6 +51,7 @@ class PdbAtom {
         const val IS_ATOM = 1
         const val IS_HETATM = 2
         const val IS_NUCLEIC = 3
+        const val IS_TER_RECORD = 4
     }
 }
 

@@ -18,6 +18,7 @@
 
 package com.kotmol.pdbParser
 
+import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -184,7 +185,8 @@ class ParserPdbFile internal constructor(
             while (i < mol.numList.size) {
                 anAtom = mol.atoms[mol.numList[i]]
                 requireNotNull(anAtom)
-                if (anAtom.atomType == PdbAtom.IS_HETATM) {
+                if (anAtom.atomType == PdbAtom.IS_HETATM
+                        || anAtom.atomType == PdbAtom.IS_TER_RECORD ) {
                     i++
                     continue
                 }
@@ -440,8 +442,9 @@ class ParserPdbFile internal constructor(
                             "buildPdbChainLists: error - got null for %d", mol.numList[i]))
                     continue
                 }
-
-
+                if (anAtom.atomType == IS_TER_RECORD) {
+                    continue
+                }
                 /*
                  * if this is a new residue sequence,
                  * then add the previous residue info to the list
@@ -808,6 +811,9 @@ class ParserPdbFile internal constructor(
                             "centerMolecules: error - got null for %d", mol.numList[i]))
                     continue
                 }
+                if (anAtom.atomType == IS_TER_RECORD) {
+                    continue
+                }
                 anAtom.atomPosition.x = anAtom.atomPosition.x - centerX
                 anAtom.atomPosition.y = anAtom.atomPosition.y - centerY
                 anAtom.atomPosition.z = anAtom.atomPosition.z - centerZ
@@ -953,6 +959,7 @@ class ParserPdbFile internal constructor(
          */
         @Suppress("UseExpressionBody")
         private fun parseTerRecord(lineIn: String) {
+            val atom = PdbAtom()
             var line = lineIn
 
             try {
@@ -967,8 +974,21 @@ class ParserPdbFile internal constructor(
                     line = "$line                                                                          "
                 }
 
+
                 val terNumber = parseInteger(line.substring(7 - 1, 11).trim { it <= ' ' })
                 mol.ter[terNumber] = true
+
+                atom.atomType = IS_TER_RECORD
+                atom.atomName = "TER_RECORD"
+                atom.atomNumber = terNumber
+                atom.elementSymbol = ""
+
+                mol.atoms[atom.atomNumber] = atom
+                mol.numList.add(atom.atomNumber)
+                mol.maxAtomNumber = if (mol.maxAtomNumber < atom.atomNumber)
+                    atom.atomNumber
+                else
+                    mol.maxAtomNumber
 
             } catch (e: Exception) {
                 messageStrings.add(String.format(
@@ -1136,6 +1156,7 @@ class ParserPdbFile internal constructor(
          *    walk the list of atoms.
          *    For each residue, attempt to connect the standard atoms in the polymeric chain.
          *    Check the atom to atom spacing for error correction
+         *    TODO: test for TER records
          */
         private fun connectResidues() {
             var totalDistance = 0f

@@ -64,9 +64,9 @@ END
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
 
-        // only 5 atoms, does not include later models
+        // only 5 + 1TER atoms, does not include later models
         val atoms = mol.atoms
-        assertEquals(5, atoms.size)
+        assertEquals(5+1, atoms.size)
 
         // has the 4 bonds from the zinc atom to the previous 4 atoms
         assertEquals(4, mol.bondList.size)

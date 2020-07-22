@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
+import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
@@ -11,11 +12,14 @@ internal class KotmolTERtest01 {
 
     /**
      * 1ZNF - a Zinc Finger PDB with 37 models (edited)
+     *    What is unique about this test case is that the same
+     *    residue number is used across a TER record.  The residue names
+     *    change.   The TER record asserts that the chain ends there.
      */
     lateinit var str : ByteArrayInputStream
     lateinit var aModelTest : String
     @org.junit.jupiter.api.BeforeEach
-    fun setUp() { // from 2r6p
+    fun setUp() {
         val theModelString = """
          1         2         3         4         5         6         7
 12345678901234567890123456789012345678901234567890123456789012345678901234567890"""
@@ -74,7 +78,7 @@ ATOM    242  C4   DA D  12      52.392 -61.477   0.435  1.00122.09           C
      *
      */
     @Test
-    @DisplayName( "test that mol has only five atoms, does not include other models, has bonds to Zinc HETATM")
+    @DisplayName( "test processing of a TER record")
     fun testModelSkipping() {
 
         val mol = Molecule()
@@ -82,16 +86,22 @@ ATOM    242  C4   DA D  12      52.392 -61.477   0.435  1.00122.09           C
 
         val parse = ParserPdbFile
                 .Builder(mol)
-                .setMoleculeName("1CLQ")
+                .setMoleculeName("1ZNF")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
 
-        // only 5 atoms, does not include later models
+        // two residues separated by a TER record (see above)
         val atoms = mol.atoms
-        assertEquals(38, atoms.size)
+        assertEquals(39, atoms.size)
 
-        // has the 4 bonds from the zinc atom to the previous 4 atoms
+        // bonds from the two records don't overlap
         assertEquals(41, mol.bondList.size)
+
+        // check that the TER record is entered into the
+        // atom list as a TER_RECORD type.
+        val shouldBeTER = mol.atoms[224]
+        assertNotNull(shouldBeTER)
+        assertEquals(IS_TER_RECORD, shouldBeTER!!.atomType)
 
     }
 }
