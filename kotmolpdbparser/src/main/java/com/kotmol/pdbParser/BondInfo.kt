@@ -492,6 +492,7 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             // add H1 and H3 bonds to N
             KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
             // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.966
