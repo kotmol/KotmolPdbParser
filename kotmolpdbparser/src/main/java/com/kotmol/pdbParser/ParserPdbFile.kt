@@ -214,7 +214,7 @@ class ParserPdbFile internal constructor(
                 }
                 val bondMap = resnameToBonds[residueName]
                 requireNotNull(bondMap)
-                matchBonds(i, residueSequenceNumber, residueInsertionCode, bondMap)
+                matchBonds(i, residueName, residueSequenceNumber, residueInsertionCode, bondMap)
                 i++
                 /*
                  * now skip through the rest of the atoms in the residue until the next residue starts
@@ -224,7 +224,8 @@ class ParserPdbFile internal constructor(
                     anAtom = mol.atoms[atomSerialNumber]
                     requireNotNull(anAtom)
                     if (anAtom.residueSeqNumber != residueSequenceNumber
-                            || anAtom.residueInsertionCode != residueInsertionCode) {
+                            || anAtom.residueInsertionCode != residueInsertionCode
+                            || anAtom.residueName.toLowerCase() != residueName) {
                         break
                     }
                     i++
@@ -256,6 +257,7 @@ class ParserPdbFile internal constructor(
         // TODO: rework to search the array instead of look up values in the map
         private fun matchBonds(
                 atomIndex: Int,
+                residueName: String,
                 residueSequenceNumber: Int,
                 residueInsertionCode: Char,
                 bondListOriginal: List<BondInfo.KotmolBondRecord>) {
@@ -288,7 +290,8 @@ class ParserPdbFile internal constructor(
 
                 // has the loop arrived at the next residue?
                 if (currentAtom.residueSeqNumber != residueSequenceNumber
-                        || currentAtom.residueInsertionCode != residueInsertionCode) {
+                        || currentAtom.residueInsertionCode != residueInsertionCode
+                        || currentAtom.residueName.toLowerCase() != residueName) {
                     break
                 }
 

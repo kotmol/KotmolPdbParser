@@ -84,6 +84,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.468),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.968
             )
     )
@@ -113,6 +117,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "NH1", atom_2 = "HH12", bond_order = 1f, bond_type = "sing", length = 1.016),
             KotmolBondRecord(atom_1 = "NH2", atom_2 = "HH21", bond_order = 1f, bond_type = "sing", length = 1.017),
             KotmolBondRecord(atom_1 = "NH2", atom_2 = "HH22", bond_order = 1f, bond_type = "sing", length = 1.017),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.981
             )
     )
@@ -132,6 +140,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "ND2", atom_2 = "HD21", bond_order = 1f, bond_type = "sing", length = 0.97),
             KotmolBondRecord(atom_1 = "ND2", atom_2 = "HD22", bond_order = 1f, bond_type = "sing", length = 0.97),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -150,6 +162,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "OD2", atom_2 = "HD2", bond_order = 1f, bond_type = "sing", length = 0.966),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -167,6 +183,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.008),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -183,6 +203,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.01),
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "SG", atom_2 = "HG", bond_order = 1f, bond_type = "sing", length = 1.344
             )
     )
@@ -205,6 +229,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "NE2", atom_2 = "HE21", bond_order = 1f, bond_type = "sing", length = 0.969),
             KotmolBondRecord(atom_1 = "NE2", atom_2 = "HE22", bond_order = 1f, bond_type = "sing", length = 0.97),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -226,6 +254,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "OE2", atom_2 = "HE2", bond_order = 1f, bond_type = "sing", length = 0.966),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -246,6 +278,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "HXT", atom_2 = "OXT", bond_order = 1f, bond_type = "sing", length = 0.967),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009
             )
     )
@@ -258,6 +294,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.47),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -282,6 +322,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "ND1", atom_2 = "CE1", bond_order = 1.5f, bond_type = "doub", length = 1.337, aromatic = true),
             KotmolBondRecord(atom_1 = "ND1", atom_2 = "HD1", bond_order = 1f, bond_type = "sing", length = 1.016),
             KotmolBondRecord(atom_1 = "NE2", atom_2 = "HE2", bond_order = 1f, bond_type = "sing", length = 1.016),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.98
             )
     )
@@ -306,6 +350,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.007),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.008),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -331,6 +379,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.008),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.966
             )
     )
@@ -358,6 +410,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "NZ", atom_2 = "HZ1", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "NZ", atom_2 = "HZ2", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "NZ", atom_2 = "HZ3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -380,6 +436,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.01),
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "SD", atom_2 = "CE", bond_order = 1f, bond_type = "sing", length = 1.814
             )
     )
@@ -406,6 +466,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.008),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -426,6 +490,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.486),
             KotmolBondRecord(atom_1 = "N", atom_2 = "CD", bond_order = 1f, bond_type = "sing", length = 1.487),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.966
             )
     )
@@ -442,6 +510,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "OG", atom_2 = "HG", bond_order = 1f, bond_type = "sing", length = 0.967),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -461,6 +533,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.007),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "OG1", atom_2 = "HG1", bond_order = 1f, bond_type = "sing", length = 0.967),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -492,6 +568,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.01),
             KotmolBondRecord(atom_1 = "NE1", atom_2 = "CE2", bond_order = 1.5f, bond_type = "sing", length = 1.377, aromatic = true),
             KotmolBondRecord(atom_1 = "NE1", atom_2 = "HE1", bond_order = 1f, bond_type = "sing", length = 0.969),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
@@ -519,6 +599,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
             KotmolBondRecord(atom_1 = "OH", atom_2 = "HH", bond_order = 1f, bond_type = "sing", length = 0.966),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.968
             )
     )
@@ -540,6 +624,10 @@ class BondInfo {
             KotmolBondRecord(atom_1 = "N", atom_2 = "CA", bond_order = 1f, bond_type = "sing", length = 1.469),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H", bond_order = 1f, bond_type = "sing", length = 1.008),
             KotmolBondRecord(atom_1 = "N", atom_2 = "H2", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // add H1 and H3 bonds to N
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H1", bond_order = 1f, bond_type = "sing", length = 1.009),
+            KotmolBondRecord(atom_1 = "N", atom_2 = "H3", bond_order = 1f, bond_type = "sing", length = 1.009),
+            // end change
             KotmolBondRecord(atom_1 = "OXT", atom_2 = "HXT", bond_order = 1f, bond_type = "sing", length = 0.967
             )
     )
