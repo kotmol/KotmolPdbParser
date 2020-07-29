@@ -24,10 +24,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.lang.Double.max
-import java.lang.Double.min
-import java.lang.Math.sqrt
-
 
 /**
  * @author Jim Andreas
@@ -868,13 +864,13 @@ class ParserPdbFile internal constructor(
 
                 // don't include HETATM in max / min calculation
                 if (atom_type_flag == PdbAtom.IS_ATOM) {
-                    maxX = max(maxX, vx)
-                    maxY = max(maxY, vy)
-                    maxZ = max(maxZ, vz)
+                    maxX = kotlin.math.max(maxX, vx)
+                    maxY = kotlin.math.max(maxY, vy)
+                    maxZ = kotlin.math.max(maxZ, vz)
 
-                    minX = min(minX, vx)
-                    minY = min(minY, vy)
-                    minZ = min(minZ, vz)
+                    minX = kotlin.math.min(minX, vx)
+                    minY = kotlin.math.min(minY, vy)
+                    minZ = kotlin.math.min(minZ, vz)
                 }
 
                 atom.atomPosition = KotmolVector3(vx, vy, vz)
@@ -1140,7 +1136,7 @@ class ParserPdbFile internal constructor(
                     (p1.z - p2.z) * (p1.z - p2.z)
 
             if (distanceSquared > 20.0) {
-                val prettyPrint = String.format("%6.2f", sqrt(distanceSquared))
+                val prettyPrint = String.format("%6.2f", kotlin.math.sqrt(distanceSquared))
                 messageStrings.add(String.format(
                         "Bad CONECT between %d and %d distance is %d",
                         atom1, atom2, prettyPrint))
