@@ -70,20 +70,22 @@ END
     }
 
     /**
-     *
+     * make sure there are no bonds between the two residue - i.e. the TER record
+     * stops the bond processing even though the residue numbers are the same
      */
     @Test
     @DisplayName( "test processing of a TER record")
-    fun testModelSkipping() {
+    fun testTERrecordProcessing() {
 
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
-        val parse = ParserPdbFile
+        ParserPdbFile
                 .Builder(mol)
                 .setMoleculeName("4AJX")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
+                .parse()
 
         //
         val atoms = mol.atoms
@@ -98,5 +100,33 @@ END
         assertNotNull(shouldBeTER)
         assertEquals(IS_TER_RECORD, shouldBeTER!!.atomType)
 
+    }
+
+
+    /**
+     * make sure there are no bonds between the two residue - i.e. the TER record
+     * stops the bond processing even though the residue numbers are the same
+     */
+    @Test
+    @DisplayName( "test that bond processing is suppressed")
+    fun testDoBondProcessingFlag() {
+
+        val mol = Molecule()
+        val messages : MutableList<String> = mutableListOf()
+
+        ParserPdbFile
+                .Builder(mol)
+                .setMoleculeName("4AJX")
+                .setMessageStrings(messages)
+                .loadPdbFromStream(str)
+                .doBondProcessing(false)  // skip over bond processing
+                .parse()
+
+        //
+        val atoms = mol.atoms
+        assertEquals(33, atoms.size)
+
+        // should have no bonds in bond list
+        assertEquals(0, mol.bondList.size)
     }
 }

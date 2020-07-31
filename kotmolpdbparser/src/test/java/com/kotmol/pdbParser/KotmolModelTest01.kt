@@ -58,11 +58,12 @@ END
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
-        val parse = ParserPdbFile
+        ParserPdbFile
                 .Builder(mol)
                 .setMoleculeName("1ZNF")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
+                .parse()
 
         // only 5 + 1TER atoms, does not include later models
         val atoms = mol.atoms

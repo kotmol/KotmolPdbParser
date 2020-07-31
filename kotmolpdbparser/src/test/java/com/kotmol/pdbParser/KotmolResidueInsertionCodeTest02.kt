@@ -47,11 +47,12 @@ ATOM      9  CA  ARG A   9      92.907   0.305 214.038  1.00 73.62           C
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
-        val parse = ParserPdbFile
+        ParserPdbFile
                 .Builder(mol)
                 .setMoleculeName("2R6P")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
+                .parse()
 
         assertEquals(9, mol.maxAtomNumber)
 

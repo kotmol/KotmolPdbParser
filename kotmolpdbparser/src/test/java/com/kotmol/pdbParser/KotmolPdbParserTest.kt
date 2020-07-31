@@ -45,19 +45,19 @@ internal class KotmolPdbParserTest {
     @Test
     @DisplayName( "parser test")
     fun parserTest01() {
-        val builder = KotmolPdbParserClient.Builder()
+        val molecule: Molecule = Molecule()
+        val builder = ParserPdbFile.Builder(molecule)
         assertNotNull(builder)
-
     }
 
     @Test
     @DisplayName( "parser test with parameters")
     fun parserTest02() {
         val molecule: Molecule = Molecule()
-        val builder = KotmolPdbParserClient
-                .Builder()
-                .setStream(stream)
-                .parse(molecule)
+        ParserPdbFile
+                .Builder(molecule)
+                .loadPdbFromStream(stream)
+                .parse()
         assertEquals(1, molecule.atoms.size)
     }
 
@@ -67,11 +67,11 @@ internal class KotmolPdbParserTest {
         val molecule: Molecule = Molecule()
         val retainedMessages = mutableListOf<String>()
         assertEquals(0, retainedMessages.size)
-        val builder = KotmolPdbParserClient
-                .Builder()
-                .setStream(stream)
-                .parse(molecule, retainedMessages)
+        ParserPdbFile
+                .Builder(molecule)
+                .setMessageStrings(retainedMessages)
+                .loadPdbFromStream(stream)
+                .parse()
         assertEquals(1, molecule.atoms.size)
-        //assert(retainedMessages.size > 0)
     }
 }

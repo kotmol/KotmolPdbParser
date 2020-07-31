@@ -14,7 +14,16 @@
  * limitations under the License
  */
 
-@file:Suppress("unused", "unused_variable", "unused_parameter")
+@file:Suppress(
+        "unused",
+        "unused_variable",
+        "unused_parameter",
+        "deprecation",
+        "UNUSED_ANONYMOUS_PARAMETER",
+        "UNUSED_EXPRESSION",
+        "MemberVisibilityCanBePrivate", "FunctionWithLambdaExpressionBody",
+        "UnusedMainParameter", "JoinDeclarationAndAssignment",
+        "CanBePrimaryConstructorProperty", "RemoveEmptyClassBody")
 
 package com.kotmol.pdbParser
 
@@ -24,6 +33,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.util.concurrent.ExecutionException
 
 /**
  * @author Jim Andreas
@@ -45,9 +55,7 @@ import java.io.InputStreamReader
 // TODO: parse old version of Hydrogen atoms (e.g. 1HD)
 // TODO: parse HETATM - convert "CO" in 1mat to single letter code (at atom 1967)
 
-class ParserPdbFile internal constructor(
-        builder: Builder
-) {
+class ParserPdbFile internal constructor( builder: Builder ) {
 
     constructor(mol: Molecule) : this(Builder(mol))
 
@@ -64,30 +72,80 @@ class ParserPdbFile internal constructor(
         private lateinit var messageStrings: MutableList<String>
         private var parseModelsSomeday = false
         private var centerTheMoleculeCoordinates = true
+        private var doBondProcessing = true
+        private lateinit var inputStream: InputStream
 
+        /**
+         * Pass in a string list if you want some logging.
+         * There is no inherent logging facility besides the
+         * messages appended to a string list.
+         *
+         * @param messagesIn - an optional parameter for parsing.
+         */
         fun setMessageStrings(messagesIn: MutableList<String>) = apply {
             messageStrings = messagesIn
         }
 
+        /**
+         * If you want to annotate the logging with the name (e.g. 1BNA) of
+         * the molecule that will be parsed, pass it in here.
+         * TODO: make sure that all message strings contain the filename
+         * (not completely implemented yet)
+         */
         fun setMoleculeName(molNameString: String) = apply {
             mol.molName = molNameString
         }
 
+        /**
+         * The processing of bond information is optional.   The default
+         * mode is `true` - but it can be suppressed if you just want
+         * `ATOM` and `HETATM` information
+         */
+        fun doBondProcessing(bool: Boolean) = apply {
+            doBondProcessing = bool
+        }
+
+        /**
+         * optionally parse multiple models.
+         */
         fun parseModels(parseModelFlag: Boolean) = apply {
             parseModelsSomeday = parseModelFlag
             // TODO: optionally parse additional models if flag is set
+            if (parseModelFlag) {
+                TODO() // well someday
+            }
             messageStrings.add(
                     String.format(
                             "%sparsing: parsing of MODELs is not yet implemented.",
                             messageMolName()))
         }
 
+        /**
+         * there is no guarantee that the PDB atom coordinates will be centered -
+         * they can be somewhere off to one side or the PDB file may contain
+         * some subset of residues away from the center of the molecule.
+         * The default is to use max and min coordinate atom position data
+         * to center the molecule around the x, y, and z coordinate axes.
+         */
         fun centerTheMolecule(centerTheMoleculeFlag: Boolean) = apply {
             centerTheMoleculeCoordinates = centerTheMoleculeFlag
         }
 
-        fun loadPdbFromStream(inputStream: InputStream) = apply {
+        /**
+         * for now a mandatory definition of the stream to use.
+         * Later there may be other input modalities TBD
+         */
+        fun loadPdbFromStream(theStreamToUse: InputStream) = apply {
+            inputStream = theStreamToUse
+        }
 
+        /**
+         * The actual parser execution
+         */
+        fun parse() = apply {
+            if (!this::inputStream.isInitialized) {
+                throw KotlinNullPointerException()
+            }
             if (!this::messageStrings.isInitialized) {
                 messageStrings = mutableListOf("")
             }
@@ -98,11 +156,13 @@ class ParserPdbFile internal constructor(
             /*
              * Todo: ?? addHelixSecondaryInformation - update for HELIX records
              */
-            mapBonds()
-            buildPdbChainLists()
-            addHelixSecondaryInformation()
-            addSheetSecondaryInformation()
-            connectResidues()
+            if (doBondProcessing) {
+                mapBonds()
+                buildPdbChainLists()
+                addHelixSecondaryInformation()
+                addSheetSecondaryInformation()
+                connectResidues()
+            }
 
             if (centerTheMoleculeCoordinates) centerMolecule()
         }

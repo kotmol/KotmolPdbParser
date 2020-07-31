@@ -52,11 +52,12 @@ END
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
-        val parse = ParserPdbFile
+        ParserPdbFile
                 .Builder(mol)
                 .setMoleculeName("5W1O")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
+                .parse()
 
         // four atoms with three CONECT records
         val atoms = mol.atoms

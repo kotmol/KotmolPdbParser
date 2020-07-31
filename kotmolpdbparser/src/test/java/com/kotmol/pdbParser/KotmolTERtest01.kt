@@ -84,11 +84,12 @@ ATOM    242  C4   DA D  12      52.392 -61.477   0.435  1.00122.09           C
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
-        val parse = ParserPdbFile
+        ParserPdbFile
                 .Builder(mol)
                 .setMoleculeName("1ZNF")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
+                .parse()
 
         // two residues separated by a TER record (see above)
         val atoms = mol.atoms
