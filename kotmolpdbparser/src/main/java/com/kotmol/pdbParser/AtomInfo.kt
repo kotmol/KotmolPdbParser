@@ -16,871 +16,146 @@
  */
 
 package com.kotmol.pdbParser
-class AtomInfo {
-    /*
-     * for the mega-annoying hex literal problem (*SPORADIC* toInt() below), see:
-     * https://stackoverflow.com/questions/33023949/0xff0000ff-an-integer-literal-does-not-conform-to-the-expected-type-kotlin-int
-     * and https://youtrack.jetbrains.com/issue/KT-4749
-     * Solved by adding the color as a triple of shorts.
-     */
-    data class AtomInfo(
-            val atomNumber: Int,
-            val atomChemicalSymbol: String,
-            val atomElementName: String,
-            var atomRadius: Int = 0,
-            val atomRed: Short,
-            val atomGreen: Short,
-            val atomBlue: Short
-    )
-    val atomInfoList = listOf(
-            AtomInfo(
-                    atomNumber = 1,
-                    atomChemicalSymbol = "H",
-                    atomElementName = "hydrogen",
-                    atomRadius = 120,
-                    atomRed = 255,
-                    atomGreen = 255,
-                    atomBlue = 255
-            ),
-            AtomInfo(
-                    atomNumber = 2,
-                    atomChemicalSymbol = "HE",
-                    atomElementName = "helium",
-                    atomRadius = 140,
-                    atomRed = 217,
-                    atomGreen = 255,
-                    atomBlue = 255
-            ),
-            AtomInfo(
-                    atomNumber = 3,
-                    atomChemicalSymbol = "LI",
-                    atomElementName = "lithium",
-                    atomRadius = 182,
-                    atomRed = 178,
-                    atomGreen = 33,
-                    atomBlue = 33
-            ),
-            AtomInfo(
-                    atomNumber = 4,
-                    atomChemicalSymbol = "BE",
-                    atomElementName = "beryllium",
-                    atomRadius = 153,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 5,
-                    atomChemicalSymbol = "B",
-                    atomElementName = "boron",
-                    atomRadius = 192,
-                    atomRed = 0,
-                    atomGreen = 255,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 6,
-                    atomChemicalSymbol = "C",
-                    atomElementName = "carbon",
-                    atomRadius = 170,
-                    atomRed = 227,
-                    atomGreen = 195,
-                    atomBlue = 152
-            ),
-            AtomInfo(
-                    atomNumber = 7,
-                    atomChemicalSymbol = "N",
-                    atomElementName = "nitrogen",
-                    atomRadius = 155,
-                    atomRed = 135,
-                    atomGreen = 206,
-                    atomBlue = 230
-            ),
-            AtomInfo(
-                    atomNumber = 8,
-                    atomChemicalSymbol = "O",
-                    atomElementName = "oxygen",
-                    atomRadius = 152,
-                    atomRed = 255,
-                    atomGreen = 0,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 9,
-                    atomChemicalSymbol = "F",
-                    atomElementName = "fluorine",
-                    atomRadius = 147,
-                    atomRed = 218,
-                    atomGreen = 165,
-                    atomBlue = 32
-            ),
-            AtomInfo(
-                    atomNumber = 10,
-                    atomChemicalSymbol = "NE",
-                    atomElementName = "neon",
-                    atomRadius = 154,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 11,
-                    atomChemicalSymbol = "NA",
-                    atomElementName = "sodium",
-                    atomRadius = 227,
-                    atomRed = 0,
-                    atomGreen = 0,
-                    atomBlue = 255
-            ),
-            AtomInfo(
-                    atomNumber = 12,
-                    atomChemicalSymbol = "MG",
-                    atomElementName = "magnesium",
-                    atomRadius = 173,
-                    atomRed = 34,
-                    atomGreen = 139,
-                    atomBlue = 34
-            ),
-            AtomInfo(
-                    atomNumber = 13,
-                    atomChemicalSymbol = "AL",
-                    atomElementName = "aluminium",
-                    atomRadius = 184,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 14,
-                    atomChemicalSymbol = "SI",
-                    atomElementName = "silicon",
-                    atomRadius = 210,
-                    atomRed = 218,
-                    atomGreen = 165,
-                    atomBlue = 32
-            ),
-            AtomInfo(
-                    atomNumber = 15,
-                    atomChemicalSymbol = "P",
-                    atomElementName = "phosphorus",
-                    atomRadius = 180,
-                    atomRed = 255,
-                    atomGreen = 170,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 16,
-                    atomChemicalSymbol = "S",
-                    atomElementName = "sulfur",
-                    atomRadius = 180,
-                    atomRed = 255,
-                    atomGreen = 255,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 17,
-                    atomChemicalSymbol = "CL",
-                    atomElementName = "chlorine",
-                    atomRadius = 175,
-                    atomRed = 0,
-                    atomGreen = 255,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 18,
-                    atomChemicalSymbol = "AR",
-                    atomElementName = "argon",
-                    atomRadius = 188,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 19,
-                    atomChemicalSymbol = "K",
-                    atomElementName = "potassium",
-                    atomRadius = 275,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 20,
-                    atomChemicalSymbol = "CA",
-                    atomElementName = "calcium",
-                    atomRadius = 231,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 21,
-                    atomChemicalSymbol = "SC",
-                    atomElementName = "scandium",
-                    atomRadius = 211,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 22,
-                    atomChemicalSymbol = "TI",
-                    atomElementName = "titanium",
-                    atomRadius = 0,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 23,
-                    atomChemicalSymbol = "V",
-                    atomElementName = "vanadium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 24,
-                    atomChemicalSymbol = "CR",
-                    atomElementName = "chromium",
-                    atomRadius = 0,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 25,
-                    atomChemicalSymbol = "MN",
-                    atomElementName = "manganese",
-                    atomRadius = 0,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 26,
-                    atomChemicalSymbol = "FE",
-                    atomElementName = "iron",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 170,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 27,
-                    atomChemicalSymbol = "CO",
-                    atomElementName = "cobalt",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 28,
-                    atomChemicalSymbol = "NI",
-                    atomElementName = "nickel",
-                    atomRadius = 163,
-                    atomRed = 128,
-                    atomGreen = 40,
-                    atomBlue = 40
-            ),
-            AtomInfo(
-                    atomNumber = 29,
-                    atomChemicalSymbol = "CU",
-                    atomElementName = "copper",
-                    atomRadius = 140,
-                    atomRed = 128,
-                    atomGreen = 40,
-                    atomBlue = 40
-            ),
-            AtomInfo(
-                    atomNumber = 30,
-                    atomChemicalSymbol = "ZN",
-                    atomElementName = "zinc",
-                    atomRadius = 139,
-                    atomRed = 128,
-                    atomGreen = 40,
-                    atomBlue = 40
-            ),
-            AtomInfo(
-                    atomNumber = 31,
-                    atomChemicalSymbol = "GA",
-                    atomElementName = "gallium",
-                    atomRadius = 187,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 32,
-                    atomChemicalSymbol = "GE",
-                    atomElementName = "germanium",
-                    atomRadius = 211,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 33,
-                    atomChemicalSymbol = "AS",
-                    atomElementName = "arsenic",
-                    atomRadius = 185,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 34,
-                    atomChemicalSymbol = "SE",
-                    atomElementName = "selenium",
-                    atomRadius = 190,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 35,
-                    atomChemicalSymbol = "BR",
-                    atomElementName = "bromine",
-                    atomRadius = 185,
-                    atomRed = 128,
-                    atomGreen = 40,
-                    atomBlue = 40
-            ),
-            AtomInfo(
-                    atomNumber = 36,
-                    atomChemicalSymbol = "KR",
-                    atomElementName = "krypton",
-                    atomRadius = 202,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 37,
-                    atomChemicalSymbol = "RB",
-                    atomElementName = "rubidium",
-                    atomRadius = 303,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 38,
-                    atomChemicalSymbol = "SR",
-                    atomElementName = "strontium",
-                    atomRadius = 249,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 39,
-                    atomChemicalSymbol = "Y",
-                    atomElementName = "yttrium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 40,
-                    atomChemicalSymbol = "ZR",
-                    atomElementName = "zirconium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 41,
-                    atomChemicalSymbol = "NB",
-                    atomElementName = "niobium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 42,
-                    atomChemicalSymbol = "MO",
-                    atomElementName = "molybdenum",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 43,
-                    atomChemicalSymbol = "TC",
-                    atomElementName = "technetium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 44,
-                    atomChemicalSymbol = "RU",
-                    atomElementName = "ruthenium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 45,
-                    atomChemicalSymbol = "RH",
-                    atomElementName = "rhodium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 46,
-                    atomChemicalSymbol = "PD",
-                    atomElementName = "palladium",
-                    atomRadius = 163,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 47,
-                    atomChemicalSymbol = "AG",
-                    atomElementName = "silver",
-                    atomRadius = 172,
-                    atomRed = 105,
-                    atomGreen = 105,
-                    atomBlue = 105
-            ),
-            AtomInfo(
-                    atomNumber = 48,
-                    atomChemicalSymbol = "CD",
-                    atomElementName = "cadmium",
-                    atomRadius = 158,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 49,
-                    atomChemicalSymbol = "IN",
-                    atomElementName = "indium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 50,
-                    atomChemicalSymbol = "SN",
-                    atomElementName = "tin",
-                    atomRadius = 217,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 51,
-                    atomChemicalSymbol = "SB",
-                    atomElementName = "antimony",
-                    atomRadius = 206,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 52,
-                    atomChemicalSymbol = "TE",
-                    atomElementName = "tellurium",
-                    atomRadius = 206,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 53,
-                    atomChemicalSymbol = "I",
-                    atomElementName = "iodine",
-                    atomRadius = 198,
-                    atomRed = 160,
-                    atomGreen = 32,
-                    atomBlue = 240
-            ),
-            AtomInfo(
-                    atomNumber = 54,
-                    atomChemicalSymbol = "XE",
-                    atomElementName = "xenon",
-                    atomRadius = 216,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 55,
-                    atomChemicalSymbol = "CS",
-                    atomElementName = "caesium",
-                    atomRadius = 343,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 56,
-                    atomChemicalSymbol = "BA",
-                    atomElementName = "barium",
-                    atomRadius = 268,
-                    atomRed = 255,
-                    atomGreen = 170,
-                    atomBlue = 0
-            ),
-            AtomInfo(
-                    atomNumber = 57,
-                    atomChemicalSymbol = "LA",
-                    atomElementName = "lanthanum",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 58,
-                    atomChemicalSymbol = "CE",
-                    atomElementName = "cerium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 59,
-                    atomChemicalSymbol = "PR",
-                    atomElementName = "praseodymium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 60,
-                    atomChemicalSymbol = "ND",
-                    atomElementName = "neodymium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 61,
-                    atomChemicalSymbol = "PM",
-                    atomElementName = "promethium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 62,
-                    atomChemicalSymbol = "SM",
-                    atomElementName = "samarium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 63,
-                    atomChemicalSymbol = "EU",
-                    atomElementName = "europium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 64,
-                    atomChemicalSymbol = "GD",
-                    atomElementName = "gadolinium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 65,
-                    atomChemicalSymbol = "TB",
-                    atomElementName = "terbium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 66,
-                    atomChemicalSymbol = "DY",
-                    atomElementName = "dysprosium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 67,
-                    atomChemicalSymbol = "HO",
-                    atomElementName = "holmium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 68,
-                    atomChemicalSymbol = "ER",
-                    atomElementName = "erbium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 69,
-                    atomChemicalSymbol = "TM",
-                    atomElementName = "thulium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 70,
-                    atomChemicalSymbol = "YB",
-                    atomElementName = "ytterbium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 71,
-                    atomChemicalSymbol = "LU",
-                    atomElementName = "lutetium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 72,
-                    atomChemicalSymbol = "HF",
-                    atomElementName = "hafnium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 73,
-                    atomChemicalSymbol = "TA",
-                    atomElementName = "tantalum",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 74,
-                    atomChemicalSymbol = "W",
-                    atomElementName = "tungsten",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 75,
-                    atomChemicalSymbol = "RE",
-                    atomElementName = "rhenium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 76,
-                    atomChemicalSymbol = "OS",
-                    atomElementName = "osmium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 77,
-                    atomChemicalSymbol = "IR",
-                    atomElementName = "iridium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 78,
-                    atomChemicalSymbol = "PT",
-                    atomElementName = "platinum",
-                    atomRadius = 175,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 79,
-                    atomChemicalSymbol = "AU",
-                    atomElementName = "gold",
-                    atomRadius = 166,
-                    atomRed = 218,
-                    atomGreen = 165,
-                    atomBlue = 32
-            ),
-            AtomInfo(
-                    atomNumber = 80,
-                    atomChemicalSymbol = "HG",
-                    atomElementName = "mercury",
-                    atomRadius = 155,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 81,
-                    atomChemicalSymbol = "TL",
-                    atomElementName = "thallium",
-                    atomRadius = 0,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 82,
-                    atomChemicalSymbol = "PB",
-                    atomElementName = "lead",
-                    atomRadius = 202,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 83,
-                    atomChemicalSymbol = "BI",
-                    atomElementName = "bismuth",
-                    atomRadius = 207,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 84,
-                    atomChemicalSymbol = "PO",
-                    atomElementName = "polonium",
-                    atomRadius = 197,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 85,
-                    atomChemicalSymbol = "AT",
-                    atomElementName = "astatine",
-                    atomRadius = 202,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 86,
-                    atomChemicalSymbol = "RN",
-                    atomElementName = "radon",
-                    atomRadius = 220,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 87,
-                    atomChemicalSymbol = "FR",
-                    atomElementName = "francium",
-                    atomRadius = 348,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            ),
-            AtomInfo(
-                    atomNumber = 88,
-                    atomChemicalSymbol = "RA",
-                    atomElementName = "radium",
-                    atomRadius = 283,
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            )
 
-    )
-    val eleHash = hashMapOf(
-            "AG" to 172,
-            "AL" to 184,
-            "AR" to 188,
-            "AS" to 185,
-            "AT" to 202,
-            "AU" to 166,
-            "B" to 192,
-            "BA" to 268,
-            "BE" to 153,
-            "BI" to 207,
-            "BR" to 185,
-            "C" to 170,
-            "CA" to 231,
-            "CD" to 158,
-            "CL" to 175,
-            "CS" to 343,
-            "CU" to 140,
-            "F" to 147,
-            "FR" to 348,
-            "GA" to 187,
-            "GE" to 211,
-            "H" to 120,
-            "HE" to 140,
-            "HG" to 155,
-            "I" to 198,
-            "K" to 275,
-            "KR" to 202,
-            "LI" to 182,
-            "LN" to 193,
-            "MG" to 173,
-            "N" to 155,
-            "NA" to 227,
-            "NE" to 154,
-            "NI" to 163,
-            "O" to 152,
-            "P" to 180,
-            "PB" to 202,
-            "PD" to 163,
-            "PO" to 197,
-            "PT" to 175,
-            "RA" to 283,
-            "RB" to 303,
-            "RN" to 220,
-            "S" to 180,
-            "SB" to 206,
-            "SC" to 211,
-            "SE" to 190,
-            "SI" to 210,
-            "SN" to 217,
-            "SR" to 249,
-            "TE" to 206,
-            "XE" to 216,
-            "ZN" to 139
+class AtomInformationTable {
+
+    // generated from JimConvertAtomInfoTable.kt (IntelliJ Idea)
+    data class AtomNameNumber(
+            var number: Int = 0,
+            var symbol: String = "",
+            var name: String = "",
+            var vanDerWaalsRadius: Int = 300, // default size if not known
+            var color: FloatArray = floatArrayOf(0.0f, 0.0f, 0.0f, 1.0f)
     )
 
+    val atomSymboltoAtomNumNameColor = HashMap<String, AtomNameNumber>()
+
+    val atomInformationTable = listOf(
+            AtomNameNumber(number = 1, symbol = "H", name = "hydrogen", vanDerWaalsRadius = 120, color = floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f)),
+            AtomNameNumber(number = 2, symbol = "HE", name = "helium", vanDerWaalsRadius = 140, color = floatArrayOf(0.8509804f, 1.0f, 1.0f, 1.0f)),
+            AtomNameNumber(number = 3, symbol = "LI", name = "lithium", vanDerWaalsRadius = 182, color = floatArrayOf(0.69803923f, 0.12941177f, 0.12941177f, 1.0f)),
+            AtomNameNumber(number = 4, symbol = "BE", name = "beryllium", vanDerWaalsRadius = 153, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 5, symbol = "B", name = "boron", vanDerWaalsRadius = 192, color = floatArrayOf(0.0f, 1.0f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 6, symbol = "C", name = "carbon", vanDerWaalsRadius = 170, color = floatArrayOf(0.8901961f, 0.7647059f, 0.59607846f, 1.0f)),
+            AtomNameNumber(number = 7, symbol = "N", name = "nitrogen", vanDerWaalsRadius = 155, color = floatArrayOf(0.5294118f, 0.80784315f, 0.9019608f, 1.0f)),
+            AtomNameNumber(number = 8, symbol = "O", name = "oxygen", vanDerWaalsRadius = 152, color = floatArrayOf(1.0f, 0.0f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 9, symbol = "F", name = "fluorine", vanDerWaalsRadius = 147, color = floatArrayOf(0.85490197f, 0.64705884f, 0.1254902f, 1.0f)),
+            AtomNameNumber(number = 10, symbol = "NE", name = "neon", vanDerWaalsRadius = 154, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 11, symbol = "NA", name = "sodium", vanDerWaalsRadius = 227, color = floatArrayOf(0.0f, 0.0f, 1.0f, 1.0f)),
+            AtomNameNumber(number = 12, symbol = "MG", name = "magnesium", vanDerWaalsRadius = 173, color = floatArrayOf(0.13333334f, 0.54509807f, 0.13333334f, 1.0f)),
+            AtomNameNumber(number = 13, symbol = "AL", name = "aluminium", vanDerWaalsRadius = 184, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 14, symbol = "SI", name = "silicon", vanDerWaalsRadius = 210, color = floatArrayOf(0.85490197f, 0.64705884f, 0.1254902f, 1.0f)),
+            AtomNameNumber(number = 15, symbol = "P", name = "phosphorus", vanDerWaalsRadius = 180, color = floatArrayOf(1.0f, 0.6666667f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 16, symbol = "S", name = "sulfur", vanDerWaalsRadius = 180, color = floatArrayOf(1.0f, 1.0f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 17, symbol = "CL", name = "chlorine", vanDerWaalsRadius = 175, color = floatArrayOf(0.0f, 1.0f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 18, symbol = "AR", name = "argon", vanDerWaalsRadius = 188, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 19, symbol = "K", name = "potassium", vanDerWaalsRadius = 275, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 20, symbol = "CA", name = "calcium", vanDerWaalsRadius = 231, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 21, symbol = "SC", name = "scandium", vanDerWaalsRadius = 211, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 22, symbol = "TI", name = "titanium", vanDerWaalsRadius = 300, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 23, symbol = "V", name = "vanadium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 24, symbol = "CR", name = "chromium", vanDerWaalsRadius = 300, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 25, symbol = "MN", name = "manganese", vanDerWaalsRadius = 300, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 26, symbol = "FE", name = "iron", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.6666667f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 27, symbol = "CO", name = "cobalt", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 28, symbol = "NI", name = "nickel", vanDerWaalsRadius = 163, color = floatArrayOf(0.5019608f, 0.15686275f, 0.15686275f, 1.0f)),
+            AtomNameNumber(number = 29, symbol = "CU", name = "copper", vanDerWaalsRadius = 140, color = floatArrayOf(0.5019608f, 0.15686275f, 0.15686275f, 1.0f)),
+            AtomNameNumber(number = 30, symbol = "ZN", name = "zinc", vanDerWaalsRadius = 139, color = floatArrayOf(0.5019608f, 0.15686275f, 0.15686275f, 1.0f)),
+            AtomNameNumber(number = 31, symbol = "GA", name = "gallium", vanDerWaalsRadius = 187, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 32, symbol = "GE", name = "germanium", vanDerWaalsRadius = 211, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 33, symbol = "AS", name = "arsenic", vanDerWaalsRadius = 185, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 34, symbol = "SE", name = "selenium", vanDerWaalsRadius = 190, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 35, symbol = "BR", name = "bromine", vanDerWaalsRadius = 185, color = floatArrayOf(0.5019608f, 0.15686275f, 0.15686275f, 1.0f)),
+            AtomNameNumber(number = 36, symbol = "KR", name = "krypton", vanDerWaalsRadius = 202, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 37, symbol = "RB", name = "rubidium", vanDerWaalsRadius = 303, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 38, symbol = "SR", name = "strontium", vanDerWaalsRadius = 249, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 39, symbol = "Y", name = "yttrium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 40, symbol = "ZR", name = "zirconium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 41, symbol = "NB", name = "niobium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 42, symbol = "MO", name = "molybdenum", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 43, symbol = "TC", name = "technetium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 44, symbol = "RU", name = "ruthenium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 45, symbol = "RH", name = "rhodium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 46, symbol = "PD", name = "palladium", vanDerWaalsRadius = 163, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 47, symbol = "AG", name = "silver", vanDerWaalsRadius = 172, color = floatArrayOf(0.4117647f, 0.4117647f, 0.4117647f, 1.0f)),
+            AtomNameNumber(number = 48, symbol = "CD", name = "cadmium", vanDerWaalsRadius = 158, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 49, symbol = "IN", name = "indium", vanDerWaalsRadius = 193, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 50, symbol = "SN", name = "tin", vanDerWaalsRadius = 217, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 51, symbol = "SB", name = "antimony", vanDerWaalsRadius = 206, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 52, symbol = "TE", name = "tellurium", vanDerWaalsRadius = 206, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 53, symbol = "I", name = "iodine", vanDerWaalsRadius = 198, color = floatArrayOf(0.627451f, 0.1254902f, 0.9411765f, 1.0f)),
+            AtomNameNumber(number = 54, symbol = "XE", name = "xenon", vanDerWaalsRadius = 216, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 55, symbol = "CS", name = "caesium", vanDerWaalsRadius = 343, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 56, symbol = "BA", name = "barium", vanDerWaalsRadius = 268, color = floatArrayOf(1.0f, 0.6666667f, 0.0f, 1.0f)),
+            AtomNameNumber(number = 57, symbol = "LA", name = "lanthanum", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 58, symbol = "CE", name = "cerium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 59, symbol = "PR", name = "praseodymium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 60, symbol = "ND", name = "neodymium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 61, symbol = "PM", name = "promethium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 62, symbol = "SM", name = "samarium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 63, symbol = "EU", name = "europium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 64, symbol = "GD", name = "gadolinium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 65, symbol = "TB", name = "terbium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 66, symbol = "DY", name = "dysprosium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 67, symbol = "HO", name = "holmium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 68, symbol = "ER", name = "erbium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 69, symbol = "TM", name = "thulium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 70, symbol = "YB", name = "ytterbium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 71, symbol = "LU", name = "lutetium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 72, symbol = "HF", name = "hafnium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 73, symbol = "TA", name = "tantalum", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 74, symbol = "W", name = "tungsten", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 75, symbol = "RE", name = "rhenium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 76, symbol = "OS", name = "osmium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 77, symbol = "IR", name = "iridium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 78, symbol = "PT", name = "platinum", vanDerWaalsRadius = 175, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 79, symbol = "AU", name = "gold", vanDerWaalsRadius = 166, color = floatArrayOf(0.85490197f, 0.64705884f, 0.1254902f, 1.0f)),
+            AtomNameNumber(number = 80, symbol = "HG", name = "mercury", vanDerWaalsRadius = 155, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 81, symbol = "TL", name = "thallium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 82, symbol = "PB", name = "lead", vanDerWaalsRadius = 202, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 83, symbol = "BI", name = "bismuth", vanDerWaalsRadius = 207, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 84, symbol = "PO", name = "polonium", vanDerWaalsRadius = 197, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 85, symbol = "AT", name = "astatine", vanDerWaalsRadius = 202, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 86, symbol = "RN", name = "radon", vanDerWaalsRadius = 220, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 87, symbol = "FR", name = "francium", vanDerWaalsRadius = 348, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 88, symbol = "RA", name = "radium", vanDerWaalsRadius = 283, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 89, symbol = "AC", name = "actinium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 90, symbol = "TH", name = "thorium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 91, symbol = "PA", name = "protactinium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 92, symbol = "U", name = "uranium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 93, symbol = "NP", name = "neptunium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 94, symbol = "PU", name = "plutonium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 95, symbol = "AM", name = "americium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 96, symbol = "CM", name = "curium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 97, symbol = "BK", name = "berkelium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 98, symbol = "CF", name = "californium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 99, symbol = "ES", name = "einsteinium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 100, symbol = "FM", name = "fermium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 101, symbol = "MD", name = "mendelevium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 102, symbol = "NO", name = "nobelium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 103, symbol = "LR", name = "lawrencium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 104, symbol = "RF", name = "rutherfordium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 105, symbol = "DB", name = "dubnium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 106, symbol = "SG", name = "seaborgium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 107, symbol = "BH", name = "bohrium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 108, symbol = "HS", name = "hassium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 109, symbol = "MT", name = "meitnerium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 110, symbol = "DS", name = "darmstadtium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 111, symbol = "RG", name = "roentgenium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 112, symbol = "CN", name = "copernicium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 113, symbol = "UUT", name = "ununtrium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 114, symbol = "FL", name = "flerovium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 115, symbol = "UUP", name = "ununpentium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 116, symbol = "LV", name = "livermorium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 117, symbol = "UUS", name = "ununseptium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f)),
+            AtomNameNumber(number = 118, symbol = "UUO", name = "ununoctium", vanDerWaalsRadius = 300, color = floatArrayOf(1.0f, 0.078431375f, 0.5764706f, 1.0f))
+    )
+
+    init {
+        val iter = atomInformationTable.iterator()
+        while (iter.hasNext()) {
+            val thisAtom = iter.next()
+            atomSymboltoAtomNumNameColor[thisAtom.symbol] = thisAtom
+        }
+    }
 }

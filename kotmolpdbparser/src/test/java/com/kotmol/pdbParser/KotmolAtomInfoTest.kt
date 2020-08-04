@@ -28,26 +28,28 @@ internal class KotmolAtomInfoTest {
     @Test
     @DisplayName("touch test the atomInfo setup")
     fun touchTestOfAtomInfo() {
-        val info = AtomInfo().atomInfoList
+        val table = AtomInformationTable()
+        val info = table.atomInformationTable
 
-        assertEquals("hydrogen", info[1 - 1].atomElementName)
-        assertEquals("H", info[1 - 1].atomChemicalSymbol)
-        assertEquals(120, info[1 - 1].atomRadius)
+        assertEquals("hydrogen", info[1 - 1].name)
+        assertEquals("H", info[1 - 1].symbol)
+        assertEquals(120, info[1 - 1].vanDerWaalsRadius)
 
-        assertEquals("carbon", info[6 - 1].atomElementName)
-        assertEquals("C", info[6 - 1].atomChemicalSymbol)
-        assertEquals(170, info[6 - 1].atomRadius)
+        assertEquals("carbon", info[6 - 1].name)
+        assertEquals("C", info[6 - 1].symbol)
+        assertEquals(170, info[6 - 1].vanDerWaalsRadius)
 
-        assertEquals("radium", info[88 - 1].atomElementName)
-        assertEquals("RA", info[88 - 1].atomChemicalSymbol)
-        assertEquals(283, info[88 - 1].atomRadius)
+        assertEquals("radium", info[88 - 1].name)
+        assertEquals("RA", info[88 - 1].symbol)
+        assertEquals(283, info[88 - 1].vanDerWaalsRadius)
 
     }
 
     @Test
     @DisplayName("scan eleHash hash set for nulls and bad behavior")
     fun scanHashSetForNulls() {
-        val hashSet = AtomInfo().eleHash
+        val table = AtomInformationTable()
+        val hashSet = table.atomSymboltoAtomNumNameColor
 
         for (item in hashSet) {
             val foo = item.key
@@ -59,44 +61,4 @@ internal class KotmolAtomInfoTest {
         }
     }
 
-    /*@Test  // was used to insert atomRadius into table
-    @DisplayName("hacking")
-    fun hacking() {
-        var update = AtomInfo()
-        val info = AtomInfo().atomInfoList
-        val eleHash = AtomInfo().eleHash
-       //println(info)
-
-        for (item in eleHash) {
-            for (info2 in info) {
-                if (info2.atomChemicalSymbol == item.key) {
-                    //println(item.value)
-                    info2.atomRadius = item.value
-                }
-            }
-        }
-
-        for (info2 in info) {
-            println("AtomInfo(")
-            println("atomNumber = ${info2.atomNumber},")
-            println("atomChemicalSymbol = \"${info2.atomChemicalSymbol}\",")
-            println("atomElementName = \"${info2.atomElementName}\",")
-            println("atomRadius = ${info2.atomRadius},")
-            println("atomRed = ${info2.atomRed},")
-            println("atomGreen = ${info2.atomGreen},")
-            println("atomBlue= ${info2.atomBlue}")
-            println("),")
-        }
-    }*/
 }
-
-/*
-AtomInfo(
-                    atomNumber = 88,
-                    atomChemicalSymbol = "RA",
-                    atomElementName = "radium",
-                    atomRed = 255,
-                    atomGreen = 20,
-                    atomBlue = 147
-            )
- */
