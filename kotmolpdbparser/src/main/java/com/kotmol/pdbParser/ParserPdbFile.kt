@@ -63,9 +63,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
         //private lateinit var mol: Molecule
         private val bondinfo = BondInfo()
-        private var maxX = 0.toDouble()
-        private var maxY = 0.toDouble()
-        private var maxZ = 0.toDouble()
+        private var maxX = -1e6
+        private var maxY = -1e6
+        private var maxZ = -1e6
         private var minX = 1e6
         private var minY = 1e6
         private var minZ = 1e6
