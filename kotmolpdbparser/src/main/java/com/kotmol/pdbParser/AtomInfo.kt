@@ -15,6 +15,9 @@
  *
  */
 
+@file:Suppress(
+        "ArrayInDataClass"
+)
 package com.kotmol.pdbParser
 
 class AtomInformationTable {

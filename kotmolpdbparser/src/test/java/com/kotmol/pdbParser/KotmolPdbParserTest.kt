@@ -58,7 +58,7 @@ internal class KotmolPdbParserTest {
                 .Builder(molecule)
                 .loadPdbFromStream(stream)
                 .parse()
-        assertEquals(1, molecule.atoms.size)
+        assertEquals(1, molecule.atomNumberToAtomInfoHash.size)
     }
 
     @Test
@@ -72,6 +72,6 @@ internal class KotmolPdbParserTest {
                 .setMessageStrings(retainedMessages)
                 .loadPdbFromStream(stream)
                 .parse()
-        assertEquals(1, molecule.atoms.size)
+        assertEquals(1, molecule.atomNumberToAtomInfoHash.size)
     }
 }

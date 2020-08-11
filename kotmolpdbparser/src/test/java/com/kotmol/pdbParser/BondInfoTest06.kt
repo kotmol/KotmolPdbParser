@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
-import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
@@ -88,7 +87,7 @@ END
                 .parse()
 
         //
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(33, atoms.size)
 
         // bonds from the two records don't overlap
@@ -96,9 +95,9 @@ END
 
         // check that the TER record is entered into the
         // atom list as a TER_RECORD type.
-        val shouldBeTER = mol.atoms[10]
+        val shouldBeTER = mol.atomNumberToAtomInfoHash[10]
         assertNotNull(shouldBeTER)
-        assertEquals(IS_TER_RECORD, shouldBeTER!!.atomType)
+        assertEquals(PdbAtom.AtomType.IS_TER_RECORD, shouldBeTER!!.atomType)
 
     }
 
@@ -123,7 +122,7 @@ END
                 .parse()
 
         //
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(33, atoms.size)
 
         // should have no bonds in bond list

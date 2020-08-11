@@ -83,11 +83,11 @@ ATOM   2891  N   THR B  83     -15.949 -20.929 -10.732  1.00 24.92           N
 
         assertEquals(2891, mol.maxAtomNumber)
 
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(36, atoms.size)
 
-        val firstAtomNumber = mol.numList[0]
-        val firstAtom = mol.atoms[firstAtomNumber]
+        val firstAtomNumber = mol.atomNumberList[0]
+        val firstAtom = mol.atomNumberToAtomInfoHash[firstAtomNumber]
         assertNotNull(firstAtom)
         assertEquals("HE2", firstAtom!!.atomName)
 

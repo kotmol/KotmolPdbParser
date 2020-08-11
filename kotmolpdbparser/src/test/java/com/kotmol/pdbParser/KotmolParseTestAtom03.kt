@@ -42,7 +42,7 @@ ATOM      3  C4'  DC A   1      19.961  32.668  24.100  1.00 31.28           C
 
         assertEquals(3, mol.maxAtomNumber)
 
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(3, atoms.size)
 
         val firstAtom = atoms[1]

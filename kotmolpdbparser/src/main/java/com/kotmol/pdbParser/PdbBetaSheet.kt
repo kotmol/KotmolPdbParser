@@ -38,7 +38,7 @@ class PdbBetaSheet {
     var terminalChainIdChar: Char = ' '
     var terminalResidueNumber: Int = 0
     var terminalInsertionCodeChar: Char = ' '
-    var parallelSenseCode: Int = 0  // see SENSE_CODE
+    var parallelSenseCode: Int = 0  // see SENSE_CODE, pulled from PDB data (don't enum covert!)
 
     var registrationCurrentAtomName: String? = null
     var registrationCurrentResidueName: String? = null

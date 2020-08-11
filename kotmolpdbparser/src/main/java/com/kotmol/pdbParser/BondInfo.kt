@@ -15,6 +15,11 @@
  */
 
 @file:Suppress(
+
+        "MemberVisibilityCanBePrivate"
+)
+
+/*@file:Suppress(
         "unused",
         "unused_variable",
         "unused_parameter",
@@ -32,8 +37,9 @@
         "ConstantConditionIf",
         "ReplaceSingleLineLet",
         "ReplaceJavaStaticMethodWithKotlinAnalog",
-        "NestedLambdaShadowedImplicitParameter"
-)
+        "NestedLambdaShadowedImplicitParameter",
+        "ArrayInDataClass" // suppresses complains about overriding equals and hashCode() operations
+)*/
 
 package com.kotmol.pdbParser
 
@@ -68,7 +74,13 @@ package com.kotmol.pdbParser
 
 class BondInfo {
     data class KotmolBondRecord(
-            val atom_1: String, val atom_2: String, val bond_order: Float, val bond_type: String, val aromatic: Boolean = false, val length: Double, var bondRecordCreated: Boolean = false
+            val atom_1: String,
+            val atom_2: String,
+            val bond_order: Float,
+            val bond_type: String,
+            val aromatic: Boolean = false,
+            val length: Double,
+            var bondRecordCreated: Boolean = false
     )
 
 

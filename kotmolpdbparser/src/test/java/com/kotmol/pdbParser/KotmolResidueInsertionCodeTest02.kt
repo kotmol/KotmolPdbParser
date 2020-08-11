@@ -56,7 +56,7 @@ ATOM      9  CA  ARG A   9      92.907   0.305 214.038  1.00 73.62           C
 
         assertEquals(9, mol.maxAtomNumber)
 
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(9, atoms.size)
 
 //        val firstAtomNumber = mol.numList[0]

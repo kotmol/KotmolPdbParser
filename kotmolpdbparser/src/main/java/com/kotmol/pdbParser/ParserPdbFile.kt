@@ -26,14 +26,10 @@
         "CanBePrimaryConstructorProperty", "RemoveEmptyClassBody")
 
 package com.kotmol.pdbParser
-
-import com.kotmol.pdbParser.PdbAtom.Companion.IS_HETATM
-import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.util.concurrent.ExecutionException
 
 /**
  * @author Jim Andreas
@@ -194,9 +190,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         line = reader.readLine()
                         continue
                     } else if (line.substring(0, 4) == "ATOM") {
-                        parseAtom(line, PdbAtom.IS_ATOM)
+                        parseAtom(line, PdbAtom.AtomType.IS_ATOM)
                     } else if (line.substring(0, 6) == "HETATM") {
-                        parseAtom(line, PdbAtom.IS_HETATM)
+                        parseAtom(line, PdbAtom.AtomType.IS_HETATM)
                     } else if (line.substring(0, 3) == "TER") {
                         parseTerRecord(line)
                     } else if (line.substring(0, 5) == "HELIX") {
@@ -239,11 +235,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var warnOnUnknownResidue = false
 
             var i = 0
-            while (i < mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
+            while (i < mol.atomNumberList.size) {
+                anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[i]]
                 requireNotNull(anAtom)
-                if (anAtom.atomType == IS_HETATM
-                        || anAtom.atomType == IS_TER_RECORD ) {
+                if (anAtom.atomType == PdbAtom.AtomType.IS_HETATM
+                        || anAtom.atomType == PdbAtom.AtomType.IS_TER_RECORD) {
                     i++
                     continue
                 }
@@ -275,9 +271,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 /*
                  * now skip through the rest of the atoms in the residue until the next residue starts
                  */
-                while (i < mol.numList.size) {
-                    val atomSerialNumber = mol.numList[i]
-                    anAtom = mol.atoms[atomSerialNumber]
+                while (i < mol.atomNumberList.size) {
+                    val atomSerialNumber = mol.atomNumberList[i]
+                    anAtom = mol.atomNumberToAtomInfoHash[atomSerialNumber]
                     requireNotNull(anAtom)
                     if (anAtom.residueSeqNumber != residueSequenceNumber
                             || anAtom.residueInsertionCode != residueInsertionCode
@@ -288,11 +284,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     /*
                     * stop skipping if we cross a TER record
                     */
-                    if (mol.ter[atomSerialNumber+1] == true) {
+                    if (mol.terRecordTest[atomSerialNumber+1] == true) {
                         break
                     }
                 }
-                if (i == mol.atoms.size) {
+                if (i == mol.atomNumberToAtomInfoHash.size) {
                     break
                 } else {
                     i--
@@ -336,12 +332,12 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var j = 0
             while (true) {
 
-                if (i == mol.numList.size) {
+                if (i == mol.atomNumberList.size) {
                     break
                 }
-                var atomSerialNumber = mol.numList[i]
+                var atomSerialNumber = mol.atomNumberList[i]
 
-                currentAtom = mol.atoms[atomSerialNumber]
+                currentAtom = mol.atomNumberToAtomInfoHash[atomSerialNumber]
                 requireNotNull(currentAtom)
 
                 // has the loop arrived at the next residue?
@@ -374,12 +370,12 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                      */
                     j = i + 1
                     while (true) {
-                        if (j == mol.numList.size) {
+                        if (j == mol.atomNumberList.size) {
                             break
                         }
-                        atomSerialNumber = mol.numList[j]
+                        atomSerialNumber = mol.atomNumberList[j]
 
-                        loopAtom = mol.atoms[atomSerialNumber]
+                        loopAtom = mol.atomNumberToAtomInfoHash[atomSerialNumber]
                         requireNotNull(loopAtom)
                         /*
                          * if the loop has reached the next residue, then quit
@@ -397,7 +393,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         /*
                          * has the loop hit a TER record?  Then exit the loop
                          */
-                        if (mol.ter[atomSerialNumber+1] == true) {
+                        if (mol.terRecordTest[atomSerialNumber+1] == true) {
                              break
                         }
                     }
@@ -420,8 +416,8 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     }
                 }
 
-                atomSerialNumber = mol.numList[i]
-                if (mol.ter[atomSerialNumber+1] == true) {
+                atomSerialNumber = mol.atomNumberList[i]
+                if (mol.terRecordTest[atomSerialNumber+1] == true) {
                     break
                 }
                 i++
@@ -487,7 +483,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var chain = ChainRenderingDescriptor()
 
             // set base chain_id to the chain_id of the first atom
-            anAtom = mol.atoms[mol.numList[0]]
+            anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[0]]
             if (anAtom == null) {
                 messageStrings.add("buildPdbChainLists: error - first atom is null!")
                 return
@@ -495,14 +491,14 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var currentChainIdChar = anAtom.chainId
             var residueSequenceNumber = anAtom.residueSeqNumber
 
-            for (i in 0 until mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
+            for (i in 0 until mol.atomNumberList.size) {
+                anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[i]]
                 if (anAtom == null) {
                     messageStrings.add(String.format(
-                            "buildPdbChainLists: error - got null for %d", mol.numList[i]))
+                            "buildPdbChainLists: error - got null for %d", mol.atomNumberList[i]))
                     continue
                 }
-                if (anAtom.atomType == IS_TER_RECORD) {
+                if (anAtom.atomType == PdbAtom.AtomType.IS_TER_RECORD) {
                     continue
                 }
                 /*
@@ -552,7 +548,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 }
 
                 // don't build chains of HETATMs, rely on CONECT records for bonds
-                if (anAtom.atomType == PdbAtom.IS_HETATM) {
+                if (anAtom.atomType == PdbAtom.AtomType.IS_HETATM) {
                     continue
                 }
 
@@ -568,7 +564,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 when (anAtom.atomName) {
                     "C5'" -> {
                         chain.backboneAtom = anAtom
-                        chain.secondary_type = ChainRenderingDescriptor.NUCLEIC
+                        chain.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.NUCLEIC
                     }
                     "C1'" -> chain.guideAtom = anAtom
                     "O5'" -> chain.startAtom = anAtom
@@ -580,11 +576,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 if (anAtom.residueName == "DC" || anAtom.residueName == "DT"
                         || anAtom.residueName == "C" || anAtom.residueName == "T"
                         || anAtom.residueName == "U") {
-                    chain.nucleicType = ChainRenderingDescriptor.PURINE
+                    chain.nucleicType = ChainRenderingDescriptor.NucleicType.PURINE
                     when (anAtom.atomName) {
                         "N1" -> {
                             chain.nucleicCornerAtom = anAtom
-                            anAtom.atomType = PdbAtom.IS_NUCLEIC
+                            anAtom.atomType = PdbAtom.AtomType.IS_NUCLEIC
                         }
                         "C2" -> chain.nucleicGuideAtom = anAtom
                         "C6" -> chain.nucleicPlanarAtom = anAtom
@@ -593,11 +589,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         || anAtom.residueName == "A" || anAtom.residueName == "G"
                         // 2n0l  see: en.wikipedia.org/wiki/8-Oxoguanine
                         || anAtom.residueName == "8OG") {
-                    chain.nucleicType = ChainRenderingDescriptor.PYRIMIDINE
+                    chain.nucleicType = ChainRenderingDescriptor.NucleicType.PYRIMIDINE
                     when (anAtom.atomName) {
                         "N9" -> {
                             chain.nucleicCornerAtom = anAtom
-                            anAtom.atomType = PdbAtom.IS_NUCLEIC
+                            anAtom.atomType = PdbAtom.AtomType.IS_NUCLEIC
                         }
                         "C4" -> chain.nucleicGuideAtom = anAtom
                         "N7" -> chain.nucleicPlanarAtom = anAtom
@@ -610,7 +606,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         || anAtom.atomName == "C3'"
                         || anAtom.atomName == "C4'"
                         || anAtom.atomName == "O4'") {
-                    anAtom.atomType = PdbAtom.IS_NUCLEIC
+                    anAtom.atomType = PdbAtom.AtomType.IS_NUCLEIC
                 }/* || an_atom.atom_name.equals("N1") */
             }
             /*
@@ -666,7 +662,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     while (j < list.size) {
                         val item = list[j] as ChainRenderingDescriptor
                         if (item.backboneAtom!!.chainId == initialChainIdChar && item.backboneAtom!!.residueSeqNumber == initialResidueNumber) {
-                            item.secondary_type = ChainRenderingDescriptor.ALPHA_HELIX
+                            item.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.ALPHA_HELIX
                             found = true
                             break
                         }
@@ -694,7 +690,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 var nextItem: ChainRenderingDescriptor? = null
                 while (j < list!!.size - 1) {
                     nextItem = list[j + 1] as ChainRenderingDescriptor
-                    nextItem.secondary_type = ChainRenderingDescriptor.ALPHA_HELIX
+                    nextItem.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.ALPHA_HELIX
                     if (nextItem.backboneAtom!!.chainId == terminalChainIdChar && nextItem.backboneAtom!!.residueSeqNumber == terminalResidueNumber) {
                         nextItem.endOfSecondaryStructure = true
                         break
@@ -758,7 +754,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     while (j < list.size) {
                         val item = list[j] as ChainRenderingDescriptor
                         if (item.backboneAtom!!.chainId == initialChainIdChar && item.backboneAtom!!.residueSeqNumber == initialResidueNumber) {
-                            item.secondary_type = ChainRenderingDescriptor.BETA_SHEET
+                            item.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.BETA_SHEET
                             found = true
                             break
                         }
@@ -786,7 +782,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 j = 0
                 while (j < list!!.size - 1) {
                     nextItem = list[j + 1] as ChainRenderingDescriptor
-                    nextItem.secondary_type = ChainRenderingDescriptor.BETA_SHEET
+                    nextItem.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.BETA_SHEET
                     if (nextItem.backboneAtom!!.chainId == terminalChainIdChar && nextItem.backboneAtom!!.residueSeqNumber == terminalResidueNumber) {
                         nextItem.endOfSecondaryStructure = true
                         break
@@ -821,11 +817,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
             var anAtom: PdbAtom?
 
-            for (i in 0 until mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
+            for (i in 0 until mol.atomNumberList.size) {
+                anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[i]]
                 if (anAtom == null) {
                     messageStrings.add(String.format(
-                            "findSplineAnchor: error - got null for %d", mol.numList[i]))
+                            "findSplineAnchor: error - got null for %d", mol.atomNumberList[i]))
                     continue
                 }
                 if (anAtom.chainId == sequence_id) {
@@ -864,14 +860,14 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             val centerZ = (maxZ - minZ) / 2f + minZ
 
             var anAtom: PdbAtom?
-            for (i in 0 until mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
+            for (i in 0 until mol.atomNumberList.size) {
+                anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[i]]
                 if (anAtom == null) {
                     messageStrings.add(String.format(
-                            "centerMolecules: error - got null for %d", mol.numList[i]))
+                            "centerMolecules: error - got null for %d", mol.atomNumberList[i]))
                     continue
                 }
-                if (anAtom.atomType == IS_TER_RECORD) {
+                if (anAtom.atomType == PdbAtom.AtomType.IS_TER_RECORD) {
                     continue
                 }
                 anAtom.atomPosition.x = anAtom.atomPosition.x - centerX
@@ -889,7 +885,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
         /**
          * ParseAtom
          */
-        private fun parseAtom(lineIn: String, atom_type_flag: Int) {
+        private fun parseAtom(lineIn: String, atom_type_flag: PdbAtom.AtomType) {
             var line = lineIn
 
             val vx: Double
@@ -923,7 +919,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 vz = parseDouble(line.substring(47 - 1, 54).trim { it <= ' ' })
 
                 // don't include HETATM in max / min calculation
-                if (atom_type_flag == PdbAtom.IS_ATOM) {
+                if (atom_type_flag == PdbAtom.AtomType.IS_ATOM) {
                     maxX = kotlin.math.max(maxX, vx)
                     maxY = kotlin.math.max(maxY, vy)
                     maxZ = kotlin.math.max(maxZ, vz)
@@ -961,8 +957,8 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     }
                 }
 
-                mol.atoms[atom.atomNumber] = atom
-                mol.numList.add(atom.atomNumber)
+                mol.atomNumberToAtomInfoHash[atom.atomNumber] = atom
+                mol.atomNumberList.add(atom.atomNumber)
                 mol.maxAtomNumber = if (mol.maxAtomNumber < atom.atomNumber)
                     atom.atomNumber
                 else
@@ -1036,15 +1032,15 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
 
                 val terNumber = parseInteger(line.substring(7 - 1, 11).trim { it <= ' ' })
-                mol.ter[terNumber] = true
+                mol.terRecordTest[terNumber] = true
 
-                atom.atomType = IS_TER_RECORD
+                atom.atomType = PdbAtom.AtomType.IS_TER_RECORD
                 atom.atomName = "TER_RECORD"
                 atom.atomNumber = terNumber
                 atom.elementSymbol = ""
 
-                mol.atoms[atom.atomNumber] = atom
-                mol.numList.add(atom.atomNumber)
+                mol.atomNumberToAtomInfoHash[atom.atomNumber] = atom
+                mol.atomNumberList.add(atom.atomNumber)
                 mol.maxAtomNumber = if (mol.maxAtomNumber < atom.atomNumber)
                     atom.atomNumber
                 else
@@ -1179,8 +1175,8 @@ class ParserPdbFile internal constructor( builder: Builder ) {
          */
         private fun validateBond(atom1: Int, atom2: Int) {
 
-            val a1 = mol.atoms[atom1]
-            val a2 = mol.atoms[atom2]
+            val a1 = mol.atomNumberToAtomInfoHash[atom1]
+            val a2 = mol.atomNumberToAtomInfoHash[atom2]
 
             /*
              * TODO: handle hydrogens.   For now skip over null pointers from missing hydros
@@ -1227,14 +1223,14 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var anAtom: PdbAtom?
             var lastAtom: PdbAtom? = null
             var lastResidueSequenceNumber = 0
-            for (i in 0 until mol.numList.size) {
-                anAtom = mol.atoms[mol.numList[i]]
+            for (i in 0 until mol.atomNumberList.size) {
+                anAtom = mol.atomNumberToAtomInfoHash[mol.atomNumberList[i]]
                 if (anAtom == null) {
-                    messageStrings.add(String.format("connectResidues: error - got null for %s", mol.numList[i]))
+                    messageStrings.add(String.format("connectResidues: error - got null for %s", mol.atomNumberList[i]))
                     continue
                 }
                 // rely on CONECT records for HETATM
-                if (anAtom.atomType == PdbAtom.IS_HETATM) {
+                if (anAtom.atomType == PdbAtom.AtomType.IS_HETATM) {
                     continue
                 }
                 if (anAtom.atomName == "O3'" || anAtom.atomName == "C") {

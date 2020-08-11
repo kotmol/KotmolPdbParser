@@ -30,14 +30,13 @@ package com.kotmol.pdbParser
 import kotlin.math.sqrt
 
 class PdbAtom {
-
-    var atomNumber: Int = 0
-    var atomType: Int = 0
-    var atomBondCount: Int = 0
+    var atomNumber = 0
+    var atomType = AtomType.IS_NOT_A_TYPE
+    var atomBondCount = 0
     lateinit var atomName: String
     lateinit var residueName: String
     var chainId: Char = ' '
-    var residueSeqNumber: Int = 0
+    var residueSeqNumber = 0
     var residueInsertionCode: Char = ' '
     lateinit var atomPosition: KotmolVector3
     lateinit var elementSymbol: String
@@ -47,12 +46,20 @@ class PdbAtom {
      */
     val pickedAtom = false
 
-    companion object {
-        const val IS_ATOM = 1
-        const val IS_HETATM = 2
-        const val IS_NUCLEIC = 3
-        const val IS_TER_RECORD = 4
+    enum class AtomType {
+        IS_ATOM,
+        IS_HETATM,
+        IS_NUCLEIC,
+        IS_TER_RECORD,
+        IS_NOT_A_TYPE
     }
+
+//    companion object {
+//        const val IS_ATOM = 1
+//        const val IS_HETATM = 2
+//        const val IS_NUCLEIC = 3
+//        const val IS_TER_RECORD = 4
+//    }
 }
 
 class Helix {

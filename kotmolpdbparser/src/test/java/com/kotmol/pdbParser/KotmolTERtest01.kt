@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
-import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
+import com.kotmol.pdbParser.PdbAtom.AtomType.IS_TER_RECORD
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
@@ -92,7 +92,7 @@ ATOM    242  C4   DA D  12      52.392 -61.477   0.435  1.00122.09           C
                 .parse()
 
         // two residues separated by a TER record (see above)
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(39, atoms.size)
 
         // bonds from the two records don't overlap
@@ -100,7 +100,7 @@ ATOM    242  C4   DA D  12      52.392 -61.477   0.435  1.00122.09           C
 
         // check that the TER record is entered into the
         // atom list as a TER_RECORD type.
-        val shouldBeTER = mol.atoms[224]
+        val shouldBeTER = mol.atomNumberToAtomInfoHash[224]
         assertNotNull(shouldBeTER)
         assertEquals(IS_TER_RECORD, shouldBeTER!!.atomType)
 

@@ -39,7 +39,7 @@ internal class KotmolParseTestAtom02 {
 
         assertEquals(1, mol.maxAtomNumber)
 
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(1, atoms.size)
 
         val firstAtom = atoms[1]

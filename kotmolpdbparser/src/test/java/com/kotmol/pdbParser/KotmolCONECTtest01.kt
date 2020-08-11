@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
-import com.kotmol.pdbParser.PdbAtom.Companion.IS_TER_RECORD
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
@@ -60,7 +59,7 @@ END
                 .parse()
 
         // four atoms with three CONECT records
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(4, atoms.size)
 
         // bonds from the two records don't overlap

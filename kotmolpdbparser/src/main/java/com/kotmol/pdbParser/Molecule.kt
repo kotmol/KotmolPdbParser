@@ -31,11 +31,10 @@
 package com.kotmol.pdbParser
 
 class Molecule {
-    var molName: String = ""
+    val atomNumberList: MutableList<Int> = ArrayList()
+    val atomNumberToAtomInfoHash = HashMap<Int, PdbAtom>()
     var maxAtomNumber: Int = 0
-    val numList: MutableList<Int> = ArrayList()
-    val atoms = HashMap<Int, PdbAtom>()
-    val ter = HashMap<Int, Boolean>()
+    val terRecordTest = HashMap<Int, Boolean>()
     val bondList: MutableList<Bond> = ArrayList()
     val helixList: MutableList<PdbHelix> = ArrayList()
     val pdbSheetList: MutableList<PdbBetaSheet> = ArrayList()
@@ -46,6 +45,12 @@ class Molecule {
     var hasAlternateLocations = false
     var guideAtomMissing = false
 
+    var molName: String = ""
+
+    /**
+     * The "dcOffset" is a scalar that indicates shift offset vector length
+     * used in centering the molecule to a 0,0,0 origin
+     */
     var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
 
     // TODO: parse multiple MODELs
@@ -65,8 +70,8 @@ class Molecule {
 
     fun clearLists() {
         maxAtomNumber = 0
-        numList.clear()
-        atoms.clear()
+        atomNumberList.clear()
+        atomNumberToAtomInfoHash.clear()
         bondList.clear()
         helixList.clear()
         pdbSheetList.clear()

@@ -66,7 +66,7 @@ END
                 .parse()
 
         // only 5 + 1TER atoms, does not include later models
-        val atoms = mol.atoms
+        val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(5+1, atoms.size)
 
         // has the 4 bonds from the zinc atom to the previous 4 atoms
