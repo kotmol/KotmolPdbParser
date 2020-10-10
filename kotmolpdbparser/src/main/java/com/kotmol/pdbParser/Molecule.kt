@@ -34,6 +34,7 @@ class Molecule {
     val atomNumberList: MutableList<Int> = ArrayList()
     val atomNumberToAtomInfoHash = HashMap<Int, PdbAtom>()
     var maxAtomNumber: Int = 0
+    var maxCoordinate: Double = 0.0
     val terRecordTest = HashMap<Int, Boolean>()
     val bondList: MutableList<Bond> = ArrayList()
     val helixList: MutableList<PdbHelix> = ArrayList()
@@ -48,8 +49,8 @@ class Molecule {
     var molName: String = ""
 
     /**
-     * The "dcOffset" is a scalar that indicates shift offset vector length
-     * used in centering the molecule to a 0,0,0 origin
+     * The "dcOffset" is the scalar (length)
+     *
      */
     var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
 
