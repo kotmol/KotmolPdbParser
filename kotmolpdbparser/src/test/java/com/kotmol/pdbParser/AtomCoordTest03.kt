@@ -33,9 +33,9 @@ internal class AtomCoordTest03 {
     @org.junit.jupiter.api.BeforeEach
     fun setUp() { // from 1bna.pdb
         val anAtomZero = """
-ATOM      1  O5'  DC A   1      10.000  00.000  00.000  1.00 64.35           O  
-ATOM      2  C5'  DC A   1      00.000  10.000  00.000  1.00 44.69           C  
-ATOM      3  C4'  DC A   1      00.000  00.000  10.000  1.00 31.28           C 
+ATOM      1  O5'  DC A   1      00.000  10.000  00.000  1.00 64.35           O  
+ATOM      2  C5'  DC A   1      07.071 -07.071  00.000  1.00 44.69           C  
+ATOM      3  C4'  DC A   1     -07.071 -07.071  00.000  1.00 31.28           C 
         """.trimIndent()
 
         str00 = anAtomZero.byteInputStream()
@@ -50,8 +50,6 @@ ATOM      3  C4'  DC A   1      00.000  00.000  10.000  1.00 31.28           C
     @DisplayName( "test with a 10, 10, 10 max coordinate atom")
     fun testWithZeroCoordinateAtom() {
 
-        var messages : MutableList<String> = mutableListOf()
-
         ParserPdbFile
                 .Builder(mol)
                 .loadPdbFromStream(str00)
@@ -62,7 +60,28 @@ ATOM      3  C4'  DC A   1      00.000  00.000  10.000  1.00 31.28           C
         val atoms = mol.atomNumberToAtomInfoHash
         assertEquals(3, atoms.size)
 
-        val maxCoord = mol.maxCoordinate
-        assertEquals(maxCoord, 10.0)
+        val maxVector = mol.maxPostCenteringVectorMagnitude
+        assertEquals(maxVector, 11.380666666666666, 0.01)
     }
 }
+
+/*
+ATOM line per PDB spec V33
+COLUMNS DATA TYPE FIELD DEFINITION
+-------------------------------------------------------------------------------------
+1 - 6 Record name "ATOM "
+7 - 11 Integer serial Atom serial number.
+13 - 16 Atom name Atom name.
+17 Character altLoc Alternate location indicator.
+18 - 20 Residue name resName Residue name.
+22 Character chainID Chain identifier.
+23 - 26 Integer resSeq Residue sequence number.
+27 AChar iCode Code for insertion of residues.
+31 - 38 Real(8.3) x Orthogonal coordinates for X in Angstroms.
+39 - 46 Real(8.3) y Orthogonal coordinates for Y in Angstroms.
+47 - 54 Real(8.3) z Orthogonal coordinates for Z in Angstroms.
+55 - 60 Real(6.2) occupancy Occupancy.
+61 - 66 Real(6.2) tempFactor Temperature factor.
+77 - 78 LString(2) element Element symbol, right-justified.
+79 - 80 LString(2) charge Charge on the atom.
+ */

@@ -12,14 +12,14 @@
  */
 
 @file:Suppress(
-        "unused",
+       /* "unused",
         "unused_variable",
         "unused_parameter",
         "unused_property",
         "deprecation",
         "ConstantConditionIf",
         "LocalVariableName",
-        "PropertyName")
+        "PropertyName"*/)
 
 package com.kotmol.pdbParser
 
@@ -37,11 +37,6 @@ class PdbAtom {
     lateinit var atomPosition: KotmolVector3
     lateinit var elementSymbol: String
 
-    /**
-     * debugging of picking
-     */
-    val pickedAtom = false
-
     enum class AtomType {
         IS_ATOM,
         IS_HETATM,
@@ -49,22 +44,17 @@ class PdbAtom {
         IS_TER_RECORD,
         IS_NOT_A_TYPE
     }
-
-//    companion object {
-//        const val IS_ATOM = 1
-//        const val IS_HETATM = 2
-//        const val IS_NUCLEIC = 3
-//        const val IS_TER_RECORD = 4
-//    }
 }
 
 class Helix {
-    var chain_id: Char = ' '
+    var chainId: Char = ' '
     lateinit var atom: PdbAtom
 }
 
 class KotmolVector3(
-        var x: Double, var y: Double, var z: Double) {
+        var x: Double = 0.0,
+        var y: Double = 0.0,
+        var z: Double = 0.0) {
 
     fun distanceTo(q: KotmolVector3): Double {
         val a = x - q.x

@@ -27,10 +27,14 @@
 package com.kotmol.pdbParser
 
 class Molecule {
+    var molName: String = ""
+    val averagePosition = KotmolVector3()
+    var maxPostCenteringVectorMagnitude = 0.0
+    var maxPostCenteringCoordinate = KotmolVector3()
     val atomNumberList: MutableList<Int> = ArrayList()
     val atomNumberToAtomInfoHash = HashMap<Int, PdbAtom>()
     var maxAtomNumber: Int = 0
-    var maxCoordinate: Double = 0.0
+    //var maxCoordinate: Double = 0.0
     val terRecordTest = HashMap<Int, Boolean>()
     val bondList: MutableList<Bond> = ArrayList()
     val helixList: MutableList<PdbHelix> = ArrayList()
@@ -42,7 +46,6 @@ class Molecule {
     var hasAlternateLocations = false
     var guideAtomMissing = false
 
-    var molName: String = ""
 
     /**
      * The "dcOffset" is the scalar (length)

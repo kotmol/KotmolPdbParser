@@ -80,7 +80,6 @@ class BondInfo {
             var bondRecordCreated: Boolean = false
     )
 
-
     val ala = listOf(
             KotmolBondRecord(atom_1 = "C", atom_2 = "O", bond_order = 2f, bond_type = "doub", length = 1.207),
             KotmolBondRecord(atom_1 = "C", atom_2 = "OXT", bond_order = 1f, bond_type = "sing", length = 1.342),

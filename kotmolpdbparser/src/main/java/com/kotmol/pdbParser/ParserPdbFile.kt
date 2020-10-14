@@ -27,8 +27,6 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import kotlin.math.absoluteValue
-import kotlin.math.max
 
 /**
  * @author Jim Andreas
@@ -58,18 +56,13 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
         //private lateinit var mol: Molecule
         private val bondinfo = BondInfo()
-        private var maxX = -1e6
-        private var maxY = -1e6
-        private var maxZ = -1e6
-        private var minX = 1e6
-        private var minY = 1e6
-        private var minZ = 1e6
+
         private var averageX = 0.0
         private var averageY = 0.0
         private var averageZ = 0.0
         private lateinit var messageStrings: MutableList<String>
         private var parseModelsSomeday = false
-        private var centerTheMoleculeCoordinates = true
+        private var centerTheMoleculeCoordinatesFlag = true
         private var doBondProcessing = true
         private lateinit var inputStream: InputStream
 
@@ -122,11 +115,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
          * there is no guarantee that the PDB atom coordinates will be centered -
          * they can be somewhere off to one side or the PDB file may contain
          * some subset of residues away from the center of the molecule.
-         * The default is to use max and min coordinate atom position data
+         * The default is to use the average of the coordinate atom position data
          * to center the molecule around the x, y, and z coordinate axes.
          */
         fun centerTheMolecule(centerTheMoleculeFlag: Boolean) = apply {
-            centerTheMoleculeCoordinates = centerTheMoleculeFlag
+            centerTheMoleculeCoordinatesFlag = centerTheMoleculeFlag
         }
 
         /**
@@ -162,7 +155,14 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 connectResidues()
             }
 
-            if (centerTheMoleculeCoordinates) centerMolecule()
+            averageX /= mol.atomNumberList.size
+            averageY /= mol.atomNumberList.size
+            averageZ /= mol.atomNumberList.size
+            mol.averagePosition.x = averageX
+            mol.averagePosition.y = averageY
+            mol.averagePosition.z = averageZ
+            
+            if (centerTheMoleculeCoordinatesFlag) centerMolecule()
         }
 
         /**
@@ -834,7 +834,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         continue
                     }
                     val helix = Helix()
-                    helix.chain_id = sequence_id
+                    helix.chainId = sequence_id
                     helix.atom = anAtom
                     helix_list.add(helix)
                     return true
@@ -845,25 +845,14 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
         /**
          * adjust the XYZ of each atom
-         * to move the entire molecule to the center of the viewport
+         * to shift the molecule around (0,0,0)
+         *
+         * Also track the max vector out from the average (shifted) center.
          */
         private fun centerMolecule() {
 
-            val maxX = maxX
-            val maxY = maxY
-            val maxZ = maxZ
-
-            val minX = minX
-            val minY = minY
-            val minZ = minZ
-
-            averageX /= mol.atomNumberList.size
-            averageY /= mol.atomNumberList.size
-            averageZ /= mol.atomNumberList.size
-
-//            val centerX = (maxX - minX) / 2f + minX
-//            val centerY = (maxY - minY) / 2f + minY
-//            val centerZ = (maxZ - minZ) / 2f + minZ
+            var maxVector = KotmolVector3()
+            var maxVectorMagnitude = 0.0
 
             var anAtom: PdbAtom?
             for (i in 0 until mol.atomNumberList.size) {
@@ -879,20 +868,25 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 anAtom.atomPosition.x = anAtom.atomPosition.x - averageX
                 anAtom.atomPosition.y = anAtom.atomPosition.y - averageY
                 anAtom.atomPosition.z = anAtom.atomPosition.z - averageZ
+
+                // track the maximum magnitude of the atom positions away
+                // from the average position (outermost atom)
+                val vector = kotlin.math.sqrt(
+                       anAtom.atomPosition.x * anAtom.atomPosition.x +
+                       anAtom.atomPosition.y * anAtom.atomPosition.y +
+                       anAtom.atomPosition.z * anAtom.atomPosition.z)
+                if (vector > maxVectorMagnitude) {
+                    maxVector = KotmolVector3(
+                            anAtom.atomPosition.x,
+                            anAtom.atomPosition.y,
+                            anAtom.atomPosition.z)
+                    maxVectorMagnitude = vector
+                }
             }
 
-            val dcOffsetX = maxX - minX
-            val dcOffsetY = maxY - minY
-            val dcOffsetZ = maxZ - minZ
+            mol.maxPostCenteringVectorMagnitude  = maxVectorMagnitude
+            mol.maxPostCenteringCoordinate = maxVector
 
-            mol.dcOffset = kotlin.math.sqrt(dcOffsetX * dcOffsetX + dcOffsetY * dcOffsetY + dcOffsetZ + dcOffsetZ)
-
-            // calculate the maximum
-            val maxAbsX = max((maxX - dcOffsetX).absoluteValue, (dcOffsetX - minX).absoluteValue)
-            val maxAbsY = max((maxY - dcOffsetY).absoluteValue, (dcOffsetY - minY).absoluteValue)
-            val maxAbsZ = max((maxZ - dcOffsetZ).absoluteValue, (dcOffsetZ - minZ).absoluteValue)
-
-            mol.maxCoordinate = maxOf( maxAbsX, maxAbsY, maxAbsZ)
         }
 
         /**
@@ -904,6 +898,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             val vx: Double
             val vy: Double
             val vz: Double
+            var avex = 0.0
+            var avey = 0.0
+            var avez = 0.0
             val atom = PdbAtom()
             try {
 
@@ -931,16 +928,8 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 vy = parseDouble(line.substring(39 - 1, 46).trim { it <= ' ' })
                 vz = parseDouble(line.substring(47 - 1, 54).trim { it <= ' ' })
 
-                // don't include HETATM in max / min calculation
+                // don't include HETATM in average calculation
                 if (atom_type_flag == PdbAtom.AtomType.IS_ATOM) {
-                    maxX = max(maxX, vx)
-                    maxY = max(maxY, vy)
-                    maxZ = max(maxZ, vz)
-
-                    minX = kotlin.math.min(minX, vx)
-                    minY = kotlin.math.min(minY, vy)
-                    minZ = kotlin.math.min(minZ, vz)
-
                     averageX += vx
                     averageY += vy
                     averageZ += vz
@@ -1300,18 +1289,8 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 //            Timber.e("Bad Integer : $s")
                 0
             }
-
         }
 
-        // clean out old data, reset state
-        private fun resetMoleculeMaxMin() {
-            maxX = 0.toDouble()
-            maxY = 0.toDouble()
-            maxZ = 0.toDouble()
-            minX = 1e6
-            minY = 1e6
-            minZ = 1e6
-        }
         private fun messageMolName() : String {
             if (mol.molName != "") {
                 return String.format("%s: ", mol.molName)

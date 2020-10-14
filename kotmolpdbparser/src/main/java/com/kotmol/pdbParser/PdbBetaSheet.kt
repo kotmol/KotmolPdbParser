@@ -12,14 +12,14 @@
  */
 
 @file:Suppress(
-        "unused",
+       /* "unused",
         "unused_variable",
         "unused_parameter",
         "unused_property",
         "deprecation",
         "ConstantConditionIf",
         "LocalVariableName",
-        "PropertyName")
+        "PropertyName"*/)
 package com.kotmol.pdbParser
 
 class PdbBetaSheet {
