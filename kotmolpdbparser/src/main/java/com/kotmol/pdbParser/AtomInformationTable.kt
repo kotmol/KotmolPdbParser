@@ -1,18 +1,14 @@
 /*
- *  Copyright (C) 2020 James Andreas
- *
+ *  Copyright 2020 James Andreas
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *
  *       http://www.apache.org/licenses/LICENSE-2.0
- *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License
- *
  */
 
 @file:Suppress(
@@ -20,7 +16,7 @@
 )
 package com.kotmol.pdbParser
 
-class AtomInformationTable {
+object AtomInformationTable {
 
     // generated from JimConvertAtomInfoTable.kt (IntelliJ Idea)
     data class AtomNameNumber(
@@ -33,7 +29,7 @@ class AtomInformationTable {
 
     val atomSymboltoAtomNumNameColor = HashMap<String, AtomNameNumber>()
 
-    val atomInformationTable = listOf(
+    val atomTable = listOf(
             AtomNameNumber(number = 1, symbol = "H", name = "hydrogen", vanDerWaalsRadius = 120, color = floatArrayOf(1.0f, 1.0f, 1.0f, 1.0f)),
             AtomNameNumber(number = 2, symbol = "HE", name = "helium", vanDerWaalsRadius = 140, color = floatArrayOf(0.8509804f, 1.0f, 1.0f, 1.0f)),
             AtomNameNumber(number = 3, symbol = "LI", name = "lithium", vanDerWaalsRadius = 182, color = floatArrayOf(0.69803923f, 0.12941177f, 0.12941177f, 1.0f)),
@@ -155,7 +151,7 @@ class AtomInformationTable {
     )
 
     init {
-        val iter = atomInformationTable.iterator()
+        val iter = atomTable.iterator()
         while (iter.hasNext()) {
             val thisAtom = iter.next()
             atomSymboltoAtomNumNameColor[thisAtom.symbol] = thisAtom
