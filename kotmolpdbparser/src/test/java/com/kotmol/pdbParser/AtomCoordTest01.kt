@@ -25,7 +25,7 @@ import java.io.ByteArrayInputStream
  */
 internal class AtomCoordTest01 {
 
-    lateinit var str00 : ByteArrayInputStream
+    private lateinit var str00 : ByteArrayInputStream
     val mol = Molecule()
     val parse = ParserPdbFile(mol)
 
@@ -46,9 +46,6 @@ ATOM      1  O5'  DC A   1      00.000  00.000  00.000  1.00 64.35           O
     @Test
     @DisplayName( "test with a 000 coordinate atom")
     fun testWithZeroCoordinateAtom() {
-
-        var messages : MutableList<String> = mutableListOf()
-
         ParserPdbFile
                 .Builder(mol)
                 .loadPdbFromStream(str00)

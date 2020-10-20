@@ -46,13 +46,6 @@ class Molecule {
     var hasAlternateLocations = false
     var guideAtomMissing = false
 
-
-    /**
-     * The "dcOffset" is the scalar (length)
-     *
-     */
-    var dcOffset: Double = 0.toDouble() // calculated in ParserPdbFile
-
     // TODO: parse multiple MODELs
     /*
      * this is a placeholder for the API to hold an array of additional MODELs

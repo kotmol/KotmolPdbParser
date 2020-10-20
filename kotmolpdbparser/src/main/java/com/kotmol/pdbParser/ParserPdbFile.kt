@@ -65,6 +65,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
         private var centerTheMoleculeCoordinatesFlag = true
         private var doBondProcessing = true
         private lateinit var inputStream: InputStream
+        private val encodedBondMap: MutableMap<Int, Boolean> = mutableMapOf(0 to false)
 
         /**
          * Pass in a string list if you want some logging.
@@ -460,15 +461,33 @@ class ParserPdbFile internal constructor( builder: Builder ) {
          * @param atom2 to atom
          */
         private fun addBond(atom1: PdbAtom, atom2: PdbAtom): Bond? {
-            if (atom1.atomBondCount > 0) {
-                if (atom2.atomBondCount > 0) {
-                    if (doesDuplicateBondExist(atom2, atom1)) {
-                        return null
-                    }
+            if (atom1.atomBondCount > 0 &&
+                atom2.atomBondCount > 0) {
+
+//                if (doesDuplicateBondExist(atom2, atom1)) {
+//                    return null
+//                }
+
+                // new test - look up the bond in the hash map - if there is a non-null response
+                // then the bond is already in the map.
+                val theBondEncoded1 = atom1.atomNumber shl 16 or atom2.atomNumber
+                val theBondEncoded2 = atom2.atomNumber shl 16 or atom1.atomNumber
+                if (encodedBondMap[theBondEncoded1] != null) {
+                    return null
                 }
+                if (encodedBondMap[theBondEncoded2] != null) {
+                    return null
+                }
+
             }
             val bond = Bond(atom1.atomNumber, atom2.atomNumber)
             mol.bondList.add(bond)
+
+            // add the bond to a HashMap for very fast lookup
+
+            val theBondEncoded = atom1.atomNumber shl 16 or atom2.atomNumber
+            encodedBondMap[theBondEncoded] = true
+
             atom1.atomBondCount = atom1.atomBondCount + 1
             atom2.atomBondCount = atom2.atomBondCount + 1
             return(bond)
