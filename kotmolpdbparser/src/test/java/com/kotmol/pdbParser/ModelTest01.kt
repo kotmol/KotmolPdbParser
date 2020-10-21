@@ -20,7 +20,7 @@ import java.io.ByteArrayInputStream
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolModelTest01 {
+internal class ModelTest01 {
 
     /**
      * 1ZNF - a Zinc Finger PDB with 37 models (edited)

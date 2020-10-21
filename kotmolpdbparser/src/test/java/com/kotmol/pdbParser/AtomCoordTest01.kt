@@ -58,6 +58,7 @@ ATOM      1  O5'  DC A   1      00.000  00.000  00.000  1.00 64.35           O
 
         val firstAtom = atoms[1]
         assertEquals("O5'", firstAtom?.atomName)
+        assertEquals("DC", firstAtom?.residueName)
 
         val maxVector = mol.maxPostCenteringVectorMagnitude
         assertEquals(maxVector, 0.0, 0.01)

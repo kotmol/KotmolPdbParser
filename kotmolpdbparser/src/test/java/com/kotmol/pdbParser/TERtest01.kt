@@ -21,7 +21,7 @@ import com.kotmol.pdbParser.PdbAtom.AtomType.IS_TER_RECORD
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolTERtest01 {
+internal class TERtest01 {
 
     /**
      * 1ZNF - a Zinc Finger PDB with 37 models (edited)

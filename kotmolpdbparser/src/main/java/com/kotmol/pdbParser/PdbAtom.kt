@@ -29,13 +29,13 @@ class PdbAtom {
     var atomNumber = 0
     var atomType = AtomType.IS_NOT_A_TYPE
     var atomBondCount = 0
-    lateinit var atomName: String
-    lateinit var residueName: String
+    var atomName: String = ""
+    var residueName: String = ""
     var chainId: Char = ' '
     var residueSeqNumber = 0
     var residueInsertionCode: Char = ' '
     lateinit var atomPosition: KotmolVector3
-    lateinit var elementSymbol: String
+    var elementSymbol: String = ""
 
     enum class AtomType {
         IS_ATOM,

@@ -20,32 +20,31 @@ import java.io.ByteArrayInputStream
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolCONECTtest01 {
+internal class ResidueInsertionCodeTest02 {
 
     /**
-     * 5W1O -
-     *    has CONECT records with no spaces.   Check that the HETATMs are
-     *    properly CONECT'ed
+     * 2R6P - a CA only PDB model
      */
     lateinit var str : ByteArrayInputStream
-    lateinit var aModelTest : String
+    lateinit var anAtom : String
     @org.junit.jupiter.api.BeforeEach
-    fun setUp() {
-        val theModelString = """
+    fun setUp() { // from 2r6p
+        val numbering = """
          1         2         3         4         5         6         7
 12345678901234567890123456789012345678901234567890123456789012345678901234567890"""
-        aModelTest = """
-HETATM17079  S   IDS E 512       8.437   1.398  80.249  1.00 31.19           S  
-HETATM17080  O1S IDS E 512       9.147   0.259  79.768  1.00 31.82           O  
-HETATM17081  O2S IDS E 512       7.206   1.638  79.577  1.00 33.46           O  
-HETATM17082  O3S IDS E 512       9.251   2.557  80.323  1.00 30.40           O  
-CONECT1708017079                                                                
-CONECT1708117079                                                                
-CONECT1708217079                                                                                  
-END    
+        anAtom = """
+ATOM      1  CA  MET A   1      93.887  11.659 215.822  1.00 70.94           C  
+ATOM      2  CA  ARG A   2      90.531  10.195 214.833  1.00 72.65           C  
+ATOM      3  CA  CYS A   3      91.669   6.554 215.139  1.00 63.88           C  
+ATOM      4  CA  ILE A   4      92.293   6.900 218.830  1.00 73.59           C  
+ATOM      5  CA  GLY A   5      89.515   5.137 220.704  1.00 75.00           C  
+ATOM      6  CA  ILE A   6      88.514   2.427 217.829  1.00 75.00           C  
+ATOM      7  CA  SER A   7      89.320  -0.852 218.358  1.00 75.00           C  
+ATOM      8  CA  ASN A   8      89.792  -2.127 214.851  1.00 75.00           C  
+ATOM      9  CA  ARG A   9      92.907   0.305 214.038  1.00 73.62           C  
         """.trimIndent()
 
-        str = aModelTest.byteInputStream()
+        str = anAtom.byteInputStream()
 
     }
 
@@ -54,31 +53,30 @@ END
         str.close()
     }
 
-    /**
-     *
-     */
     @Test
-    @DisplayName( "test processing of a TER record")
-    fun testModelSkipping() {
+    @DisplayName( "test only CA atoms in PDB")
+    fun testOnlyCAatomsInPDB() {
 
         val mol = Molecule()
         val messages : MutableList<String> = mutableListOf()
 
         ParserPdbFile
                 .Builder(mol)
-                .setMoleculeName("5W1O")
+                .setMoleculeName("2R6P")
                 .setMessageStrings(messages)
                 .loadPdbFromStream(str)
                 .parse()
 
-        // four atoms with three CONECT records
+        assertEquals(9, mol.maxAtomNumber)
+
         val atoms = mol.atomNumberToAtomInfoHash
-        assertEquals(4, atoms.size)
+        assertEquals(9, atoms.size)
 
-        // bonds from the two records don't overlap
-        assertEquals(3, mol.bondList.size)
+//        val firstAtomNumber = mol.numList[0]
+//        val firstAtom = mol.atoms[firstAtomNumber]
+//        assertNotNull(firstAtom)
+//        assertEquals("HE2", firstAtom!!.atomName)
 
-        // TODO: check the Bond list
 
     }
 }

@@ -20,7 +20,7 @@ import java.io.ByteArrayInputStream
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolResidueInsertionCodeTest01 {
+internal class ResidueInsertionCodeTest01 {
 
     /**
      * @link https://proteopedia.org/wiki/index.php/Unusual_sequence_numbering

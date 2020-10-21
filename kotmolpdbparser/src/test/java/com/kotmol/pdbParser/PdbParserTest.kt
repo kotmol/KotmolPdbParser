@@ -20,7 +20,7 @@ import java.io.ByteArrayInputStream
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolPdbParserTest {
+internal class PdbParserTest {
 
     private lateinit var stream : ByteArrayInputStream
 

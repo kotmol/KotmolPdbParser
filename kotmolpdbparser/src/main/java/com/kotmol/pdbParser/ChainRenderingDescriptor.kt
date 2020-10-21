@@ -22,24 +22,23 @@
         "PropertyName")
 package com.kotmol.pdbParser
 
+import com.kotmol.pdbParser.ChainRenderingDescriptor.SecondaryStructureType.RIBBON
+
 /**
  * this records information used in rendering the CA ribbon for the
  * various chains - Alpha, Beta, and Nucleic
  */
 class ChainRenderingDescriptor {
+    var secondaryStructureType = RIBBON
+
     var backboneAtom: PdbAtom? = null
     var guideAtom: PdbAtom? = null
-    lateinit var startAtom: PdbAtom
-    lateinit var endAtom: PdbAtom
+    var startAtom: PdbAtom? = null
+    var endAtom: PdbAtom? = null
     // use the C3' atom to extend the spline just a bit
     lateinit var nucleicEndAtom: PdbAtom
 
     var curveIndex: Int = 0
-
-    //var rendered_flag: Boolean = false
-    //lateinit var vertex_cache: FloatArray
-
-    var secondaryStructureType = SecondaryStructureType.NOT_A_SECONDARY_STRUCTURE_TYPE
 
     var endOfSecondaryStructure = false
 
@@ -63,13 +62,4 @@ class ChainRenderingDescriptor {
         NOT_A_NUCLEIC_TYPE
     }
 
-   /* companion object {
-        const val RIBBON = 0
-        const val ALPHA_HELIX = 1
-        const val BETA_SHEET = 2
-        const val NUCLEIC = 3
-        const val NOT_A_TYPE = -1
-        const val PURINE = 1
-        const val PYRIMIDINE = 2
-    }*/
 }

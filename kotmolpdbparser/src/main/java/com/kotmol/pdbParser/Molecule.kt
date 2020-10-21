@@ -39,8 +39,8 @@ class Molecule {
     val bondList: MutableList<Bond> = ArrayList()
     val helixList: MutableList<PdbHelix> = ArrayList()
     val pdbSheetList: MutableList<PdbBetaSheet> = ArrayList()
-    val listofChainDescriptorLists: MutableList<List<*>> = ArrayList()
-    private val listofDnaHelixChainLists: MutableList<List<*>> = ArrayList()
+    val listofChainDescriptorLists: MutableList<List<ChainRenderingDescriptor>> = ArrayList()
+    private val listofDnaHelixChainLists: MutableList<List<ChainRenderingDescriptor>> = ArrayList()
     var ribbonNodeCount = 0
     var unbondedAtomCount = 0
     var hasAlternateLocations = false

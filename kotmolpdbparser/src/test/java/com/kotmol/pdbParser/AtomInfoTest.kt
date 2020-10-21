@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class KotmolAtomInfoTest {
+internal class AtomInfoTest {
 
     @Test
     @DisplayName("touch test the atomInfo setup")

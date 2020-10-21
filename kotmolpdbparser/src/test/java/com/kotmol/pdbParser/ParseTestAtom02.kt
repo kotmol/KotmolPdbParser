@@ -20,7 +20,7 @@ import java.io.ByteArrayInputStream
 
 // https://blog.jetbrains.com/idea/2016/08/using-junit-5-in-intellij-idea/
 
-internal class KotmolParseTestAtom02 {
+internal class ParseTestAtom02 {
 
     lateinit var stream : ByteArrayInputStream
     val mol = Molecule()
