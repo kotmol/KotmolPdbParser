@@ -14,7 +14,7 @@
 
 buildscript {
     ext.versions = [
-            'kotlin': '1.4.10'
+            'kotlin': '1.4.20'
     ]
 
     ext.deps = [
@@ -54,15 +54,15 @@ subprojects {
 //        ]
 //    }
 
-    plugins.withId('org.jetbrains.kotlin.jvm') {
-        compileKotlin {
-            kotlinOptions {
-                jvmTarget = "1.8"
-                freeCompilerArgs = [
-                        "-progressive",
-                ]
-            }
-        }
-    }
+//    plugins.withId('org.jetbrains.kotlin.jvm') {
+//        compileKotlin {
+//            kotlinOptions {
+//                jvmTarget = "1.8"
+//                freeCompilerArgs = [
+//                        "-progressive",
+//                ]
+//            }
+//        }
+//    }
 }
 

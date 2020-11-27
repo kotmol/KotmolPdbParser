@@ -44,9 +44,9 @@ class ChainRenderingDescriptor {
 
     var nucleicType = NucleicType.NOT_A_NUCLEIC_TYPE
 
-    lateinit var nucleicCornerAtom: PdbAtom
-    lateinit var nucleicGuideAtom: PdbAtom
-    lateinit var nucleicPlanarAtom: PdbAtom
+    var nucleicCornerAtom: PdbAtom? = null
+    var nucleicGuideAtom: PdbAtom? = null
+    var nucleicPlanarAtom: PdbAtom? = null
 
     enum class SecondaryStructureType {
         RIBBON,

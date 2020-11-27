@@ -681,7 +681,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     list = listOfLists[i]
                     j = 0
                     while (j < list.size) {
-                        val item = list[j] as ChainRenderingDescriptor
+                        val item = list[j]
                         if (item.backboneAtom!!.chainId == initialChainIdChar && item.backboneAtom!!.residueSeqNumber == initialResidueNumber) {
                             item.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.ALPHA_HELIX
                             found = true
@@ -773,7 +773,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                     list = listOfLists[i]
                     j = 0
                     while (j < list.size) {
-                        val item = list[j] as ChainRenderingDescriptor
+                        val item = list[j]
                         if (item.backboneAtom!!.chainId == initialChainIdChar && item.backboneAtom!!.residueSeqNumber == initialResidueNumber) {
                             item.secondaryStructureType = ChainRenderingDescriptor.SecondaryStructureType.BETA_SHEET
                             found = true
