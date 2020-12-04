@@ -10,7 +10,7 @@ Version 1.0.3
 
 * First SNAPSHOT version
 
-Version 1.0.0 *(2016-06-26)*
+Version 1.0.0 *(2020-06-26)*
 ----------------------------
 
  * Initial version
