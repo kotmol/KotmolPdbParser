@@ -57,9 +57,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
         //private lateinit var mol: Molecule
         private val bondinfo = BondInfo()
 
-        private var averageX = 0.0
-        private var averageY = 0.0
-        private var averageZ = 0.0
+        private var averageX = 0.0f
+        private var averageY = 0.0f
+        private var averageZ = 0.0f
         private lateinit var messageStrings: MutableList<String>
         private var parseModelsSomeday = false
         private var centerTheMoleculeCoordinatesFlag = true
@@ -871,7 +871,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
         private fun centerMolecule() {
 
             var maxVector = KotmolVector3()
-            var maxVectorMagnitude = 0.0
+            var maxVectorMagnitude = 0.0f
 
             var anAtom: PdbAtom?
             for (i in 0 until mol.atomNumberList.size) {
@@ -914,9 +914,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
         private fun parseAtom(lineIn: String, atom_type_flag: PdbAtom.AtomType) {
             var line = lineIn
 
-            val vx: Double
-            val vy: Double
-            val vz: Double
+            val vx: Float
+            val vy: Float
+            val vz: Float
             var avex = 0.0
             var avey = 0.0
             var avez = 0.0
@@ -943,9 +943,9 @@ class ParserPdbFile internal constructor( builder: Builder ) {
 
                 atom.residueSeqNumber = parseInteger(line.substring(23 - 1, 26).trim { it <= ' ' })
                 atom.residueInsertionCode = line[27 - 1]
-                vx = parseDouble(line.substring(31 - 1, 38).trim { it <= ' ' })
-                vy = parseDouble(line.substring(39 - 1, 46).trim { it <= ' ' })
-                vz = parseDouble(line.substring(47 - 1, 54).trim { it <= ' ' })
+                vx = parseFloat(line.substring(31 - 1, 38).trim { it <= ' ' })
+                vy = parseFloat(line.substring(39 - 1, 46).trim { it <= ' ' })
+                vz = parseFloat(line.substring(47 - 1, 54).trim { it <= ' ' })
 
                 // don't include HETATM in average calculation
                 if (atom_type_flag == PdbAtom.AtomType.IS_ATOM) {
@@ -1270,7 +1270,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                             count++
                             addBond(anAtom, lastAtom)
                         } else {
-                            val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
+                            val prettyPrint = String.format("%6.2f", totalDistance / count.toFloat())
                             messageStrings.add(String.format(
                                     "connectResidues: excessive bond dist = %s from atom %s to %s",
                                     prettyPrint,
@@ -1283,17 +1283,17 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             }
 
             /*if (count > 0) {
-                val prettyPrint = String.format("%6.2f", totalDistance / count.toDouble())
+                val prettyPrint = String.format("%6.2f", totalDistance / count.toFloat())
                 //Timber.i("connectResidues: ave connection distance = $prettyPrint")
             }*/
 
         }
 
-        private fun parseDouble(s: String): Double {
+        private fun parseFloat(s: String): Float {
             return try {
-                s.toDouble()
+                s.toFloat()
             } catch (e: RuntimeException) {
-                0.toDouble()
+                0.toFloat()
             }
 
         }

@@ -61,7 +61,7 @@ ATOM      3  C4'  DC A   1     -07.071 -07.071  00.000  1.00 31.28           C
         assertEquals(3, atoms.size)
 
         val maxVector = mol.maxPostCenteringVectorMagnitude
-        assertEquals(maxVector, 11.380666666666666, 0.01)
+        assertEquals(maxVector, 11.380666666666666f, 0.01f)
     }
 }
 

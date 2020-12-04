@@ -61,6 +61,6 @@ ATOM      1  O5'  DC A   1      00.000  00.000  00.000  1.00 64.35           O
         assertEquals("DC", firstAtom?.residueName)
 
         val maxVector = mol.maxPostCenteringVectorMagnitude
-        assertEquals(maxVector, 0.0, 0.01)
+        assertEquals(maxVector, 0.0f, 0.01f)
     }
 }

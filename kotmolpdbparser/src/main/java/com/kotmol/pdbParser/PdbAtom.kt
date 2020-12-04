@@ -52,11 +52,11 @@ class Helix {
 }
 
 class KotmolVector3(
-        var x: Double = 0.0,
-        var y: Double = 0.0,
-        var z: Double = 0.0) {
+        var x: Float = 0.0f,
+        var y: Float = 0.0f,
+        var z: Float = 0.0f) {
 
-    fun distanceTo(q: KotmolVector3): Double {
+    fun distanceTo(q: KotmolVector3): Float {
         val a = x - q.x
         val b = y - q.y
         val c = z - q.z
