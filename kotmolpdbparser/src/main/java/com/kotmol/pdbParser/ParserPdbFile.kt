@@ -948,11 +948,11 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                 vz = parseFloat(line.substring(47 - 1, 54).trim { it <= ' ' })
 
                 // don't include HETATM in average calculation
-                if (atom_type_flag == PdbAtom.AtomType.IS_ATOM) {
+                //if (atom_type_flag == PdbAtom.AtomType.IS_ATOM) {
                     averageX += vx
                     averageY += vy
                     averageZ += vz
-                }
+                //}
 
                 atom.atomPosition = KotmolVector3(vx, vy, vz)
 

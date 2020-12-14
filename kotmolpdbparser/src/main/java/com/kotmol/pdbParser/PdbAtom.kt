@@ -28,7 +28,6 @@ import kotlin.math.sqrt
 class PdbAtom {
     var atomNumber = 0
     var atomType = AtomType.IS_NOT_A_TYPE
-    var atomBondCount = 0
     var atomName: String = ""
     var residueName: String = ""
     var chainId: Char = ' '
@@ -36,6 +35,8 @@ class PdbAtom {
     var residueInsertionCode: Char = ' '
     lateinit var atomPosition: KotmolVector3
     var elementSymbol: String = ""
+    var atomBondCount = 0
+    var renderThisAtomAsSphere = false
 
     enum class AtomType {
         IS_ATOM,
