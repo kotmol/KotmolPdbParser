@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020 James Andreas
+ *  Copyright 2021 James Andreas
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -335,18 +335,21 @@ class ParserPdbFile internal constructor( builder: Builder ) {
             var j = 0
             while (true) {
 
-                if (i == mol.atomNumberList.size) {
+                if (i >= mol.atomNumberList.size) {
                     break
                 }
                 var atomSerialNumber = mol.atomNumberList[i]
 
                 currentAtom = mol.atomNumberToAtomInfoHash[atomSerialNumber]
-                requireNotNull(currentAtom)
+                if (currentAtom == null) {
+                    i++
+                    continue
+                }
 
                 // has the loop arrived at the next residue?
                 if (currentAtom.residueSeqNumber != residueSequenceNumber
                         || currentAtom.residueInsertionCode != residueInsertionCode
-                        || currentAtom.residueName.toLowerCase() != residueName) {
+                        || currentAtom.residueName.toLowerCase() != residueName.toLowerCase()) {
                     break
                 }
 
@@ -373,18 +376,21 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                      */
                     j = i + 1
                     while (true) {
-                        if (j == mol.atomNumberList.size) {
+                        if (j >= mol.atomNumberList.size) {
                             break
                         }
                         atomSerialNumber = mol.atomNumberList[j]
 
                         loopAtom = mol.atomNumberToAtomInfoHash[atomSerialNumber]
-                        requireNotNull(loopAtom)
+                        if (loopAtom == null) {
+                            j++
+                            continue
+                        }
                         /*
                          * if the loop has reached the next residue, then quit
                          */
                         if (loopAtom.residueSeqNumber != residueSequenceNumber
-                                || loopAtom.residueInsertionCode != residueInsertionCode) {
+                                || loopAtom.residueInsertionCode.toLowerCase() != residueInsertionCode.toLowerCase()) {
                             break
                         }
 
@@ -1266,7 +1272,7 @@ class ParserPdbFile internal constructor( builder: Builder ) {
                         // connect the atoms
                         val dist = anAtom.atomPosition.distanceTo(lastAtom.atomPosition)
                         if (dist < 2.0) {
-                            totalDistance += dist.toFloat()
+                            totalDistance += dist
                             count++
                             addBond(anAtom, lastAtom)
                         } else {
