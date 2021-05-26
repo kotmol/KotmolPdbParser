@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020 James Andreas
+ *  Copyright 2021 James Andreas
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -25,6 +25,8 @@
 )
 
 package com.kotmol.pdbParser
+
+import java.util.*
 
 class Molecule {
     var molName: String = ""

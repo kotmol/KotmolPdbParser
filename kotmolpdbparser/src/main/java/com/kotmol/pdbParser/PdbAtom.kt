@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020 James Andreas
+ *  Copyright 2021 James Andreas
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
@@ -11,15 +11,7 @@
  *  limitations under the License
  */
 
-@file:Suppress(
-       /* "unused",
-        "unused_variable",
-        "unused_parameter",
-        "unused_property",
-        "deprecation",
-        "ConstantConditionIf",
-        "LocalVariableName",
-        "PropertyName"*/)
+@file:Suppress("unused")
 
 package com.kotmol.pdbParser
 
